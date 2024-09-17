@@ -7,52 +7,150 @@ import { Input } from "@/components/ui/input"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "../ui/form"
+import { Separator } from "../ui/separator"
+import { useState } from "react"
+import { SignUpForHospital } from "@/api/authentication";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+import LoadingButton from "../widgets/LoadingButton"
 
 const FormSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-})
+  firstName: z.string().min(2, { message: "First name must be provided." }),
+  lastName: z.string().min(2, { message: "Last name must be provided." }),
+  email: z.string().email({ message: "Invalid email address." }),
+  password: z.string().min(8, { message: "Password must be at least 8 characters." }),
+  phone: z.string().min(10, { message: "Phone number must be at least 10 digits." }),
+});
+
+export type HospitalApplicantSignUpTypes = z.infer<typeof FormSchema>;
 
 export default function CreateHospitalAdminAccountForm() {
-  const form = useForm<z.infer<typeof FormSchema>>({
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const form = useForm<HospitalApplicantSignUpTypes>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      username: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      phone: "",
     },
-  })
+  });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data)
+  function onSubmit(data: HospitalApplicantSignUpTypes) {
+    setIsLoading(true);
+    SignUpForHospital(data)
+    .then((response) => {
+      console.log(response);
+      form.reset();
+      toast.message(response.message);
+      setIsLoading(false);
+      navigate(`/apply/${response.userId}`)
+    })
+    .catch ((error) => {
+      setIsLoading(false);
+      toast.error(error.message);
+    })
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="shadcn" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
+    <div className="w-full flex flex-col justify-start space-y-4">
+      <h1 className="text-2xl font-bold">Apply For Hospital</h1>
+      <div className="flex justify-between w-full items-center">
+        <h2 className="text-lg font-bold">Create Account</h2>
+        <span>Step 1</span>
+      </div>
+      <Separator />
+
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
+          <div className="w-full flex flex-wrap space-y-4 items-start md:space-y-0 justify-between">
+            <FormField
+              control={form.control}
+              name="firstName"
+              render={({ field }) => (
+                <FormItem className="w-full md:w-[49%]">
+                  <FormLabel>First Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Your first name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="lastName"
+              render={({ field }) => (
+                <FormItem className="w-full md:w-[49%]">
+                  <FormLabel>Last Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Your last name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email address</FormLabel>
+                <FormControl>
+                  <Input placeholder="Your email address" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className="w-full flex flex-wrap space-y-4 md:space-y-0 items-start justify-between">
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem className="w-full md:w-[49%]">
+                  <FormLabel>Phone number</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Your phone number" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem className="w-full md:w-[49%]">
+                  <FormLabel className="flex justify-between items-center">
+                    <span>Password</span>
+                    <span className="text-sm text-gray-800" onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
+                      {isPasswordVisible ? "Hide" : "Show"} Password
+                    </span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input type={isPasswordVisible ? "text" : "password"} placeholder="Create password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          {isLoading 
+            ? <LoadingButton label="Submitting..." btnClass={"w-fit"} btnVariant={"default"} /> 
+            : <Button type="submit">Submit</Button>
+          }
+        </form>
+      </Form>
+    </div>
   )
 }
