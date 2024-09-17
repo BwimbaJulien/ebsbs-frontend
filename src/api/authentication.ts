@@ -76,3 +76,4 @@ export const HospitalSignInRequest = async (data: SignInTypes) => {
 
     return responseData;
 }
+
