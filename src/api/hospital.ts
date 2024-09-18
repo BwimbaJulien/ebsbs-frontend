@@ -49,3 +49,25 @@ export const getInactiveHospitals = async () => {
     }
     return responseData;
 }
+
+export const getHospitalById = async (id: string) => {
+    const response = await fetch(`${API_BASE_URL}/hospitals/findById?id=${id}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+    const responseData = await response.json();
+    if (!response.ok) {
+        if (responseData.errors) {
+            throw new Error(responseData.errors[0].message);
+        }
+        if (responseData.message) {
+            throw new Error(responseData.message);
+        }
+        if (responseData.error) { 
+            throw new Error(responseData.error);
+        }
+    }
+    return responseData;
+}

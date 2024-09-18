@@ -1,6 +1,5 @@
 import { getInactiveHospitals } from "@/api/hospital";
-import { ApplicationsTable } from "@/components/tables/ApplicationsTable";
-import { Separator } from "@/components/ui/separator";
+import { ApplicationsTable } from "@/components/tables/applicationTable/ApplicationsTable";
 import { useEffect, useState } from "react";
 
 export type ApplicationsTypes = {
@@ -32,9 +31,9 @@ export default function Applications() {
             <div className="flex items-center justify-between">
                 <h1 className="text-lg font-semibold md:text-2xl">Overview</h1>
             </div>
-            <Separator />
+            {/* <Separator /> */}
             <div
-                className="flex flex-1"
+                className="flex flex-1 p-4 border border-slate-200 rounded-lg shadow-sm"
             >
                 <ApplicationsTable applications={applications} />
             </div>

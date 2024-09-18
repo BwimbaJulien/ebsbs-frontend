@@ -2,6 +2,9 @@ import { NavLink } from "react-router-dom";
 import { Button } from "../ui/button";
 
 export default function NavBar() {
+    const pathName = window.location.pathname;
+    console.log(pathName);
+
     return (
         <header className="bg-white">
             <div className="mx-auto max-w-screen-xl px-4 py-2 sm:px-6 sm:py-12 lg:px-8">

@@ -39,6 +39,7 @@ import HospitalReceivedRequests from "./pages/hospital/dashboard/RecievedRequest
 import { Toaster } from "./components/ui/sonner";
 import BloodBags from "./pages/bloodbank/dashboard/BloodBags";
 import Applications from "./pages/bloodbank/dashboard/Applications";
+import ApplicationDetails from "./pages/bloodbank/dashboard/ApplicationDetails";
 
 /**
  * The main application component that handles routing and navigation for the blood bank and hospital management system.
@@ -82,6 +83,7 @@ export default function App() {
           <Route path="overview" element={<BloodBankOverview />} />
           <Route path="settings" element={<BloodBankSettings />} />
           <Route path="applications" element={<Applications />} />
+          <Route path="application/:id/edit" element={<ApplicationDetails />} />
           <Route path="users" element={<BloodBankUsers />} />
           <Route path="stock" element={<BloodBankStock />} />
           <Route path="bags" element={<BloodBags />} />
