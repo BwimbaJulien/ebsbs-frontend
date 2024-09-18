@@ -48,7 +48,6 @@ export default function CreateHospitalAdminAccountForm() {
     setIsLoading(true);
     SignUpForHospital(data)
     .then((response) => {
-      console.log(response);
       form.reset();
       toast.message(response.message);
       setIsLoading(false);

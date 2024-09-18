@@ -67,7 +67,7 @@ export default function App() {
           <Route path="reset-password/:token/:id" element={<ResetPassword />} />
         </Route>
 
-        <Route path="/hauth/:hospitalId" element={(localStorage.getItem("hospitalAdminToken") || localStorage.getItem("hospitalWorkerToken")) ? <HospitalDashboardLayout /> : <Navigate replace to='/hauth/signin' />}>
+        <Route path="/hdash/:hospitalId" element={(localStorage.getItem("hospitalAdminToken") || localStorage.getItem("hospitalWorkerToken")) ? <HospitalDashboardLayout /> : <Navigate replace to='/hauth/signin' />}>
           <Route path="" element={<HospitalOverview />} />
           <Route path="overview" element={<HospitalOverview />} />
           <Route path="profile" element={<HospitalProfile />} />

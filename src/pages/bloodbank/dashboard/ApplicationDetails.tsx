@@ -1,8 +1,45 @@
 import { getUserWithHospitalId } from "@/api/authentication";
-import { getHospitalById } from "@/api/hospital";
+import { getHospitalById, updateHospital } from "@/api/hospital";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
+import { z } from "zod";
+import { toast } from "sonner";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import LoadingButton from "@/components/widgets/LoadingButton";
+
+const FormSchema = z.object({
+    accessStatus: z.enum(["Active", "Inactive"]),
+})
+
+interface HospitalInfoTypes extends z.infer<typeof FormSchema> {
+    name: string;
+    province: string;
+    town: string;
+    id: string;
+    hospitalType: "Public" | "Private";
+    googleLocation: string;
+    specialization: string;
+    createdAt: Date;
+}
 
 type ApplicationDetailsTypes = {
     name: string;
@@ -12,7 +49,7 @@ type ApplicationDetailsTypes = {
     hospitalType: "Public" | "Private";
     googleLocation: string;
     specialization: string;
-    accountStatus: "Active" | "Inactive";
+    accessStatus: "Active" | "Inactive";
     createdAt: Date;
 }
 
@@ -20,6 +57,7 @@ type ApplicantDataTypes = {
     id: string;
     firstName: string;
     lastName: string;
+    province: string;
     email: string;
     phone: string;
     accountStatus: "Active" | "Inactive";
@@ -27,16 +65,19 @@ type ApplicantDataTypes = {
 }
 
 export default function ApplicationDetails() {
+    const [isLoading, setIsLoading] = useState(false);
     const params = useParams();
     const [applicant, setApplicant] = useState<ApplicantDataTypes>({
         id: "",
         firstName: "",
         lastName: "",
         email: "",
+        province: "",
         phone: "",
         accountStatus: "Inactive",
         createdAt: new Date(),
     });
+
     const [application, setApplication] = useState<ApplicationDetailsTypes>({
         name: "",
         province: "",
@@ -45,9 +86,39 @@ export default function ApplicationDetails() {
         hospitalType: "Public",
         googleLocation: "",
         specialization: "",
-        accountStatus: "Active",
+        accessStatus: "Active",
         createdAt: new Date(),
     });
+    const form = useForm<HospitalInfoTypes>({
+        resolver: zodResolver(FormSchema),
+        defaultValues: {
+            accessStatus: "Active"
+        }
+    })
+
+    function onSubmit(data: HospitalInfoTypes) {
+        setIsLoading(true);
+
+        data.name = application.name;
+        data.province = application.province;
+        data.town = application.town;
+        data.id = application.id;
+        data.hospitalType = application.hospitalType;
+        data.googleLocation = application.googleLocation;
+        data.specialization = application.specialization;
+
+        updateHospital(params.id as string, data)
+            .then((response) => {
+                form.reset();
+                toast.message(response.message);
+                setIsLoading(false);
+                window.location.replace(`/dashboard/`)
+            })
+            .catch((error) => {
+                setIsLoading(false);
+                toast.error(error.message);
+            })
+    }
 
     useEffect(() => {
         getHospitalById(params.id as string)
@@ -60,7 +131,6 @@ export default function ApplicationDetails() {
 
         getUserWithHospitalId(params.id as string)
             .then(response => {
-                console.log(response);
                 setApplicant(response.hospitalAdmin);
             })
             .catch(error => {
@@ -72,12 +142,16 @@ export default function ApplicationDetails() {
         <>
             <div className="flex items-center justify-between">
                 <h1 className="text-lg font-semibold md:text-2xl">Application No: {params.id}</h1>
+                <Button variant="outline" className="flex items-center gap-2">
+                    <Link to={`/dashboard/applications`} className="flex items-center gap-2">Back to Applications</Link>
+                </Button>
             </div>
-            <div className="flex w-full gap-4 flex-wrap justify-between items-start">
+            <div className="flex w-full gap-4 flex-wrap justify-between items-start flex-1 p-4 border border-slate-200 rounded-lg shadow-sm">
                 <div
-                    className="flex w-full flex-wrap md:w-[60%] justify-between items-start p-4 border border-slate-200 rounded-lg shadow-sm"
+                    className="flex w-full flex-wrap lg:w-[60%] justify-between items-start p-4 border border-slate-200 rounded-lg shadow-sm"
                 >
-                    <h2 className="text-lg font-semibold w-full pb-4 border-b">Hospital: <span className="text-primary">{application?.name}</span></h2>
+                    <h2 className="text-lg font-semibold w-full pb-4">Hospital: <span className="text-primary">{application?.name}</span></h2>
+                    <Separator />
                     <table className="w-full">
                         <tbody>
                             <tr className="">
@@ -99,7 +173,7 @@ export default function ApplicationDetails() {
                             <tr className="">
                                 <th className="text-left py-2 font-semibold">Access Status</th>
                                 <td className="capitalize">
-                                    {application?.accountStatus === "Active"
+                                    {application?.accessStatus === "Active"
                                         ? <Badge variant={"default"}>Active</Badge>
                                         : <Badge variant={"destructive"}>Inactive</Badge>
                                     }
@@ -111,17 +185,47 @@ export default function ApplicationDetails() {
                             </tr>
                         </tbody>
                     </table>
-
+                    <Separator />
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full flex justify-between mt-2 items-end space-y-4">
+                            <FormField
+                                control={form.control}
+                                name="accessStatus"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Approve application</FormLabel>
+                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                            <FormControl>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Select a status" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                <SelectItem value="Active">Active</SelectItem>
+                                                <SelectItem value="Inactive">Inactive</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            {isLoading
+                                ? <LoadingButton label="Submitting..." btnClass={"w-fit"} btnVariant={"default"} />
+                                : <Button className="w-fit" type="submit">Confirm change</Button>
+                            }
+                        </form>
+                    </Form>
                 </div>
                 <div
                     className="flex w-full md:w-[38%] flex-col justify-start items-start flex-1 p-4 border border-slate-200 rounded-lg shadow-sm"
                 >
-                    <div className="flex gap-4 flex-col">
+                    <div className="flex gap-4  w-full flex-col">
                         <img src="https://e7.pngegg.com/pngimages/81/570/png-clipart-profile-logo-computer-icons-user-user-blue-heroes-thumbnail.png" alt="logo" className="sm:h-16 sm:w-16 h-32 w-32 rounded-full" />
                         <div>
                             <strong>Applicant</strong>
                             <p>{applicant.firstName + " " + applicant.lastName}</p>
                         </div>
+                        <Separator />
                         <table className="w-full">
                             <tbody>
                                 <tr className="">

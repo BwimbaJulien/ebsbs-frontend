@@ -100,3 +100,47 @@ export const getUserWithHospitalId = async (hospitalId: string) => {
 
     return responseData;
 }
+
+export const getBloodBankWorkers = async () => {
+    const response = await fetch(`${API_BASE_URL}/auth/listBloodBankEmployees`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+    const responseData = await response.json();
+    if (!response.ok) {
+        if (responseData.errors) {
+            throw new Error(responseData.errors[0].message);
+        }
+        if (responseData.message) {
+            throw new Error(responseData.message);
+        }
+        if (responseData.error) { 
+            throw new Error(responseData.error);
+        }
+    }
+    return responseData;
+}
+
+export const getHospitalWorkers = async (hospitalId: string) => {
+    const response = await fetch(`${API_BASE_URL}/auth/listHospitalEmployees?hospitalId=${hospitalId}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+    const responseData = await response.json();
+    if (!response.ok) {
+        if (responseData.errors) {
+            throw new Error(responseData.errors[0].message);
+        }
+        if (responseData.message) {
+            throw new Error(responseData.message);
+        }
+        if (responseData.error) {
+            throw new Error(responseData.error);
+        }
+    }
+    return responseData;
+}

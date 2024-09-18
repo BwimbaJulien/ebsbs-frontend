@@ -32,20 +32,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ApplicationsTypes } from "@/pages/bloodbank/dashboard/Applications"
 import { columns } from "./columns"
+import { UserDataTypes } from "@/components/widgets/UserManagementDialog"
 
-export function ApplicationsTable({ applications }: { applications: ApplicationsTypes[] }) {
+export function BloodBankUsersTable({ users }: { users: UserDataTypes[] }) {
   const [sorting, setSorting] = React.useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  )
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
 
   const table = useReactTable({
-    data: applications,
+    data: users,
     columns: columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -67,10 +64,10 @@ export function ApplicationsTable({ applications }: { applications: Applications
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter by name..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          placeholder="Search by email"
+          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
+            table.getColumn("email")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
