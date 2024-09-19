@@ -2,7 +2,8 @@ import LoadingSkeleton from "@/components/widgets/LoadingSkeleton";
 import { UserDataTypes } from "@/components/widgets/ManageUserForm";
 import UserAccountForm from "@/components/widgets/UserAccountForm";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import { Link, useParams } from "react-router-dom";
 
 export default function Profile() {
   const [isLoading, setIsLoading] = useState(true);
@@ -21,6 +22,19 @@ export default function Profile() {
 
   return (
     <>
+      <Breadcrumb className="hidden md:flex">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link to={`/dashboard/${params.userType}`}>Dashboard</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Profile</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
       <div className="flex items-center justify-between">
         <h1 className="text-lg font-semibold md:text-2xl">Profile</h1>
       </div>

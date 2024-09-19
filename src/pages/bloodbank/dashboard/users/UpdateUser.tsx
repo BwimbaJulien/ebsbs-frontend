@@ -5,6 +5,7 @@ import LoadingSkeleton from "@/components/widgets/LoadingSkeleton";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import DeleteDialog from "@/components/widgets/DeleteDialog";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 
 export default function AddUser() {
   const params = useParams();
@@ -34,6 +35,25 @@ export default function AddUser() {
 
   return (
     <>
+      <Breadcrumb className="hidden md:flex">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link to={`/dashboard/${params.userType}`}>Dashboard</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link to={`/dashboard/${params.userType}/users`}>Users</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Details</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
       <div className="flex items-center justify-between gap-4 flex-wrap">
         <h1 className="text-lg font-semibold md:text-2xl">Update User: <span className="text-slate-500">{params.userId}</span></h1>
         <div className="flex justify-between w-full md:w-fit gap-12 items-center">

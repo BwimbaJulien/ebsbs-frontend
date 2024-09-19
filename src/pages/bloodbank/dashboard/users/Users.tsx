@@ -4,9 +4,11 @@ import { Button } from "@/components/ui/button";
 import LoadingSkeleton from "@/components/widgets/LoadingSkeleton";
 import { UserDataTypes } from "@/components/widgets/ManageUserForm";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 
 export default function Users() {
+  const params = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [users, setUsers] = useState<UserDataTypes[]>([]);
   const bloodBankId = JSON.parse(localStorage.getItem("bloodbankAdmin") as string).bloodBankId;
@@ -26,6 +28,19 @@ export default function Users() {
 
   return (
     <>
+      <Breadcrumb className="hidden md:flex">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link to={`/dashboard/${params.userType}`}>Dashboard</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Users</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
       <div className="flex items-center justify-between">
         <h1 className="text-lg font-semibold md:text-2xl">Users</h1>
         <Button>

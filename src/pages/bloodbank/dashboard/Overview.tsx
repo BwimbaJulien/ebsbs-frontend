@@ -25,23 +25,23 @@ export default function Overview() {
           <div className="grid gap-4 sm:grid-cols-3 w-full md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-4">
             <Card x-chunk="dashboard-05-chunk-1">
               <CardHeader className="pb-2">
-                <CardDescription>This Week</CardDescription>
-                <CardTitle className="text-4xl">$1,329</CardTitle>
+                <CardDescription>Applications from Hospitals</CardDescription>
+                <CardTitle className="text-4xl">2</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-xs text-muted-foreground">
-                  +25% from last week
+                  This month
                 </div>
               </CardContent>
             </Card>
             <Card x-chunk="dashboard-05-chunk-2">
               <CardHeader className="pb-2">
-                <CardDescription>This Month</CardDescription>
-                <CardTitle className="text-4xl">$5,329</CardTitle>
+                <CardDescription>Internal Users</CardDescription>
+                <CardTitle className="text-4xl">1</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-xs text-muted-foreground">
-                  +10% from last month
+                  This month
                 </div>
               </CardContent>
             </Card>
@@ -53,7 +53,9 @@ export default function Overview() {
                 </CardDescription>
               </CardHeader>
               <CardFooter>
-                <Button>Create New Order</Button>
+                <Button>
+                  <Link to="/dashboard/a/users">Add New User</Link>
+                </Button>
               </CardFooter>
             </Card>
           </div>
