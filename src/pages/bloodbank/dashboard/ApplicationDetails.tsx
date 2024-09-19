@@ -25,6 +25,7 @@ import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import LoadingButton from "@/components/widgets/LoadingButton";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 
 const FormSchema = z.object({
     accessStatus: z.enum(["Active", "Inactive"]),
@@ -140,6 +141,25 @@ export default function ApplicationDetails() {
 
     return (
         <>
+            <Breadcrumb className="hidden md:flex">
+                <BreadcrumbList>
+                    <BreadcrumbItem>
+                        <BreadcrumbLink asChild>
+                            <Link to={`/dashboard/${params.userType}`}>Dashboard</Link>
+                        </BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                        <BreadcrumbLink asChild>
+                            <Link to={`/dashboard/${params.userType}/applications`}>Applications</Link>
+                        </BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                        <BreadcrumbPage>Details</BreadcrumbPage>
+                    </BreadcrumbItem>
+                </BreadcrumbList>
+            </Breadcrumb>
             <div className="flex items-center justify-between">
                 <h1 className="text-lg font-semibold md:text-2xl">Application No: {params.id}</h1>
                 <Button variant="link" className="flex items-center gap-2">
