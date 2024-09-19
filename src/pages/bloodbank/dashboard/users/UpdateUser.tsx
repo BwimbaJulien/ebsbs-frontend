@@ -4,6 +4,7 @@ import ManageUserForm, { UserDataTypes } from "@/components/widgets/ManageUserFo
 import LoadingSkeleton from "@/components/widgets/LoadingSkeleton";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import DeleteDialog from "@/components/widgets/DeleteDialog";
 
 export default function AddUser() {
   const params = useParams();
@@ -33,11 +34,16 @@ export default function AddUser() {
 
   return (
     <>
-      <div className="flex items-center justify-between">
-        <h1 className="text-lg font-semibold md:text-2xl">Update User: {params.userId}</h1>
-        <Button type="button" variant={'link'}>
-          <Link to="/dashboard/users">Go Back</Link>
-        </Button>
+      <div className="flex items-center justify-between gap-4 flex-wrap">
+        <h1 className="text-lg font-semibold md:text-2xl">Update User: <span className="text-slate-500">{params.userId}</span></h1>
+        <div className="flex justify-between w-full md:w-fit gap-12 items-center">
+          {user?.id && <>
+            <DeleteDialog user={user} />
+          </>}
+          <Button type="button" variant={'link'}>
+            <Link to="/dashboard/users">Go Back</Link>
+          </Button>
+        </div>
       </div>
       <div
         className="flex flex-1 p-4 border border-slate-200 rounded-lg shadow-sm"

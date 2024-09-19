@@ -49,7 +49,7 @@ export default function CreateHospitalAdminAccountForm() {
     SignUpForHospital(data)
     .then((response) => {
       form.reset();
-      toast.message(response.message);
+      toast.success(response.message);
       setIsLoading(false);
       navigate(`/apply/${response.userId}`)
     })

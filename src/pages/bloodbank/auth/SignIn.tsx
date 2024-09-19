@@ -52,7 +52,7 @@ export default function SignIn() {
     BloodBankSignInRequest(data)
       .then((response) => {
         form.reset();
-        toast.message(response.message);
+        toast.success(response.message);
         if (response.user) {
           localStorage.setItem(response.user.role === "Blood Bank Admin" ? "bloodbankAdminToken":"bloodbankRecorderToken" , response.token);
           localStorage.setItem(response.user.role === "Blood Bank Admin" ? "bloodbankAdmin" : "bloodbankRecorder", JSON.stringify(response.user));

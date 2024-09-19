@@ -110,7 +110,7 @@ export default function ApplicationDetails() {
         updateHospital(params.id as string, data)
             .then((response) => {
                 form.reset();
-                toast.message(response.message);
+                toast.success(response.message);
                 setIsLoading(false);
                 window.location.replace(`/dashboard/`)
             })

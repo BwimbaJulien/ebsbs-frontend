@@ -223,8 +223,8 @@ export const updateUser = async(userId: string, data: UserDataTypes) : Promise<U
     return responseData;
 }
 
-export const deleteUser = async(userId: string) => {
-    const response = await fetch(`${API_BASE_URL}/auth/delete?id=${userId}`, {
+export const deleteUser = async(role: string, userId: string) => {
+    const response = await fetch(`${API_BASE_URL}/auth/delete-account?id=${userId}&role=${role}`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",

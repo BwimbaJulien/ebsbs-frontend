@@ -54,7 +54,7 @@ export default function ApplyForHospitalForm() {
     ApplyForHospital(data)
       .then((response) => {
         form.reset();
-        toast.message(response.message);
+        toast.success(response.message);
         setIsLoading(false);
         navigate(`/`)
       })

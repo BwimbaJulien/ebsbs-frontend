@@ -18,7 +18,6 @@ import { addNewUser, updateUser } from "@/api/authentication"
 import LoadingButton from "./LoadingButton"
 import { toast } from "sonner"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
-import { Separator } from "@radix-ui/react-separator"
 
 const FormSchema = z.object({
     firstName: z.string().min(2, { message: "First name must be at least 2 characters." }),
@@ -35,7 +34,6 @@ export type UserDataTypes = z.infer<typeof FormSchema>
 
 export default function ManageUserForm({ user }: { user?: UserDataTypes }) {
     const [isLoading, setIsLoading] = useState(false);
-    const [isLoading2, setIsLoading2] = useState(false);
     const bloodBankId = JSON.parse(localStorage.getItem("bloodbankAdmin") as string).bloodBankId;
     const navigate = useNavigate();
 
@@ -59,7 +57,7 @@ export default function ManageUserForm({ user }: { user?: UserDataTypes }) {
             updateUser(user.id, data)
                 .then((response) => {
                     form.setValue("accountStatus", response.user.accountStatus);
-                    toast.message(response.message);
+                    toast.success(response.message);
                     setIsLoading(false);
                     navigate(`/dashboard/users`)
                 })
@@ -72,7 +70,7 @@ export default function ManageUserForm({ user }: { user?: UserDataTypes }) {
             addNewUser(data)
                 .then((response) => {
                     form.reset();
-                    toast.message(response.message);
+                    toast.success(response.message);
                     setIsLoading(false);
                     navigate(`/dashboard/users`)
                 })
@@ -82,10 +80,6 @@ export default function ManageUserForm({ user }: { user?: UserDataTypes }) {
                     console.log(error);
                 })
         }
-    }
-
-    function deleteUser() {
-
     }
 
     return (
@@ -181,18 +175,12 @@ export default function ManageUserForm({ user }: { user?: UserDataTypes }) {
                         </FormItem>
                     )}
                 />}
-                <Separator />
-                <div className="flex justify-between items-center w-full">
+
+                <div className="flex mt-8 justify-between items-center w-full">
                     {isLoading
                         ? <LoadingButton label="Submitting..." btnClass={"w-fit"} btnVariant={"default"} />
                         : <Button type="submit">{user?.id ? "Confirm changes" : "Submit"}</Button>
                     }
-                    {user?.id && <>
-                        {isLoading2
-                            ? <LoadingButton label="Submitting..." btnClass={"w-fit"} btnVariant={"default"} />
-                            : <Button type="button" variant={'secondary'} onClick={deleteUser}>Delete</Button>
-                        }
-                    </>}
                 </div>
             </form>
         </Form>
