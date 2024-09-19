@@ -13,11 +13,9 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input";
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { addNewUser, updateUser } from "@/api/authentication"
+import { updateUser } from "@/api/authentication"
 import LoadingButton from "./LoadingButton"
 import { toast } from "sonner"
-import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 
 const FormSchema = z.object({
     firstName: z.string().min(2, { message: "First name must be at least 2 characters." }),
@@ -26,16 +24,15 @@ const FormSchema = z.object({
     phone: z.string().min(10, { message: "Phone number must be at least 10 characters." }),
     accountStatus: z.enum(["Active", "Inactive"], { message: "Please select an account status." }),
     id: z.string().optional(),
-    role: z.enum(["Hospital Worker", "Blood Bank Recorder", "Blood Bank Admin" , "Hospital Admin"]),
+    role: z.enum(["Hospital Worker", "Blood Bank Admin", "Hospital Admin" , "Blood Bank Recorder"]),
     bloodBankId: z.string(),
 })
 
 export type UserDataTypes = z.infer<typeof FormSchema>
 
-export default function ManageUserForm({ user }: { user?: UserDataTypes }) {
+export default function UserAccountForm({ user }: { user?: UserDataTypes }) {
     const [isLoading, setIsLoading] = useState(false);
     const bloodBankId = JSON.parse(localStorage.getItem("bloodbankAdmin") as string).bloodBankId;
-    const navigate = useNavigate();
 
     const form = useForm<UserDataTypes>({
         resolver: zodResolver(FormSchema),
@@ -56,23 +53,18 @@ export default function ManageUserForm({ user }: { user?: UserDataTypes }) {
         if (user?.id) {
             updateUser(user.id, data)
                 .then((response) => {
-                    form.setValue("accountStatus", response.user.accountStatus);
+                    if (response.user.role === "Blood Bank Admin") {
+                        localStorage.setItem("bloodbankAdmin", JSON.stringify(response.user));
+                    } else if (response.user.role === "Hospital Admin") {
+                        localStorage.setItem("hospitalAdmin", JSON.stringify(response.user));
+                    } else if (response.user.role === "Hospital Worker") {
+                        localStorage.setItem("hospitalWorker", JSON.stringify(response.user));
+                    } else if (response.user.role === "Blood Bank Recorder") {
+                        localStorage.setItem("bloodbankRecorder", JSON.stringify(response.user));
+                    }
                     toast.success(response.message);
                     setIsLoading(false);
-                    navigate(`/dashboard/a/users`)
-                })
-                .catch((error) => {
-                    setIsLoading(false);
-                    toast.error(error.message);
-                    console.log(error);
-                })
-        } else {
-            addNewUser(data)
-                .then((response) => {
-                    form.reset();
-                    toast.success(response.message);
-                    setIsLoading(false);
-                    navigate(`/dashboard/a/users`)
+                    window.location.reload();
                 })
                 .catch((error) => {
                     setIsLoading(false);
@@ -93,7 +85,7 @@ export default function ManageUserForm({ user }: { user?: UserDataTypes }) {
                             <FormItem className="w-full md:w-[49%]">
                                 <FormLabel>First Name</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Your first name" type="text" disabled={user?.id ? true : false} {...field} />
+                                    <Input placeholder="Your first name" type="text" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -106,7 +98,7 @@ export default function ManageUserForm({ user }: { user?: UserDataTypes }) {
                             <FormItem className="w-full md:w-[49%]">
                                 <FormLabel>Last Name</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Your last name" type="text" disabled={user?.id ? true : false} {...field} />
+                                    <Input placeholder="Your last name" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -121,7 +113,7 @@ export default function ManageUserForm({ user }: { user?: UserDataTypes }) {
                             <FormItem className="w-full md:w-[49%]">
                                 <FormLabel>Email address</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Your email address" type="email" disabled={user?.id ? true : false} {...field} />
+                                    <Input placeholder="Your email address" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -134,47 +126,13 @@ export default function ManageUserForm({ user }: { user?: UserDataTypes }) {
                             <FormItem className="w-full md:w-[49%]">
                                 <FormLabel>Phone number</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Your phone number" type="tel" maxLength={10} minLength={10} disabled={user?.id ? true : false} {...field} />
+                                    <Input placeholder="Your phone number" type="tel" maxLength={10} minLength={10} {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
                 </div>
-                {user?.id && <FormField
-                    control={form.control}
-                    name="accountStatus"
-                    render={({ field }) => (
-                        <FormItem className="space-y-3">
-                            <FormLabel>Change Account Status</FormLabel>
-                            <FormControl>
-                                <RadioGroup
-                                    onValueChange={field.onChange}
-                                    defaultValue={field.value}
-                                    className="flex space-y-1"
-                                >
-                                    <FormItem className="flex items-center space-x-3 space-y-0">
-                                        <FormControl>
-                                            <RadioGroupItem value="Active" />
-                                        </FormControl>
-                                        <FormLabel className="font-normal">
-                                            Active
-                                        </FormLabel>
-                                    </FormItem>
-                                    <FormItem className="flex items-center space-x-3 space-y-0">
-                                        <FormControl>
-                                            <RadioGroupItem value="Inactive" />
-                                        </FormControl>
-                                        <FormLabel className="font-normal">
-                                            Inactive
-                                        </FormLabel>
-                                    </FormItem>
-                                </RadioGroup>
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />}
 
                 <div className="flex mt-8 justify-between items-center w-full">
                     {isLoading

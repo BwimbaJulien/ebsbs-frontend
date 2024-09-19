@@ -64,8 +64,9 @@ export default function SignIn() {
               expires: 1
             });
         }
+        const userType = response.user.role === "Blood Bank Admin" ? "a" : "r";
         setIsLoading(false);
-        window.location.replace(`/dashboard/`)
+        window.location.replace(`/dashboard/${userType}/`)
       })
       .catch((error) => {
         setIsLoading(false);

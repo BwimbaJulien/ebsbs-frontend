@@ -41,7 +41,7 @@ export default function AddUser() {
             <DeleteDialog user={user} />
           </>}
           <Button type="button" variant={'link'}>
-            <Link to="/dashboard/users">Go Back</Link>
+            <Link to="/dashboard/a/users">Go Back</Link>
           </Button>
         </div>
       </div>

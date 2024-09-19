@@ -8,7 +8,7 @@ export default function AddUser() {
       <div className="flex items-center justify-between">
         <h1 className="text-lg font-semibold md:text-2xl">Add New User</h1>
         <Button type="button" variant={'link'}>
-          <Link to="/dashboard/users">Go Back</Link>
+          <Link to="/dashboard/a/users">Go Back</Link>
         </Button>
       </div>
       <div

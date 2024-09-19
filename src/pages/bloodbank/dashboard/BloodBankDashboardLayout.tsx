@@ -16,20 +16,13 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Link, Outlet } from "react-router-dom"
+import { Link, Outlet, useParams } from "react-router-dom"
 import BloodBankDashboardLinks from "@/components/widgets/BloodBankDashboardLinks"
 
 export default function BloodBankDashboardLayout() {
-
+  const params = useParams();
   const signOut = () => {
-    let userData = "";
-    userData = localStorage.getItem('bloodbankAdmin') as string;
-    if (!userData) {
-      userData = localStorage.getItem('bloodbankRecorder') as string;
-    }
-    const user = JSON.parse(userData);
-
-    if (user.role === "Blood Bank Admin") {
+    if (params.userType === "a") {
       localStorage.removeItem("bloodbankAdmin")
       localStorage.removeItem("bloodbankAdminToken")
     } else {
@@ -44,28 +37,42 @@ export default function BloodBankDashboardLayout() {
       <div className="hidden border-r bg-muted/40 md:block">
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-            <Link to="/dashboard" className="flex items-center gap-2 font-semibold">
+            <Link to={`/dashboard/${params.userType}`} className="flex items-center gap-2 font-semibold">
               <img src="/drc-flag.png" alt="logo" className="h-8 rounded-full w-auto sm:h-10" />
               <span className="">
-                EBSBS
+                CPTS
               </span>
             </Link>
+            <span className="ml-auto font-bold underline">
+              {params.userType === "a" ? "Admin" : "Recorder"}
+            </span>
           </div>
           <div className="flex-1">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-              {BloodBankDashboardLinks.map((link, index) => (<Link key={index}
-                to={link.to}
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
-                {link.icon}
-                {link.label}
-              </Link>))}
+              {BloodBankDashboardLinks.map((link, index) => {
+                if (params.userType === 'a' && link.user === "Admin") {
+                  return (
+                    <Link key={index} to={link.to} className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
+                      {link.icon}
+                      {link.label}
+                    </Link>
+                  )
+                }
+                if (params.userType === 'r' && link.user === "Recorder") {
+                  return (
+                    <Link key={index} to={link.to} className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
+                      {link.icon}
+                      {link.label}
+                    </Link>
+                  )
+                }
+              })}
             </nav>
           </div>
         </div>
       </div>
       <div className="flex flex-col">
-        <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
+        <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6 bg-[url(/cptsxc.png)] bg-no-repeat bg-cover">
           <Sheet>
             <SheetTrigger asChild>
               <Button
@@ -79,19 +86,28 @@ export default function BloodBankDashboardLayout() {
             </SheetTrigger>
             <SheetContent side="left" className="flex flex-col">
               <nav className="grid gap-2 text-lg font-medium">
-                <Link to="/dashboard" className="flex items-center gap-2 font-semibold">
+                <Link to={`/dashboard/${params.userType}`} className="flex items-center gap-2 font-semibold">
                   <img src="/drc-flag.png" alt="logo" className="h-8 rounded-full w-auto sm:h-10" />
                   <span className="">
                     EBSBS
                   </span>
                 </Link>
-                {BloodBankDashboardLinks.map((link, index) => (<Link key={index}
-                  to={link.to}
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                >
-                  {link.icon}
-                  {link.label}
-                </Link>))}
+                {BloodBankDashboardLinks.map((link, index) => {
+                  if (params.userType === 'a' && link.user === "Admin") {
+                    return (
+                      <Link key={index} to={link.to} className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground">
+                        {link.icon}
+                        {link.label}
+                      </Link>
+                    )
+                  }
+                  return (
+                    <Link key={index} to={link.to} className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground">
+                      {link.icon}
+                      {link.label}
+                    </Link>
+                  )
+                })}
               </nav>
             </SheetContent>
           </Sheet>
@@ -120,10 +136,11 @@ export default function BloodBankDashboardLayout() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>
-                <Link to={'/dashboard/profile'}>My Account</Link>
+                <Link to={`/dashboard/${params.userType}profile`}>My Account</Link>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem><Link to={'/dashboard/settings'}>Settings</Link></DropdownMenuItem>
+              {params.userType === "a" && <DropdownMenuItem><Link to={`/dashboard/${params.userType}/settings`}>Settings</Link></DropdownMenuItem>}
+              <DropdownMenuItem><Link to={`/dashboard/${params.userType}/profile`}>Profile</Link></DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => signOut()}>Logout</DropdownMenuItem>
             </DropdownMenuContent>

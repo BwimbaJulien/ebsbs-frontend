@@ -112,7 +112,7 @@ export default function ApplicationDetails() {
                 form.reset();
                 toast.success(response.message);
                 setIsLoading(false);
-                window.location.replace(`/dashboard/`)
+                window.location.replace(`/dashboard/a/`)
             })
             .catch((error) => {
                 setIsLoading(false);
@@ -143,7 +143,7 @@ export default function ApplicationDetails() {
             <div className="flex items-center justify-between">
                 <h1 className="text-lg font-semibold md:text-2xl">Application No: {params.id}</h1>
                 <Button variant="link" className="flex items-center gap-2">
-                    <Link to={`/dashboard/applications`} className="flex items-center gap-2">Back to Applications</Link>
+                    <Link to={`/dashboard/a/applications`} className="flex items-center gap-2">Back to Applications</Link>
                 </Button>
             </div>
             <div className="flex w-full gap-4 flex-wrap justify-between items-start flex-1 p-4 border border-slate-200 rounded-lg shadow-sm">

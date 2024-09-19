@@ -29,7 +29,7 @@ export default function Users() {
       <div className="flex items-center justify-between">
         <h1 className="text-lg font-semibold md:text-2xl">Users</h1>
         <Button>
-          <Link to="/dashboard/users/new">Add User</Link>
+          <Link to="/dashboard/a/users/new">Add User</Link>
         </Button>
       </div>
       <div

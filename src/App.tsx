@@ -70,7 +70,7 @@ export default function App() {
           <Route path="reset-password/:token/:id" element={<ResetPassword />} />
         </Route>
 
-        <Route path="/hdash/:hospitalId" element={(localStorage.getItem("hospitalAdminToken") || localStorage.getItem("hospitalWorkerToken")) ? <HospitalDashboardLayout /> : <Navigate replace to='/hauth/signin' />}>
+        <Route path="/hdash/:hospitalId/:userType" element={(localStorage.getItem("hospitalAdminToken") || localStorage.getItem("hospitalWorkerToken")) ? <HospitalDashboardLayout /> : <Navigate replace to='/hauth/signin' />}>
           <Route path="" element={<HospitalOverview />} />
           <Route path="overview" element={<HospitalOverview />} />
           <Route path="profile" element={<HospitalProfile />} />
@@ -81,7 +81,7 @@ export default function App() {
           <Route path="receivedrequests" element={<HospitalReceivedRequests />} />
         </Route>
 
-        <Route path="dashboard" element={(localStorage.getItem("bloodbankAdminToken") || localStorage.getItem("bloodbankRecorderToken")) ? <BloodBankDashboardLayout /> : <Navigate replace to='/bauth/signin' />}>
+        <Route path="dashboard/:userType" element={(localStorage.getItem("bloodbankAdminToken") || localStorage.getItem("bloodbankRecorderToken")) ? <BloodBankDashboardLayout /> : <Navigate replace to='/bauth/signin' />}>
           <Route path="" element={<BloodBankOverview />} />
           <Route path="overview" element={<BloodBankOverview />} />
           <Route path="settings" element={<BloodBankSettings />} />

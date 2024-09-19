@@ -107,7 +107,7 @@ export const columns: ColumnDef<ApplicationsTypes>[] = [
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>
-                            <Link to={`/dashboard/application/${application.id}/edit`}>
+                            <Link to={`/dashboard/a/application/${application.id}/edit`}>
                                 View Application Details
                             </Link>
                         </DropdownMenuItem>

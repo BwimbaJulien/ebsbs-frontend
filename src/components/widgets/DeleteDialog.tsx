@@ -30,7 +30,7 @@ export default function DeleteDialog({ user }: { user: UserDataTypes }) {
                 .then((res) => {
                     if (res) {
                         toast.success("Account deleted successfully");
-                        navigate("/dashboard/users");
+                        navigate("/dashboard/a/users");
                     }
                 })
                 .catch((err) => {

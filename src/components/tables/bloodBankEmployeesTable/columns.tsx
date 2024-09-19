@@ -96,7 +96,7 @@ export const columns: ColumnDef<UserDataTypes>[] = [
 
             return (
                 <Button variant="link" size={'sm'}>
-                    <Link to={`/dashboard/users/${user.id}`}>View More</Link>
+                    <Link to={`/dashboard/a/users/${user.id}`}>View More</Link>
                 </Button>
             )
         },
