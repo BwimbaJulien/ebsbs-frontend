@@ -1,5 +1,6 @@
 import { getInactiveHospitals } from "@/api/hospital";
 import { ApplicationsTable } from "@/components/tables/applicationTable/ApplicationsTable";
+import LoadingSkeleton from "@/components/widgets/LoadingSkeleton";
 import { useEffect, useState } from "react";
 
 export type ApplicationsTypes = {
@@ -14,15 +15,19 @@ export type ApplicationsTypes = {
 }
 
 export default function Applications() {
+    const [isLoading, setIsLoading] = useState(false);
     const [applications, setApplications] = useState<ApplicationsTypes[]>([]);
 
     useEffect(() => {
+        setIsLoading(true);
         getInactiveHospitals()
             .then(response => {
+                setIsLoading(false);
                 setApplications(response.hospitals);
             })
             .catch(error => {
                 console.error(error);
+                setIsLoading(false);
             });
     }, []);
 
@@ -34,7 +39,8 @@ export default function Applications() {
             <div
                 className="flex flex-1 p-4 border border-slate-200 rounded-lg shadow-sm"
             >
-                <ApplicationsTable applications={applications} />
+                {!isLoading && <ApplicationsTable applications={applications} />}
+                {isLoading && <LoadingSkeleton />}
             </div>
         </>
     )

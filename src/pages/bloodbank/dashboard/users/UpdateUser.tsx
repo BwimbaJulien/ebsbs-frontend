@@ -1,7 +1,7 @@
 import { getBloodBankRecorderById } from "@/api/authentication";
 import { Button } from "@/components/ui/button";
 import ManageUserForm, { UserDataTypes } from "@/components/widgets/ManageUserForm";
-import { Loader2 } from "lucide-react";
+import LoadingSkeleton from "@/components/widgets/LoadingSkeleton";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
@@ -22,12 +22,13 @@ export default function AddUser() {
         })
         .catch((err) => {
           console.log(err);
+          setIsLoading(false);
         })
     }
   }, [params.userId]);
 
   if (isLoading) {
-    return <Loader2 size={40} className={"my-10 animate-spin"} />;
+    return <LoadingSkeleton />;
   }
 
   return (

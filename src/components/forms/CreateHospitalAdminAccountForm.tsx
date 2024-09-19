@@ -78,7 +78,7 @@ export default function CreateHospitalAdminAccountForm() {
                 <FormItem className="w-full md:w-[49%]">
                   <FormLabel>First Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Your first name" {...field} />
+                    <Input placeholder="Your first name" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -91,7 +91,7 @@ export default function CreateHospitalAdminAccountForm() {
                 <FormItem className="w-full md:w-[49%]">
                   <FormLabel>Last Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Your last name" {...field} />
+                    <Input placeholder="Your last name" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -105,7 +105,7 @@ export default function CreateHospitalAdminAccountForm() {
               <FormItem>
                 <FormLabel>Email address</FormLabel>
                 <FormControl>
-                  <Input placeholder="Your email address" {...field} />
+                  <Input placeholder="Your email address" type="email" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -119,7 +119,7 @@ export default function CreateHospitalAdminAccountForm() {
                 <FormItem className="w-full md:w-[49%]">
                   <FormLabel>Phone number</FormLabel>
                   <FormControl>
-                    <Input placeholder="Your phone number" {...field} />
+                    <Input placeholder="Your phone number" type="tel" maxLength={10} minLength={10} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

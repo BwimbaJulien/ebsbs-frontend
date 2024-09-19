@@ -83,7 +83,7 @@ export default function ApplyForHospitalForm() {
               <FormItem className="w-full">
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Name of hospital" {...field} />
+                  <Input placeholder="Name of hospital" type="text" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -97,7 +97,7 @@ export default function ApplyForHospitalForm() {
                 <FormItem className="w-full md:w-[32%]">
                   <FormLabel>Google Maps Location</FormLabel>
                   <FormControl>
-                    <Input placeholder="Your last name" {...field} />
+                    <Input placeholder="Your last name" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -110,7 +110,7 @@ export default function ApplyForHospitalForm() {
                 <FormItem className="w-full md:w-[32%]">
                   <FormLabel>Province</FormLabel>
                   <FormControl>
-                    <Input placeholder="Province" {...field} />
+                    <Input placeholder="Province" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -123,7 +123,7 @@ export default function ApplyForHospitalForm() {
                 <FormItem className="w-full md:w-[32%]">
                   <FormLabel>Town</FormLabel>
                   <FormControl>
-                    <Input placeholder="Town" {...field} />
+                    <Input placeholder="Town" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -159,7 +159,7 @@ export default function ApplyForHospitalForm() {
                 <FormItem className="w-full md:w-[32%]">
                   <FormLabel>Specialization</FormLabel>
                   <FormControl>
-                    <Input placeholder="Specialization" {...field} />
+                    <Input placeholder="Specialization" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

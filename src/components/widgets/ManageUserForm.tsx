@@ -14,9 +14,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { addNewUser } from "@/api/authentication"
+import { addNewUser, updateUser } from "@/api/authentication"
 import LoadingButton from "./LoadingButton"
 import { toast } from "sonner"
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
+import { Separator } from "@radix-ui/react-separator"
 
 const FormSchema = z.object({
     firstName: z.string().min(2, { message: "First name must be at least 2 characters." }),
@@ -33,6 +35,7 @@ export type UserDataTypes = z.infer<typeof FormSchema>
 
 export default function ManageUserForm({ user }: { user?: UserDataTypes }) {
     const [isLoading, setIsLoading] = useState(false);
+    const [isLoading2, setIsLoading2] = useState(false);
     const bloodBankId = JSON.parse(localStorage.getItem("bloodbankAdmin") as string).bloodBankId;
     const navigate = useNavigate();
 
@@ -52,18 +55,37 @@ export default function ManageUserForm({ user }: { user?: UserDataTypes }) {
 
     function onSubmit(data: UserDataTypes) {
         setIsLoading(true);
-        addNewUser(data)
-            .then((response) => {
-                form.reset();
-                toast.message(response.message);
-                setIsLoading(false);
-                navigate(`/dashboard/users`)
-            })
-            .catch((error) => {
-                setIsLoading(false);
-                toast.error(error.message);
-                console.log(error);
-            })
+        if (user?.id) {
+            updateUser(user.id, data)
+                .then((response) => {
+                    form.setValue("accountStatus", response.user.accountStatus);
+                    toast.message(response.message);
+                    setIsLoading(false);
+                    navigate(`/dashboard/users`)
+                })
+                .catch((error) => {
+                    setIsLoading(false);
+                    toast.error(error.message);
+                    console.log(error);
+                })
+        } else {
+            addNewUser(data)
+                .then((response) => {
+                    form.reset();
+                    toast.message(response.message);
+                    setIsLoading(false);
+                    navigate(`/dashboard/users`)
+                })
+                .catch((error) => {
+                    setIsLoading(false);
+                    toast.error(error.message);
+                    console.log(error);
+                })
+        }
+    }
+
+    function deleteUser() {
+
     }
 
     return (
@@ -77,7 +99,7 @@ export default function ManageUserForm({ user }: { user?: UserDataTypes }) {
                             <FormItem className="w-full md:w-[49%]">
                                 <FormLabel>First Name</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Your first name" {...field} />
+                                    <Input placeholder="Your first name" type="text" disabled={user?.id ? true : false} {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -90,7 +112,7 @@ export default function ManageUserForm({ user }: { user?: UserDataTypes }) {
                             <FormItem className="w-full md:w-[49%]">
                                 <FormLabel>Last Name</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Your last name" {...field} />
+                                    <Input placeholder="Your last name" disabled={user?.id ? true : false} {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -105,7 +127,7 @@ export default function ManageUserForm({ user }: { user?: UserDataTypes }) {
                             <FormItem className="w-full md:w-[49%]">
                                 <FormLabel>Email address</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Your email address" {...field} />
+                                    <Input placeholder="Your email address" disabled={user?.id ? true : false} {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -118,17 +140,60 @@ export default function ManageUserForm({ user }: { user?: UserDataTypes }) {
                             <FormItem className="w-full md:w-[49%]">
                                 <FormLabel>Phone number</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Your phone number" {...field} />
+                                    <Input placeholder="Your phone number" disabled={user?.id ? true : false} {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
                 </div>
-                {isLoading
-                    ? <LoadingButton label="Submitting..." btnClass={"w-fit"} btnVariant={"default"} />
-                    : <Button type="submit">Submit</Button>
-                }
+                {user?.id && <FormField
+                    control={form.control}
+                    name="accountStatus"
+                    render={({ field }) => (
+                        <FormItem className="space-y-3">
+                            <FormLabel>Change Account Status</FormLabel>
+                            <FormControl>
+                                <RadioGroup
+                                    onValueChange={field.onChange}
+                                    defaultValue={field.value}
+                                    className="flex space-y-1"
+                                >
+                                    <FormItem className="flex items-center space-x-3 space-y-0">
+                                        <FormControl>
+                                            <RadioGroupItem value="Active" />
+                                        </FormControl>
+                                        <FormLabel className="font-normal">
+                                            Active
+                                        </FormLabel>
+                                    </FormItem>
+                                    <FormItem className="flex items-center space-x-3 space-y-0">
+                                        <FormControl>
+                                            <RadioGroupItem value="Inactive" />
+                                        </FormControl>
+                                        <FormLabel className="font-normal">
+                                            Inactive
+                                        </FormLabel>
+                                    </FormItem>
+                                </RadioGroup>
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />}
+                <Separator />
+                <div className="flex justify-between items-center w-full">
+                    {isLoading
+                        ? <LoadingButton label="Submitting..." btnClass={"w-fit"} btnVariant={"default"} />
+                        : <Button type="submit">{user?.id ? "Confirm changes" : "Submit"}</Button>
+                    }
+                    {user?.id && <>
+                        {isLoading2
+                            ? <LoadingButton label="Submitting..." btnClass={"w-fit"} btnVariant={"default"} />
+                            : <Button type="button" variant={'secondary'} onClick={deleteUser}>Delete</Button>
+                        }
+                    </>}
+                </div>
             </form>
         </Form>
     )

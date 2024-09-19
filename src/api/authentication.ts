@@ -192,3 +192,56 @@ export const addNewUser = async(data: UserDataTypes) => {
     }
     return responseData;
 }
+
+type UpdateUserResponseTypes = {
+    user: UserDataTypes;
+    message: string;
+    error?: string;
+}
+
+export const updateUser = async(userId: string, data: UserDataTypes) : Promise<UpdateUserResponseTypes> => {
+    console.log(data);  
+    const response = await fetch(`${API_BASE_URL}/auth/update-account?id=${userId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    });
+    const responseData = await response.json();
+    if (!response.ok) {
+        if (responseData.errors) {
+            throw new Error(responseData.errors[0].message);
+        }
+        if (responseData.message) {
+            throw new Error(responseData.message);
+        }
+        if (responseData.error) { 
+            throw new Error(responseData.error);
+        }
+    }
+    return responseData;
+}
+
+export const deleteUser = async(userId: string) => {
+    const response = await fetch(`${API_BASE_URL}/auth/delete?id=${userId}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+    const responseData = await response.json();
+    console.log(responseData);
+    if (!response.ok) {
+        if (responseData.errors) {
+            throw new Error(responseData.errors[0].message);
+        }
+        if (responseData.message) {
+            throw new Error(responseData.message);
+        }
+        if (responseData.error) { 
+            throw new Error(responseData.error);
+        }
+    }
+    return responseData;
+}
