@@ -1,4 +1,5 @@
 import { HospitalApplicantSignUpTypes } from "@/components/forms/CreateHospitalAdminAccountForm";
+import { UserDataTypes } from "@/components/widgets/ManageUserForm";
 import { SignInTypes } from "@/pages/bloodbank/auth/SignIn";
 // import Cookies from "js-cookie";
 
@@ -101,8 +102,8 @@ export const getUserWithHospitalId = async (hospitalId: string) => {
     return responseData;
 }
 
-export const getBloodBankWorkers = async () => {
-    const response = await fetch(`${API_BASE_URL}/auth/listBloodBankEmployees`, {
+export const getBloodBankWorkers = async (bloodBankId: string) => {
+    const response = await fetch(`${API_BASE_URL}/auth/listBloodBankEmployees?bloodBankId=${bloodBankId}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -139,6 +140,53 @@ export const getHospitalWorkers = async (hospitalId: string) => {
             throw new Error(responseData.message);
         }
         if (responseData.error) {
+            throw new Error(responseData.error);
+        }
+    }
+    return responseData;
+}
+
+export const getBloodBankRecorderById = async(userId: string): Promise<UserDataTypes> => {
+    const response = await fetch(`${API_BASE_URL}/auth/findBloodBankRecorderById?id=${userId}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+    const responseData = await response.json();
+    if (!response.ok) {
+        if (responseData.errors) {
+            throw new Error(responseData.errors[0].message);
+        }
+        if (responseData.message) {
+            throw new Error(responseData.message);
+        }
+        if (responseData.error) {
+            throw new Error(responseData.error);
+        }
+    }
+    return responseData.user;
+}
+
+export const addNewUser = async(data: UserDataTypes) => {
+    const response = await fetch(`${API_BASE_URL}/auth/add`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    });
+    const responseData = await response.json();
+    console.log(responseData);
+
+    if (!response.ok) {
+        if (responseData.errors) {
+            throw new Error(responseData.errors[0].message);
+        }
+        if (responseData.message) {
+            throw new Error(responseData.message);
+        }
+        if (responseData.error) { 
             throw new Error(responseData.error);
         }
     }

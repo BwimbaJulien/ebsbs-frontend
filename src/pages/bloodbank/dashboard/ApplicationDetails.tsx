@@ -142,7 +142,7 @@ export default function ApplicationDetails() {
         <>
             <div className="flex items-center justify-between">
                 <h1 className="text-lg font-semibold md:text-2xl">Application No: {params.id}</h1>
-                <Button variant="outline" className="flex items-center gap-2">
+                <Button variant="link" className="flex items-center gap-2">
                     <Link to={`/dashboard/applications`} className="flex items-center gap-2">Back to Applications</Link>
                 </Button>
             </div>

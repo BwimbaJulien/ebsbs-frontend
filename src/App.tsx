@@ -27,7 +27,10 @@ import HospitalSettings from "./pages/hospital/dashboard/Settings";
 import HospitalOverview from "./pages/hospital/dashboard/Overview";
 import BloodBankOverview from "./pages/bloodbank/dashboard/Overview";
 
-import BloodBankUsers from "./pages/bloodbank/dashboard/Users";
+import BloodBankUsers from "./pages/bloodbank/dashboard/users/Users";
+import BloodBankAddUser from "./pages/bloodbank/dashboard/users/AddUser";
+import BloodBankUpdateUser from "./pages/bloodbank/dashboard/users/UpdateUser";
+
 import HospitalUsers from "./pages/hospital/dashboard/Users";
 
 import BloodBankStock from "./pages/bloodbank/dashboard/Stock";
@@ -85,6 +88,8 @@ export default function App() {
           <Route path="applications" element={<Applications />} />
           <Route path="application/:id/edit" element={<ApplicationDetails />} />
           <Route path="users" element={<BloodBankUsers />} />
+          <Route path="users/new" element={<BloodBankAddUser />} />
+          <Route path="users/:userId" element={<BloodBankUpdateUser />} />
           <Route path="stock" element={<BloodBankStock />} />
           <Route path="bags" element={<BloodBags />} />
           <Route path="profile" element={<BloodBankProfile />} />

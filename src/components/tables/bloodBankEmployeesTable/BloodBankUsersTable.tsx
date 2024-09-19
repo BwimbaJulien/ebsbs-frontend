@@ -33,7 +33,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { columns } from "./columns"
-import { UserDataTypes } from "@/components/widgets/UserManagementDialog"
+import { UserDataTypes } from "@/components/widgets/ManageUserForm"
 
 export function BloodBankUsersTable({ users }: { users: UserDataTypes[] }) {
   const [sorting, setSorting] = React.useState<SortingState>([])

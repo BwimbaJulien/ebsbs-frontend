@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
-import UserManagementDialog, { UserDataTypes } from "@/components/widgets/UserManagementDialog"
+import { UserDataTypes } from "@/components/widgets/ManageUserForm"
 import { CaretSortIcon } from "@radix-ui/react-icons"
 import { ColumnDef } from "@tanstack/react-table"
+import { Link } from "react-router-dom"
 
 export const columns: ColumnDef<UserDataTypes>[] = [
     {
@@ -94,7 +95,9 @@ export const columns: ColumnDef<UserDataTypes>[] = [
             const user = row.original
 
             return (
-                <UserManagementDialog user={user} />
+                <Button variant="link" size={'sm'}>
+                    <Link to={`/dashboard/users/${user.id}`}>View More</Link>
+                </Button>
             )
         },
     },
