@@ -4,8 +4,8 @@ import UserAccountForm from "@/components/widgets/UserAccountForm";
 import { useEffect, useState } from "react";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Link, useParams } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import { ResetPasswordCardForm } from "@/components/widgets/ResetPasswordCardForm";
+import { Separator } from "@/components/ui/separator";
 
 export default function Profile() {
   const [isLoading, setIsLoading] = useState(true);
@@ -41,12 +41,13 @@ export default function Profile() {
         <h1 className="text-lg font-semibold md:text-2xl">Profile</h1>
       </div>
       <div
-        className="flex flex-1 p-4 border rounded-lg shadow-sm"
+        className="flex flex-1 p-4 space-y-6 border flex-col rounded-lg shadow-sm"
       >
         {!isLoading && <UserAccountForm user={user} />}
         {isLoading && <LoadingSkeleton />}
+        <Separator />
+        <ResetPasswordCardForm email={user?.email}/>
       </div>
-      <ResetPasswordCardForm />
     </>
   )
 }

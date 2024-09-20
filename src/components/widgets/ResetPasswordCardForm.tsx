@@ -1,22 +1,46 @@
 import { Button } from "@/components/ui/button"
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { FormEvent, useState } from "react"
+import LoadingButton from "./LoadingButton"
+import { forgotPassword } from "@/api/authentication"
+import { toast } from "sonner"
 
-export function ResetPasswordCardForm() {
+
+export type ResetPasswordCardFormTypes = {
+    email: string | undefined
+}
+
+export function ResetPasswordCardForm({ email }: { email?: string }) {
+    const [isLoading, setIsLoading] = useState(false);
+
+    function sendPasswordResetRequest(e: FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+
+        setIsLoading(true);
+        forgotPassword({ email })
+            .then((response) => {
+                toast.success(response.message);
+                setIsLoading(false);
+            })
+            .catch((error) => {
+                toast.error(error.message);
+                setIsLoading(false);
+            })
+        setIsLoading(false);
+    }
+
     return (
-        <Card className="w-[350px]">
+        <Card className="w-full md:w-fit">
             <CardHeader>
-                <CardTitle>Reset Password</CardTitle>
+                <CardTitle>Reset Password {email}</CardTitle>
                 <CardDescription>You will recieve an email to reset your password</CardDescription>
             </CardHeader>
             <CardContent>
-                <form >
-                    <Button type="submit" variant={"outline"}>Request Reset Link</Button>
+                <form onSubmit={sendPasswordResetRequest}>
+                    {isLoading
+                        ? <LoadingButton label="Sending request..." btnClass={"w-fit"} btnVariant={"secondary"} />
+                        : <Button type="submit" className="w-fit" variant={'outline'}>{"Get Password Reset Link"}</Button>
+                    }
                 </form>
             </CardContent>
         </Card>

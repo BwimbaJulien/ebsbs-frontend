@@ -20,11 +20,6 @@ import { ModeToggle } from "@/components/mode-toggle"
 
 export default function BloodBankDashboardLayout() {
   const params = useParams();
-  // const [user, setUser] = useState();
-  // if (params.userType === "r") {
-  //   setUser(JSON.parse(localStorage.getItem("bloodbankRecorder") as string));
-  // } else if (params.userType === "a") {
-  //   setUser(JSON.parse(localStorage.getItem("bloodbankAdmin") as string));
 
   const signOut = () => {
     if (params.userType === "a") {
@@ -109,12 +104,14 @@ export default function BloodBankDashboardLayout() {
                       </Link>
                     )
                   }
-                  return (
-                    <Link key={index} to={link.to} className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground">
-                      {link.icon}
-                      {link.label}
-                    </Link>
-                  )
+                  if (params.userType === 'r' && link.user === "Recorder") {
+                    return (
+                      <Link key={index} to={link.to} className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground">
+                        {link.icon}
+                        {link.label}
+                      </Link>
+                    )
+                  }
                 })}
               </nav>
             </SheetContent>

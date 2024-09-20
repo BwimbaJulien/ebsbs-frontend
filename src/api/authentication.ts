@@ -1,5 +1,6 @@
 import { HospitalApplicantSignUpTypes } from "@/components/forms/CreateHospitalAdminAccountForm";
 import { UserDataTypes } from "@/components/widgets/ManageUserForm";
+import { ResetPasswordCardFormTypes } from "@/components/widgets/ResetPasswordCardForm";
 import { SignInTypes } from "@/pages/bloodbank/auth/SignIn";
 // import Cookies from "js-cookie";
 
@@ -22,7 +23,7 @@ export const SignUpForHospital = async (data: HospitalApplicantSignUpTypes) => {
         if (responseData.message) {
             throw new Error(responseData.message);
         }
-        if (responseData.error) { 
+        if (responseData.error) {
             throw new Error(responseData.error);
         }
     }
@@ -46,7 +47,7 @@ export const BloodBankSignInRequest = async (data: SignInTypes) => {
         if (responseData.message) {
             throw new Error(responseData.message);
         }
-        if (responseData.error) { 
+        if (responseData.error) {
             throw new Error(responseData.error);
         }
     }
@@ -70,7 +71,7 @@ export const HospitalSignInRequest = async (data: SignInTypes) => {
         if (responseData.message) {
             throw new Error(responseData.message);
         }
-        if (responseData.error) { 
+        if (responseData.error) {
             throw new Error(responseData.error);
         }
     }
@@ -94,7 +95,7 @@ export const getUserWithHospitalId = async (hospitalId: string) => {
         if (responseData.message) {
             throw new Error(responseData.message);
         }
-        if (responseData.error) { 
+        if (responseData.error) {
             throw new Error(responseData.error);
         }
     }
@@ -117,7 +118,7 @@ export const getBloodBankWorkers = async (bloodBankId: string) => {
         if (responseData.message) {
             throw new Error(responseData.message);
         }
-        if (responseData.error) { 
+        if (responseData.error) {
             throw new Error(responseData.error);
         }
     }
@@ -146,7 +147,7 @@ export const getHospitalWorkers = async (hospitalId: string) => {
     return responseData;
 }
 
-export const getBloodBankRecorderById = async(userId: string): Promise<UserDataTypes> => {
+export const getBloodBankRecorderById = async (userId: string): Promise<UserDataTypes> => {
     const response = await fetch(`${API_BASE_URL}/auth/findBloodBankRecorderById?id=${userId}`, {
         method: "GET",
         headers: {
@@ -168,7 +169,7 @@ export const getBloodBankRecorderById = async(userId: string): Promise<UserDataT
     return responseData.user;
 }
 
-export const addNewUser = async(data: UserDataTypes) => {
+export const addNewUser = async (data: UserDataTypes) => {
     const response = await fetch(`${API_BASE_URL}/auth/add`, {
         method: "POST",
         headers: {
@@ -186,7 +187,7 @@ export const addNewUser = async(data: UserDataTypes) => {
         if (responseData.message) {
             throw new Error(responseData.message);
         }
-        if (responseData.error) { 
+        if (responseData.error) {
             throw new Error(responseData.error);
         }
     }
@@ -199,8 +200,8 @@ type UpdateUserResponseTypes = {
     error?: string;
 }
 
-export const updateUser = async(userId: string, data: UserDataTypes) : Promise<UpdateUserResponseTypes> => {
-    console.log(data);  
+export const updateUser = async (userId: string, data: UserDataTypes): Promise<UpdateUserResponseTypes> => {
+    console.log(data);
     const response = await fetch(`${API_BASE_URL}/auth/update-account?id=${userId}`, {
         method: "PUT",
         headers: {
@@ -216,14 +217,14 @@ export const updateUser = async(userId: string, data: UserDataTypes) : Promise<U
         if (responseData.message) {
             throw new Error(responseData.message);
         }
-        if (responseData.error) { 
+        if (responseData.error) {
             throw new Error(responseData.error);
         }
     }
     return responseData;
 }
 
-export const deleteUser = async(role: string, userId: string) => {
+export const deleteUser = async (role: string, userId: string) => {
     const response = await fetch(`${API_BASE_URL}/auth/delete-account?id=${userId}&role=${role}`, {
         method: "DELETE",
         headers: {
@@ -239,7 +240,31 @@ export const deleteUser = async(role: string, userId: string) => {
         if (responseData.message) {
             throw new Error(responseData.message);
         }
-        if (responseData.error) { 
+        if (responseData.error) {
+            throw new Error(responseData.error);
+        }
+    }
+    return responseData;
+}
+
+export const forgotPassword = async (data: ResetPasswordCardFormTypes) => {
+    const response = await fetch(`${API_BASE_URL}/auth/forgot-password`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    });
+    const responseData = await response.json();
+    console.log(responseData);
+    if (!response.ok) {
+        if (responseData.errors) {
+            throw new Error(responseData.errors[0].message);
+        }
+        if (responseData.message) {
+            throw new Error(responseData.message);
+        }
+        if (responseData.error) {
             throw new Error(responseData.error);
         }
     }
