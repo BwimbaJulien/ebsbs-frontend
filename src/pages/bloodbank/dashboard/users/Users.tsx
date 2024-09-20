@@ -48,7 +48,7 @@ export default function Users() {
         </Button>
       </div>
       <div
-        className="flex flex-1 p-4 border border-slate-200 rounded-lg shadow-sm"
+        className="flex flex-1 p-4 border rounded-lg shadow-sm"
       >
         {!isLoading && <BloodBankUsersTable users={users} />}
         {isLoading && <LoadingSkeleton />}

@@ -166,9 +166,9 @@ export default function ApplicationDetails() {
                     <Link to={`/dashboard/a/applications`} className="flex items-center gap-2">Back to Applications</Link>
                 </Button>
             </div>
-            <div className="flex w-full gap-4 flex-wrap justify-between items-start flex-1 p-4 border border-slate-200 rounded-lg shadow-sm">
+            <div className="flex w-full gap-4 flex-wrap justify-between items-start flex-1 p-4 border rounded-lg shadow-sm">
                 <div
-                    className="flex w-full flex-wrap lg:w-[60%] justify-between items-start p-4 border border-slate-200 rounded-lg shadow-sm"
+                    className="flex w-full flex-wrap lg:w-[60%] justify-between items-start p-4 border rounded-lg shadow-sm"
                 >
                     <h2 className="text-lg font-semibold w-full pb-4">Hospital: <span className="text-primary">{application?.name}</span></h2>
                     <Separator />
@@ -236,9 +236,7 @@ export default function ApplicationDetails() {
                         </form>
                     </Form>
                 </div>
-                <div
-                    className="flex w-full md:w-[38%] flex-col justify-start items-start flex-1 p-4 border border-slate-200 rounded-lg shadow-sm"
-                >
+                <div className="flex w-full md:w-[38%] flex-col justify-start items-start flex-1 p-4 border rounded-lg shadow-sm">
                     <div className="flex gap-4  w-full flex-col">
                         <img src="https://e7.pngegg.com/pngimages/81/570/png-clipart-profile-logo-computer-icons-user-user-blue-heroes-thumbnail.png" alt="logo" className="sm:h-16 sm:w-16 h-32 w-32 rounded-full" />
                         <div>

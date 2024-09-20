@@ -43,6 +43,7 @@ import BloodBags from "./pages/bloodbank/dashboard/BloodBags";
 import Applications from "./pages/bloodbank/dashboard/Applications";
 import ApplicationDetails from "./pages/bloodbank/dashboard/ApplicationDetails";
 import { Toaster } from "sonner";
+import { ThemeProvider } from "./components/theme-provider";
 
 /**
  * The main application component that handles routing and navigation for the blood bank and hospital management system.
@@ -50,55 +51,76 @@ import { Toaster } from "sonner";
  * @returns {JSX.Element} - The JSX element representing the application.
  */
 export default function App() {
+  const isAdminToken = localStorage.getItem("bloodbankAdminToken");
+  const isBloodBankRecorderToken = localStorage.getItem("bloodBankRecorderToken");
+  const isHospitalAdminToken = localStorage.getItem("hospitalAdminToken");
+  const isHospitalWorkerToken = localStorage.getItem("hospitalWorkerToken");
+
   return (
     <Router>
-      <Toaster position="top-right" richColors />
-      <Routes>
-        <Route path="/" element={<CreateAccountForHospital />} />
-        <Route path="/apply/:applicantId" element={<ApplyForHospital />} />
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <Toaster position="top-right" richColors />
+        <Routes>
+          <Route path="/" element={<CreateAccountForHospital />} />
+          <Route path="/apply/:applicantId" element={<ApplyForHospital />} />
 
-        <Route path="/hauth" element={(!localStorage.getItem("hospitalAdminToken") && !localStorage.getItem("hospitalWorkerToken")) ? <HospitalAuthLayout /> : <Navigate replace to='/hauth/signin' />}>
-          <Route path="" element={<HospitalSignIn />} />
-          <Route path="signin" element={(!localStorage.getItem("hospitalAdminToken") && !localStorage.getItem("hospitalWorkerToken")) ? <HospitalSignIn /> : <Navigate replace to='/hauth/signin' />} />
-          <Route path="forgotpassword" element={<HospitalForgotPassword />} />
-        </Route>
+          <Route path="/hauth" element={(!isHospitalAdminToken && !isHospitalWorkerToken) ? <HospitalAuthLayout /> : <Navigate replace to='/hauth/signin' />}>
+            <Route path="" element={<HospitalSignIn />} />
+            <Route path="signin" element={(!isHospitalAdminToken && !isHospitalWorkerToken) ? <HospitalSignIn /> : <Navigate replace to='/hauth/signin' />} />
+            <Route path="forgotpassword" element={<HospitalForgotPassword />} />
+          </Route>
 
-        <Route path="/bauth" element={(!localStorage.getItem("bloodbankAdminToken") && !localStorage.getItem("bloodbankRecorderToken")) ? <BloodBankAuthLayout /> : <Navigate replace to='/dashboard' />}>
-          <Route path="" element={<BloodBankSignIn />} />
-          <Route path="signin" element={(!localStorage.getItem("bloodbankAdminToken") && !localStorage.getItem("bloodbankRecorderToken")) ? <BloodBankSignIn /> : <Navigate replace to='/dashboard' />} />
-          <Route path="forgotpassword" element={<BloodBankForgotPassword />} />
-          <Route path="reset-password/:token/:id" element={<ResetPassword />} />
-        </Route>
+          <Route path="/bauth" element={(!isAdminToken && !isBloodBankRecorderToken) ? <BloodBankAuthLayout /> : <Navigate replace to={`/dashboard/${isAdminToken ? 'a' : 'r'}`} />}>
+            <Route path="" element={<BloodBankSignIn />} />
+            <Route path="signin" element={(!isAdminToken && !isBloodBankRecorderToken) ? <BloodBankSignIn /> : <Navigate replace to={`/dashboard/${isAdminToken ? 'a' : 'r'}`} />} />
+            <Route path="forgotpassword" element={<BloodBankForgotPassword />} />
+            <Route path="reset-password/:token/:id" element={<ResetPassword />} />
+          </Route>
 
-        <Route path="/hdash/:hospitalId/:userType" element={(localStorage.getItem("hospitalAdminToken") || localStorage.getItem("hospitalWorkerToken")) ? <HospitalDashboardLayout /> : <Navigate replace to='/hauth/signin' />}>
-          <Route path="" element={<HospitalOverview />} />
-          <Route path="overview" element={<HospitalOverview />} />
-          <Route path="profile" element={<HospitalProfile />} />
-          <Route path="settings" element={<HospitalSettings />} />
-          <Route path="users" element={<HospitalUsers />} />
-          <Route path="stock" element={<HospitalStock />} />
-          <Route path="sentrequests" element={<HospitalSentRequests />} />
-          <Route path="receivedrequests" element={<HospitalReceivedRequests />} />
-        </Route>
+          <Route
+            path="/hdash/:hospitalId/:userType"
+            element={
+              (isHospitalAdminToken || isHospitalWorkerToken)
+                ? <HospitalDashboardLayout />
+                : <Navigate replace to='/hauth/signin' />
+            }
+          >
+            <Route path="" element={<HospitalOverview />} />
+            <Route path="overview" element={<HospitalOverview />} />
+            <Route path="profile" element={<HospitalProfile />} />
+            <Route path="settings" element={<HospitalSettings />} />
+            <Route path="users" element={<HospitalUsers />} />
+            <Route path="stock" element={<HospitalStock />} />
+            <Route path="sentrequests" element={<HospitalSentRequests />} />
+            <Route path="receivedrequests" element={<HospitalReceivedRequests />} />
+          </Route>
 
-        <Route path="dashboard/:userType" element={(localStorage.getItem("bloodbankAdminToken") || localStorage.getItem("bloodbankRecorderToken")) ? <BloodBankDashboardLayout /> : <Navigate replace to='/bauth/signin' />}>
-          <Route path="" element={<BloodBankOverview />} />
-          <Route path="overview" element={<BloodBankOverview />} />
-          <Route path="settings" element={<BloodBankSettings />} />
-          <Route path="applications" element={<Applications />} />
-          <Route path="application/:id/edit" element={<ApplicationDetails />} />
-          <Route path="users" element={<BloodBankUsers />} />
-          <Route path="users/new" element={<BloodBankAddUser />} />
-          <Route path="users/:userId" element={<BloodBankUpdateUser />} />
-          <Route path="stock" element={<BloodBankStock />} />
-          <Route path="bags" element={<BloodBags />} />
-          <Route path="profile" element={<BloodBankProfile />} />
-          <Route path="requests" element={<BloodBankRequests />} />
-        </Route>
+          <Route
+            path="dashboard/:userType"
+            element={
+              (isAdminToken || isBloodBankRecorderToken)
+                ? <BloodBankDashboardLayout />
+                : <Navigate replace to='/bauth/signin' />
+            }
+          >
+            <Route path="" element={<BloodBankOverview />} />
+            <Route path="overview" element={<BloodBankOverview />} />
+            <Route path="settings" element={<BloodBankSettings />} />
+            <Route path="applications" element={<Applications />} />
+            <Route path="application/:id/edit" element={<ApplicationDetails />} />
+            <Route path="users" element={<BloodBankUsers />} />
+            <Route path="users/new" element={<BloodBankAddUser />} />
+            <Route path="users/:userId" element={<BloodBankUpdateUser />} />
+            <Route path="stock" element={<BloodBankStock />} />
+            <Route path="bags" element={<BloodBags />} />
+            <Route path="profile" element={<BloodBankProfile />} />
+            <Route path="requests" element={<BloodBankRequests />} />
+          </Route>
 
-        <Route path="/not-found" element={<NotFound />} />
-        <Route path="*" element={<Navigate replace to={"/not-found"} />} />
-      </Routes>
+          <Route path="/not-found" element={<NotFound />} />
+          <Route path="*" element={<Navigate replace to={"/not-found"} />} />
+        </Routes>
+      </ThemeProvider>
     </Router>
   )
 }

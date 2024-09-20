@@ -16,9 +16,16 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Link, Outlet, useParams } from "react-router-dom"
 import BloodBankDashboardLinks from "@/components/widgets/BloodBankDashboardLinks"
+import { ModeToggle } from "@/components/mode-toggle"
 
 export default function BloodBankDashboardLayout() {
   const params = useParams();
+  // const [user, setUser] = useState();
+  // if (params.userType === "r") {
+  //   setUser(JSON.parse(localStorage.getItem("bloodbankRecorder") as string));
+  // } else if (params.userType === "a") {
+  //   setUser(JSON.parse(localStorage.getItem("bloodbankAdmin") as string));
+
   const signOut = () => {
     if (params.userType === "a") {
       localStorage.removeItem("bloodbankAdmin")
@@ -46,6 +53,9 @@ export default function BloodBankDashboardLayout() {
             </span>
           </div>
           <div className="flex-1">
+            {
+
+            }
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               {BloodBankDashboardLinks.map((link, index) => {
                 if (params.userType === 'a' && link.user === "Admin") {
@@ -109,28 +119,31 @@ export default function BloodBankDashboardLayout() {
               </nav>
             </SheetContent>
           </Sheet>
-          <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
-            <Bell className="h-4 w-4" />
-            <span className="sr-only">Toggle notifications</span>
-          </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="secondary" size="icon" className="rounded-full">
-                <CircleUser className="h-5 w-5" />
-                <span className="sr-only">Toggle user menu</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>
-                <Link to={`/dashboard/${params.userType}profile`}>My Account</Link>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {params.userType === "a" && <DropdownMenuItem><Link to={`/dashboard/${params.userType}/settings`}>Settings</Link></DropdownMenuItem>}
-              <DropdownMenuItem><Link to={`/dashboard/${params.userType}/profile`}>Profile</Link></DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => signOut()}>Logout</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <div className="ml-auto flex gap-4">
+            <ModeToggle />
+            <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
+              <Bell className="h-4 w-4" />
+              <span className="sr-only">Toggle notifications</span>
+            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="secondary" size="icon" className="rounded-full">
+                  <CircleUser className="h-5 w-5" />
+                  <span className="sr-only">Toggle user menu</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>
+                  <Link to={`/dashboard/${params.userType}profile`}>My Account</Link>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {params.userType === "a" && <DropdownMenuItem><Link to={`/dashboard/${params.userType}/settings`}>Settings</Link></DropdownMenuItem>}
+                <DropdownMenuItem><Link to={`/dashboard/${params.userType}/profile`}>Profile</Link></DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => signOut()}>Logout</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </header>
         <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
           <Outlet />

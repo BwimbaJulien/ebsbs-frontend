@@ -113,7 +113,7 @@ export default function SignIn() {
                 <FormItem className="w-full">
                   <FormLabel className="flex justify-between items-center">
                     <span>Password</span>
-                    <span className="text-sm text-gray-800" onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
+                    <span className="text-sm" onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
                       {isPasswordVisible ? "Hide" : "Show"} Password
                     </span>
                   </FormLabel>
@@ -125,7 +125,7 @@ export default function SignIn() {
               )}
             />
             <div className="flex w-full justify-end">
-              <Link to={"/bauth/forgotpassword"} className="text-sm text-right w-fit underline text-gray-800">Forgot Password?</Link>
+              <Link to={"/bauth/forgotpassword"} className="text-sm text-right w-fit underline">Forgot Password?</Link>
             </div>
 
             {isLoading

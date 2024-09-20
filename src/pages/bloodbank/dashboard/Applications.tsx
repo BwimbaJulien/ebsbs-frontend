@@ -59,7 +59,7 @@ export default function Applications() {
                 <h1 className="text-lg font-semibold md:text-2xl">Hospital Applications</h1>
             </div>
             <div
-                className="flex flex-1 p-4 border border-slate-200 rounded-lg shadow-sm"
+                className="flex flex-1 p-4 border rounded-lg shadow-sm"
             >
                 {!isLoading && <ApplicationsTable applications={applications} />}
                 {isLoading && <LoadingSkeleton />}

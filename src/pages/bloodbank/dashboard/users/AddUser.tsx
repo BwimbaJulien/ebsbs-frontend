@@ -12,7 +12,7 @@ export default function AddUser() {
         </Button>
       </div>
       <div
-        className="flex flex-1 p-4 border border-slate-200 rounded-lg shadow-sm"
+        className="flex flex-1 p-4 border rounded-lg shadow-sm"
       >
         <ManageUserForm />
       </div>
