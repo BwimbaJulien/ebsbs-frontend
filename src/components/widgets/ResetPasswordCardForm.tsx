@@ -32,7 +32,7 @@ export function ResetPasswordCardForm({ email }: { email?: string }) {
     return (
         <Card className="w-full md:w-fit">
             <CardHeader>
-                <CardTitle>Reset Password {email}</CardTitle>
+                <CardTitle>Reset Password</CardTitle>
                 <CardDescription>You will recieve an email to reset your password</CardDescription>
             </CardHeader>
             <CardContent>

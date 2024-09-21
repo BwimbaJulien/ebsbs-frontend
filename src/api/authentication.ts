@@ -1,6 +1,7 @@
 import { HospitalApplicantSignUpTypes } from "@/components/forms/CreateHospitalAdminAccountForm";
 import { UserDataTypes } from "@/components/widgets/ManageUserForm";
 import { ResetPasswordCardFormTypes } from "@/components/widgets/ResetPasswordCardForm";
+import { ResetPasswordTypes } from "@/pages/bloodbank/auth/ResetPassword";
 import { SignInTypes } from "@/pages/bloodbank/auth/SignIn";
 // import Cookies from "js-cookie";
 
@@ -252,6 +253,31 @@ export const forgotPassword = async (data: ResetPasswordCardFormTypes) => {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    });
+    const responseData = await response.json();
+    console.log(responseData);
+    if (!response.ok) {
+        if (responseData.errors) {
+            throw new Error(responseData.errors[0].message);
+        }
+        if (responseData.message) {
+            throw new Error(responseData.message);
+        }
+        if (responseData.error) {
+            throw new Error(responseData.error);
+        }
+    }
+    return responseData;
+}
+
+export const resetPassword = async (data: ResetPasswordTypes, token: string) => {
+    const response = await fetch(`${API_BASE_URL}/auth/reset-password`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer "+token
         },
         body: JSON.stringify(data),
     });
