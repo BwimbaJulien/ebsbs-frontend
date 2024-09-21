@@ -58,7 +58,7 @@ export default function App() {
 
   return (
     <Router>
-      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
         <Toaster position="top-right" richColors />
         <Routes>
           <Route path="/" element={<CreateAccountForHospital />} />

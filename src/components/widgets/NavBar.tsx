@@ -1,15 +1,16 @@
 import { NavLink } from "react-router-dom";
 import { Button } from "../ui/button";
+import { ModeToggle } from "../mode-toggle";
 
 export default function NavBar() {
     // const pathName = window.location.pathname;
     
     return (
-        <header className="bg-white">
+        <header className="bg-background">
             <div className="mx-auto max-w-screen-xl px-4 py-2 sm:px-6 sm:py-12 lg:px-8">
                 <div className="flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl flex items-center gap-2">
+                        <h1 className="text-2xl font-bold sm:text-3xl flex items-center gap-2">
                             <img src="/drc-flag.png" alt="logo" className="h-8 rounded-full w-auto sm:h-10" />
                             <span className="">
                                 EBSBS
@@ -22,6 +23,7 @@ export default function NavBar() {
                     </div>
 
                     <nav className="flex items-center gap-4">
+                        <ModeToggle />
                         <Button variant={"link"}>
                             <NavLink
                                 to={"/"}
