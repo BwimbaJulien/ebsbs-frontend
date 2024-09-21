@@ -8,7 +8,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { UserDataTypes } from "./ManageUserForm"
+import { UserDataTypes } from "../forms/ManageUserForm"
 import { Button } from "../ui/button"
 import { deleteUser } from "@/api/authentication"
 import { useNavigate } from "react-router-dom"

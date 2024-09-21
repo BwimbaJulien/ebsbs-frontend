@@ -1,11 +1,12 @@
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
-import { UserDataTypes } from "@/components/forms/ManageUserForm"
 import { CaretSortIcon } from "@radix-ui/react-icons"
 import { ColumnDef } from "@tanstack/react-table"
 import { Link } from "react-router-dom"
+import { BloodBagTypes } from "@/components/forms/ManageBloodBagForm"
+import { Badge } from "@/components/ui/badge"
 
-export const columns: ColumnDef<UserDataTypes>[] = [
+export const columns: ColumnDef<BloodBagTypes>[] = [
     {
         id: "select",
         header: ({ table }) => (
@@ -29,74 +30,119 @@ export const columns: ColumnDef<UserDataTypes>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "firstName",
+        accessorKey: "code",
         header: ({ column }) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    First Name
+                    Code
                     <CaretSortIcon className="ml-2 h-4 w-4" />
                 </Button>
             )
         },
-        cell: ({ row }) => <div>{row.getValue("firstName")}</div>,
+        cell: ({ row }) => <div>{row.getValue("code")}</div>,
     },
     {
-        accessorKey: "lastName",
+        accessorKey: "bloodType",
         header: ({ column }) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    Last Name
+                    Blood Type
                     <CaretSortIcon className="ml-2 h-4 w-4" />
                 </Button>
             )
         },
-        cell: ({ row }) => <div>{row.getValue("lastName")}</div>,
+        cell: ({ row }) => <div>{row.getValue("bloodType")}</div>,
     },
     {
-        accessorKey: "email",
+        accessorKey: "bloodGroup",
         header: ({ column }) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    Email Address
+                    Blood Group
                     <CaretSortIcon className="ml-2 h-4 w-4" />
                 </Button>
             )
         },
-        cell: ({ row }) => <div>{row.getValue("email")}</div>,
+        cell: ({ row }) => <div>{row.getValue("bloodGroup")}</div>,
     },
     {
-        accessorKey: "accountStatus",
+        accessorKey: "rhesis",
         header: ({ column }) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    Access Status
+                    Rhesis
                     <CaretSortIcon className="ml-2 h-4 w-4" />
                 </Button>
             )
         },
-        cell: ({ row }) => <div>{row.getValue("accountStatus")}</div>,
+        cell: ({ row }) => <div>{row.getValue("rhesis")}</div>,
+    },
+    {
+        accessorKey: "expirationDate",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Expiration Date
+                    <CaretSortIcon className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
+        cell: ({ row }) => <div>{new Date(row.getValue("expirationDate")).toDateString()}</div>,
+    },
+    {
+        accessorKey: "bloodQuality",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Blood Quality
+                    <CaretSortIcon className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
+        cell: ({ row }) => {
+            const quality = row.getValue("bloodQuality");
+            let variant: "outline" | "secondary" | "default" | "destructive" = "default";
+            if (quality === "Good") {
+                variant = "outline"
+            } else if (quality === "Moderate") {
+                variant = "secondary"
+            } else if (quality === "Expired") {
+                variant = "default"
+            }
+            return (
+                <div>
+                    <Badge variant={variant}>{row.getValue("bloodQuality")}</Badge>
+                </div>
+            )
+        },
     },
     {
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {
-            const user = row.original
+            const bag = row.original
 
             return (
                 <Button variant="link" size={'sm'}>
-                    <Link to={`/dashboard/a/users/${user.id}`}>View More</Link>
+                    <Link to={`/dashboard/r/bags/${bag.id}`}>View More</Link>
                 </Button>
             )
         },

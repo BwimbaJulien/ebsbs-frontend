@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { addNewUser, updateUser } from "@/api/authentication"
-import LoadingButton from "./LoadingButton"
+import LoadingButton from "../widgets/LoadingButton"
 import { toast } from "sonner"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 

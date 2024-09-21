@@ -33,16 +33,16 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { columns } from "./columns"
-import { UserDataTypes } from "@/components/forms/ManageUserForm"
+import { BloodBagTypes } from "@/components/forms/ManageBloodBagForm"
 
-export function BloodBankUsersTable({ users }: { users: UserDataTypes[] }) {
+export function BloodBagsTable({ bloodBags }: { bloodBags: BloodBagTypes[] }) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
 
   const table = useReactTable({
-    data: users,
+    data: bloodBags,
     columns: columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -64,10 +64,10 @@ export function BloodBankUsersTable({ users }: { users: UserDataTypes[] }) {
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Search by email"
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          placeholder="Search by bag code"
+          value={(table.getColumn("code")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
+            table.getColumn("code")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

@@ -1,6 +1,6 @@
 import { HospitalApplicantSignUpTypes } from "@/components/forms/CreateHospitalAdminAccountForm";
-import { UserDataTypes } from "@/components/widgets/ManageUserForm";
-import { ResetPasswordCardFormTypes } from "@/components/widgets/ResetPasswordCardForm";
+import { ResetPasswordCardFormTypes } from "@/components/forms/ResetPasswordCardForm";
+import { UserDataTypes } from "@/components/forms/UserAccountForm";
 import { ResetPasswordTypes } from "@/pages/bloodbank/auth/ResetPassword";
 import { SignInTypes } from "@/pages/bloodbank/auth/SignIn";
 // import Cookies from "js-cookie";
@@ -19,7 +19,7 @@ export const SignUpForHospital = async (data: HospitalApplicantSignUpTypes) => {
     const responseData = await response.json();
     if (!response.ok) {
         if (responseData.errors) {
-            throw new Error(responseData.errors[0].message);
+            throw new Error(responseData.errors);
         }
         if (responseData.message) {
             throw new Error(responseData.message);
@@ -43,7 +43,7 @@ export const BloodBankSignInRequest = async (data: SignInTypes) => {
     const responseData = await response.json();
     if (!response.ok) {
         if (responseData.errors) {
-            throw new Error(responseData.errors[0].message);
+            throw new Error(responseData.errors);
         }
         if (responseData.message) {
             throw new Error(responseData.message);
@@ -67,7 +67,7 @@ export const HospitalSignInRequest = async (data: SignInTypes) => {
     const responseData = await response.json();
     if (!response.ok) {
         if (responseData.errors) {
-            throw new Error(responseData.errors[0].message);
+            throw new Error(responseData.errors);
         }
         if (responseData.message) {
             throw new Error(responseData.message);
@@ -91,7 +91,7 @@ export const getUserWithHospitalId = async (hospitalId: string) => {
     const responseData = await response.json();
     if (!response.ok) {
         if (responseData.errors) {
-            throw new Error(responseData.errors[0].message);
+            throw new Error(responseData.errors);
         }
         if (responseData.message) {
             throw new Error(responseData.message);
@@ -114,7 +114,7 @@ export const getBloodBankWorkers = async (bloodBankId: string) => {
     const responseData = await response.json();
     if (!response.ok) {
         if (responseData.errors) {
-            throw new Error(responseData.errors[0].message);
+            throw new Error(responseData.errors);
         }
         if (responseData.message) {
             throw new Error(responseData.message);
@@ -136,7 +136,7 @@ export const getHospitalWorkers = async (hospitalId: string) => {
     const responseData = await response.json();
     if (!response.ok) {
         if (responseData.errors) {
-            throw new Error(responseData.errors[0].message);
+            throw new Error(responseData.errors);
         }
         if (responseData.message) {
             throw new Error(responseData.message);
@@ -158,7 +158,7 @@ export const getBloodBankRecorderById = async (userId: string): Promise<UserData
     const responseData = await response.json();
     if (!response.ok) {
         if (responseData.errors) {
-            throw new Error(responseData.errors[0].message);
+            throw new Error(responseData.errors);
         }
         if (responseData.message) {
             throw new Error(responseData.message);
@@ -183,7 +183,7 @@ export const addNewUser = async (data: UserDataTypes) => {
 
     if (!response.ok) {
         if (responseData.errors) {
-            throw new Error(responseData.errors[0].message);
+            throw new Error(responseData.errors);
         }
         if (responseData.message) {
             throw new Error(responseData.message);
@@ -213,7 +213,7 @@ export const updateUser = async (userId: string, data: UserDataTypes): Promise<U
     const responseData = await response.json();
     if (!response.ok) {
         if (responseData.errors) {
-            throw new Error(responseData.errors[0].message);
+            throw new Error(responseData.errors);
         }
         if (responseData.message) {
             throw new Error(responseData.message);
@@ -236,7 +236,7 @@ export const deleteUser = async (role: string, userId: string) => {
     console.log(responseData);
     if (!response.ok) {
         if (responseData.errors) {
-            throw new Error(responseData.errors[0].message);
+            throw new Error(responseData.errors);
         }
         if (responseData.message) {
             throw new Error(responseData.message);
@@ -260,7 +260,7 @@ export const forgotPassword = async (data: ResetPasswordCardFormTypes) => {
     console.log(responseData);
     if (!response.ok) {
         if (responseData.errors) {
-            throw new Error(responseData.errors[0].message);
+            throw new Error(responseData.errors);
         }
         if (responseData.message) {
             throw new Error(responseData.message);
@@ -285,7 +285,7 @@ export const resetPassword = async (data: ResetPasswordTypes, token: string) => 
     console.log(responseData);
     if (!response.ok) {
         if (responseData.errors) {
-            throw new Error(responseData.errors[0].message);
+            throw new Error(responseData.errors);
         }
         if (responseData.message) {
             throw new Error(responseData.message);

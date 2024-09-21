@@ -1,6 +1,6 @@
 import LoadingSkeleton from "@/components/widgets/LoadingSkeleton";
-import { UserDataTypes } from "@/components/widgets/ManageUserForm";
-import UserAccountForm from "@/components/widgets/UserAccountForm";
+import { UserDataTypes } from "@/components/forms/ManageUserForm";
+import UserAccountForm from "@/components/forms/UserAccountForm";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 

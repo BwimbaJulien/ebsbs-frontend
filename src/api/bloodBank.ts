@@ -1,4 +1,4 @@
-import { BloodBankDataTypes } from "@/components/widgets/SettingsForm";
+import { BloodBankDataTypes } from "@/components/forms/SettingsForm";
 
 // import Cookies from "js-cookie";
 const API_BASE_URL = import.meta.env.VITE_APP_BASE_URL;
@@ -13,7 +13,7 @@ export const getBloodBankById = async (id: string) => {
     const responseData = await response.json();
     if (!response.ok) {
         if (responseData.errors) {
-            throw new Error(responseData.errors[0].message);
+            throw new Error(responseData.errors);
         }
         if (responseData.message) {
             throw new Error(responseData.message);
@@ -42,7 +42,7 @@ export const updateBloodBank = async (id: string, data: BloodBankDataTypes) : Pr
     const responseData = await response.json();
     if (!response.ok) {
         if (responseData.errors) {
-            throw new Error(responseData.errors[0].message);
+            throw new Error(responseData.errors);
         }
         if (responseData.message) {
             throw new Error(responseData.message);

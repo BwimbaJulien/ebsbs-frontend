@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input";
 import { useState } from "react"
-import LoadingButton from "./LoadingButton"
+import LoadingButton from "../widgets/LoadingButton"
 import { toast } from "sonner"
 import { updateBloodBank } from "@/api/bloodBank"
 

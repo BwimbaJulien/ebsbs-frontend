@@ -1,6 +1,6 @@
 import { getBloodBankRecorderById } from "@/api/authentication";
 import { Button } from "@/components/ui/button";
-import ManageUserForm, { UserDataTypes } from "@/components/widgets/ManageUserForm";
+import ManageUserForm, { UserDataTypes } from "@/components/forms/ManageUserForm";
 import LoadingSkeleton from "@/components/widgets/LoadingSkeleton";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";

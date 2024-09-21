@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState } from "react"
 import { updateUser } from "@/api/authentication"
-import LoadingButton from "./LoadingButton"
+import LoadingButton from "../widgets/LoadingButton"
 import { toast } from "sonner"
 
 const FormSchema = z.object({

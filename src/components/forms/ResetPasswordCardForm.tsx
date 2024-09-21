@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { FormEvent, useState } from "react"
-import LoadingButton from "./LoadingButton"
+import LoadingButton from "../widgets/LoadingButton"
 import { forgotPassword } from "@/api/authentication"
 import { toast } from "sonner"
 

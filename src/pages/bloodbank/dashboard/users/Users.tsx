@@ -2,14 +2,14 @@ import { getBloodBankWorkers } from "@/api/authentication";
 import { BloodBankUsersTable } from "@/components/tables/bloodBankEmployeesTable/BloodBankUsersTable";
 import { Button } from "@/components/ui/button";
 import LoadingSkeleton from "@/components/widgets/LoadingSkeleton";
-import { UserDataTypes } from "@/components/widgets/ManageUserForm";
+import { UserDataTypes } from "@/components/forms/ManageUserForm";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 
 export default function Users() {
   const params = useParams();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [users, setUsers] = useState<UserDataTypes[]>([]);
   const bloodBankId = JSON.parse(localStorage.getItem("bloodbankAdmin") as string).bloodBankId;
 

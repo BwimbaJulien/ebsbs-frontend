@@ -1,6 +1,6 @@
 import { getBloodBankById } from "@/api/bloodBank";
 import LoadingSkeleton from "@/components/widgets/LoadingSkeleton";
-import SettingsForm, { BloodBankDataTypes } from "@/components/widgets/SettingsForm";
+import SettingsForm, { BloodBankDataTypes } from "@/components/forms/SettingsForm";
 import { useEffect, useState } from "react";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Link, useParams } from "react-router-dom";

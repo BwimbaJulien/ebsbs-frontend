@@ -39,11 +39,13 @@ import HospitalStock from "./pages/hospital/dashboard/Stock";
 import BloodBankRequests from "./pages/bloodbank/dashboard/Requests";
 import HospitalSentRequests from "./pages/hospital/dashboard/BloodRequests";
 import HospitalReceivedRequests from "./pages/hospital/dashboard/RecievedRequests";
-import BloodBags from "./pages/bloodbank/dashboard/BloodBags";
+import BloodBags from "./pages/bloodbank/dashboard/bloodBags/BloodBags";
 import Applications from "./pages/bloodbank/dashboard/Applications";
 import ApplicationDetails from "./pages/bloodbank/dashboard/ApplicationDetails";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "./components/theme-provider";
+import AddNewBloodbag from "./pages/bloodbank/dashboard/bloodBags/AddNewBloodBag";
+import UpdateBloodbag from "./pages/bloodbank/dashboard/bloodBags/UpdateBloodBag";
 
 /**
  * The main application component that handles routing and navigation for the blood bank and hospital management system.
@@ -113,6 +115,8 @@ export default function App() {
             <Route path="users/:userId" element={<BloodBankUpdateUser />} />
             <Route path="stock" element={<BloodBankStock />} />
             <Route path="bags" element={<BloodBags />} />
+            <Route path="bags/add" element={<AddNewBloodbag />} />
+            <Route path="bags/:bagId" element={<UpdateBloodbag />} />
             <Route path="profile" element={<BloodBankProfile />} />
             <Route path="requests" element={<BloodBankRequests />} />
           </Route>

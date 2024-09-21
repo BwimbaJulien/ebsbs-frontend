@@ -1,10 +1,10 @@
 import LoadingSkeleton from "@/components/widgets/LoadingSkeleton";
-import { UserDataTypes } from "@/components/widgets/ManageUserForm";
-import UserAccountForm from "@/components/widgets/UserAccountForm";
+import { UserDataTypes } from "@/components/forms/ManageUserForm";
+import UserAccountForm from "@/components/forms/UserAccountForm";
 import { useEffect, useState } from "react";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Link, useParams } from "react-router-dom";
-import { ResetPasswordCardForm } from "@/components/widgets/ResetPasswordCardForm";
+import { ResetPasswordCardForm } from "@/components/forms/ResetPasswordCardForm";
 import { Separator } from "@/components/ui/separator";
 
 export default function Profile() {

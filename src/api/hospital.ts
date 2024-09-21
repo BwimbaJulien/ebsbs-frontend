@@ -25,7 +25,7 @@ export const ApplyForHospital = async (data: HospitalApplicantionTypes) => {
     const responseData = await response.json();
     if (!response.ok) {
         if (responseData.errors) {
-            throw new Error(responseData.errors[0].message);
+            throw new Error(responseData.errors);
         }
         if (responseData.message) {
             throw new Error(responseData.message);
@@ -48,7 +48,7 @@ export const getInactiveHospitals = async () => {
     const responseData = await response.json();
     if (!response.ok) {
         if (responseData.errors) {
-            throw new Error(responseData.errors[0].message);
+            throw new Error(responseData.errors);
         }
         if (responseData.message) {
             throw new Error(responseData.message);
@@ -70,7 +70,7 @@ export const getHospitalById = async (id: string) => {
     const responseData = await response.json();
     if (!response.ok) {
         if (responseData.errors) {
-            throw new Error(responseData.errors[0].message);
+            throw new Error(responseData.errors);
         }
         if (responseData.message) {
             throw new Error(responseData.message);
@@ -93,7 +93,7 @@ export const updateHospital = async (id: string, data: UpdateHospitalTypes) => {
     const responseData = await response.json();
     if (!response.ok) {
         if (responseData.errors) {
-            throw new Error(responseData.errors[0].message);
+            throw new Error(responseData.errors);
         }
         if (responseData.message) {
             throw new Error(responseData.message);
