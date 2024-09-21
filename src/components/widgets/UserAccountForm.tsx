@@ -32,7 +32,12 @@ export type UserDataTypes = z.infer<typeof FormSchema>
 
 export default function UserAccountForm({ user }: { user?: UserDataTypes }) {
     const [isLoading, setIsLoading] = useState(false);
-    const bloodBankId = JSON.parse(localStorage.getItem("bloodbankAdmin") as string).bloodBankId;
+    let bloodBankId = "";
+    if (user?.role === "Blood Bank Admin") {
+        bloodBankId = JSON.parse(localStorage.getItem("bloodbankAdmin") as string).bloodBankId;
+    } else if (user?.role === "Blood Bank Recorder") {
+        bloodBankId = JSON.parse(localStorage.getItem("bloodbankRecorder") as string).bloodBankId;
+    }
 
     const form = useForm<UserDataTypes>({
         resolver: zodResolver(FormSchema),

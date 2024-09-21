@@ -52,7 +52,7 @@ import { ThemeProvider } from "./components/theme-provider";
  */
 export default function App() {
   const isAdminToken = localStorage.getItem("bloodbankAdminToken");
-  const isBloodBankRecorderToken = localStorage.getItem("bloodBankRecorderToken");
+  const isBloodBankRecorderToken = localStorage.getItem("bloodbankRecorderToken");
   const isHospitalAdminToken = localStorage.getItem("hospitalAdminToken");
   const isHospitalWorkerToken = localStorage.getItem("hospitalWorkerToken");
 

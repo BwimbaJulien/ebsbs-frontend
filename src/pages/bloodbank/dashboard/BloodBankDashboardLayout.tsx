@@ -14,12 +14,33 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Link, Outlet, useParams } from "react-router-dom"
+import { Link, NavLink, Outlet, useParams } from "react-router-dom"
 import BloodBankDashboardLinks from "@/components/widgets/BloodBankDashboardLinks"
 import { ModeToggle } from "@/components/mode-toggle"
+import { useEffect, useState } from "react"
+import { cn } from "@/lib/utils"
+
+type UserData = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  accountStatus: "Active" | "Inactive";
+  bloodBankId?: string;
+  role: "Admin" | "Recorder";
+}
 
 export default function BloodBankDashboardLayout() {
   const params = useParams();
+  const [user, setUser] = useState<UserData>();
+  useEffect(() => {
+    if (params.userType === "a") {
+      setUser(JSON.parse(localStorage.getItem("bloodbankAdmin") as string))
+    } else {
+      setUser(JSON.parse(localStorage.getItem("bloodbankRecorder") as string))
+    }
+  }, [params.userType])
 
   const signOut = () => {
     if (params.userType === "a") {
@@ -55,18 +76,18 @@ export default function BloodBankDashboardLayout() {
               {BloodBankDashboardLinks.map((link, index) => {
                 if (params.userType === 'a' && link.user === "Admin") {
                   return (
-                    <Link key={index} to={link.to} className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
+                    <NavLink key={index} to={link.to} className={cn(window.location.pathname === link.to && "bg-slate-300" ,"flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary")}>
                       {link.icon}
                       {link.label}
-                    </Link>
+                    </NavLink>
                   )
                 }
                 if (params.userType === 'r' && link.user === "Recorder") {
                   return (
-                    <Link key={index} to={link.to} className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
+                    <NavLink key={index} to={link.to} className={cn(window.location.pathname === link.to && "bg-zinc-200 dark:bg-zinc-800" ,"flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary")}>
                       {link.icon}
                       {link.label}
-                    </Link>
+                    </NavLink>
                   )
                 }
               })}
@@ -98,48 +119,54 @@ export default function BloodBankDashboardLayout() {
                 {BloodBankDashboardLinks.map((link, index) => {
                   if (params.userType === 'a' && link.user === "Admin") {
                     return (
-                      <Link key={index} to={link.to} className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground">
+                      <NavLink key={index} to={link.to} className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground">
                         {link.icon}
                         {link.label}
-                      </Link>
+                      </NavLink>
                     )
                   }
                   if (params.userType === 'r' && link.user === "Recorder") {
                     return (
-                      <Link key={index} to={link.to} className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground">
+                      <NavLink key={index} to={link.to} className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground">
                         {link.icon}
                         {link.label}
-                      </Link>
+                      </NavLink>
                     )
                   }
                 })}
               </nav>
             </SheetContent>
           </Sheet>
-          <div className="ml-auto flex gap-4">
-            <ModeToggle />
-            <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
-              <Bell className="h-4 w-4" />
-              <span className="sr-only">Toggle notifications</span>
-            </Button>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="secondary" size="icon" className="rounded-full">
-                  <CircleUser className="h-5 w-5" />
-                  <span className="sr-only">Toggle user menu</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>
-                  <Link to={`/dashboard/${params.userType}profile`}>My Account</Link>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                {params.userType === "a" && <DropdownMenuItem><Link to={`/dashboard/${params.userType}/settings`}>Settings</Link></DropdownMenuItem>}
-                <DropdownMenuItem><Link to={`/dashboard/${params.userType}/profile`}>Profile</Link></DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => signOut()}>Logout</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+          <div className="flex gap-4 justify-between w-full">
+            <span className="mr-auto block md:hidden font-bold underline">
+              {params.userType === "a" ? "Admin" : "Recorder"}
+            </span>
+            <div className="flex items-center space-x-4 ml-auto">
+              <ModeToggle />
+              <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
+                <Bell className="h-4 w-4" />
+                <span className="sr-only">Toggle notifications</span>
+              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="secondary" size="icon" className="rounded-full">
+                    <CircleUser className="h-5 w-5" />
+                    <span className="sr-only">Toggle user menu</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel className="flex flex-col gap-1">
+                    <span>{user?.firstName + " " + user?.lastName}</span>
+                    <span className="text-sm font-extralight">{user?.email}</span>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {params.userType === "a" && <DropdownMenuItem><Link to={`/dashboard/${params.userType}/settings`}>Settings</Link></DropdownMenuItem>}
+                  <DropdownMenuItem><Link to={`/dashboard/${params.userType}/profile`}>Profile</Link></DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => signOut()}>Logout</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </div>
         </header>
         <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">

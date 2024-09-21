@@ -1,9 +1,7 @@
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
-import BloodBankAdminOverviewContent from "@/components/widgets/BloodBankAdminOverviewContent";
-import BloodBankRecorderOverviewContent from "@/components/widgets/BloodBankRecorderOverviewContent";
 import { Link, useParams } from "react-router-dom"
 
-export default function Overview() {
+export default function OverviewRecorder() {
   const params = useParams();
   return (
     <>
@@ -21,8 +19,9 @@ export default function Overview() {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        {params.userType === "a" && <BloodBankAdminOverviewContent />}
-        {params.userType === "r" && <BloodBankRecorderOverviewContent />}
+        <div className="grid auto-rows-max items-start gap-4 w-full lg:col-span-3">
+          
+        </div>
       </div>
     </>
   )
