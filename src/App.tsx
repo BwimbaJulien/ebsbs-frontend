@@ -17,6 +17,7 @@ import HospitalForgotPassword from "./pages/hospital/auth/ForgotPassword";
 import BloodBankForgotPassword from "./pages/bloodbank/auth/ForgotPassword";
 
 import ResetPassword from "./pages/bloodbank/auth/ResetPassword";
+import HospitalResetPassword from "./pages/hospital/auth/ResetPassword";
 
 import HospitalProfile from "./pages/hospital/dashboard/Profile";
 import BloodBankProfile from "./pages/bloodbank/dashboard/Profile";
@@ -31,7 +32,7 @@ import BloodBankUsers from "./pages/bloodbank/dashboard/users/Users";
 import BloodBankAddUser from "./pages/bloodbank/dashboard/users/AddUser";
 import BloodBankUpdateUser from "./pages/bloodbank/dashboard/users/UpdateUser";
 
-import HospitalUsers from "./pages/hospital/dashboard/Users";
+import HospitalUsers from "./pages/hospital/dashboard/users/Users";
 
 import BloodBankStock from "./pages/bloodbank/dashboard/Stock";
 import HospitalStock from "./pages/hospital/dashboard/Stock";
@@ -70,6 +71,7 @@ export default function App() {
             <Route path="" element={<HospitalSignIn />} />
             <Route path="signin" element={(!isHospitalAdminToken && !isHospitalWorkerToken) ? <HospitalSignIn /> : <Navigate replace to='/hauth/signin' />} />
             <Route path="forgotpassword" element={<HospitalForgotPassword />} />
+            <Route path="reset-password/:token/:id" element={<HospitalResetPassword />} />
           </Route>
 
           <Route path="/bauth" element={(!isAdminToken && !isBloodBankRecorderToken) ? <BloodBankAuthLayout /> : <Navigate replace to={`/dashboard/${isAdminToken ? 'a' : 'r'}`} />}>

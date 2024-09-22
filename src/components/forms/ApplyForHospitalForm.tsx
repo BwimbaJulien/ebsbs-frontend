@@ -97,7 +97,7 @@ export default function ApplyForHospitalForm() {
                 <FormItem className="w-full md:w-[32%]">
                   <FormLabel>Google Maps Location</FormLabel>
                   <FormControl>
-                    <Input placeholder="Your last name" type="text" {...field} />
+                    <Input placeholder="Google Maps Location" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

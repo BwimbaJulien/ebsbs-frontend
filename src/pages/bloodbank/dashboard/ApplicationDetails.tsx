@@ -113,7 +113,7 @@ export default function ApplicationDetails() {
                 form.reset();
                 toast.success(response.message);
                 setIsLoading(false);
-                window.location.replace(`/dashboard/a/`)
+                window.location.replace(`/dashboard/a/applications`)
             })
             .catch((error) => {
                 setIsLoading(false);

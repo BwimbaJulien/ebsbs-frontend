@@ -1,4 +1,5 @@
 import { HospitalApplicantSignUpTypes } from "@/components/forms/CreateHospitalAdminAccountForm";
+import { HospitalUserDataTypes } from "@/components/forms/ManageHospitalUserForm";
 import { ResetPasswordCardFormTypes } from "@/components/forms/ResetPasswordCardForm";
 import { UserDataTypes } from "@/components/forms/UserAccountForm";
 import { ResetPasswordTypes } from "@/pages/bloodbank/auth/ResetPassword";
@@ -172,7 +173,7 @@ export const getBloodBankRecorderById = async (userId: string): Promise<UserData
     return responseData.user;
 }
 
-export const addNewUser = async (data: UserDataTypes) => {
+export const addNewUser = async (data: UserDataTypes | HospitalUserDataTypes) => {
     const response = await fetch(`${API_BASE_URL}/auth/add`, {
         method: "POST",
         headers: {
@@ -198,12 +199,12 @@ export const addNewUser = async (data: UserDataTypes) => {
 }
 
 type UpdateUserResponseTypes = {
-    user: UserDataTypes;
+    user: UserDataTypes | HospitalUserDataTypes;
     message: string;
     error?: string;
 }
 
-export const updateUser = async (userId: string, data: UserDataTypes): Promise<UpdateUserResponseTypes> => {
+export const updateUser = async (userId: string, data: UserDataTypes | HospitalUserDataTypes): Promise<UpdateUserResponseTypes> => {
     console.log(data);
     const response = await fetch(`${API_BASE_URL}/auth/update-account?id=${userId}`, {
         method: "PUT",

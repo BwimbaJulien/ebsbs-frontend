@@ -1,21 +1,22 @@
 import LoadingSkeleton from "@/components/widgets/LoadingSkeleton";
-import { UserDataTypes } from "@/components/forms/ManageUserForm";
-import UserAccountForm from "@/components/forms/UserAccountForm";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { HospitalUserDataTypes } from "@/components/forms/ManageHospitalUserForm";
+import HospitalUserAccountForm from "@/components/forms/HospitalUserAccountForm";
 
 export default function Profile() {
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState<UserDataTypes>();
+  const [user, setUser] = useState<HospitalUserDataTypes>();
   const params = useParams();
 
   useEffect(() => {
     setIsLoading(true);
     if (params.userType === 'a') {
-      setUser(JSON.parse(localStorage.getItem("bloodbankAdmin") as string));
-    } else if (params.userType === 'r') {
       setUser(JSON.parse(localStorage.getItem("hospitalAdmin") as string));
+    } else if (params.userType === 'r') {
+      setUser(JSON.parse(localStorage.getItem("hospitalWorker") as string));
     }
+    setIsLoading(false);
   }, [params.userType]);
 
   return (
@@ -26,7 +27,7 @@ export default function Profile() {
       <div
         className="flex flex-1 p-4 border rounded-lg shadow-sm"
       >
-        {!isLoading && <UserAccountForm user={user} />}
+        {!isLoading && <HospitalUserAccountForm user={user} />}
         {isLoading && <LoadingSkeleton />}
       </div>
     </>

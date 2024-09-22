@@ -25,7 +25,6 @@ export default function SignIn() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-
   const form = useForm<SignInTypes>({
     resolver: zodResolver(FormSchema),
     defaultValues: {

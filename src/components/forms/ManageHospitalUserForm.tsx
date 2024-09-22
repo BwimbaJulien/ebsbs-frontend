@@ -26,18 +26,19 @@ const FormSchema = z.object({
     phone: z.string().min(10, { message: "Phone number must be at least 10 characters." }),
     accountStatus: z.enum(["Active", "Inactive"], { message: "Please select an account status." }),
     id: z.string().optional(),
-    role: z.enum(["Blood Bank Recorder", "Blood Bank Admin"]),
-    bloodBankId: z.string(),
+    role: z.enum(["Hospital Worker", "Hospital Admin"]),
+    hospitalId: z.string(),
+    hospitalName: z.string().optional()
 })
 
-export type UserDataTypes = z.infer<typeof FormSchema>
+export type HospitalUserDataTypes = z.infer<typeof FormSchema>
 
-export default function ManageUserForm({ user }: { user?: UserDataTypes }) {
+export default function ManageHospitalUserForm({ user }: { user?: HospitalUserDataTypes }) {
     const [isLoading, setIsLoading] = useState(false);
-    const bloodBankId = JSON.parse(localStorage.getItem("bloodbankAdmin") as string).bloodBankId;
+    const hospitalId = JSON.parse(localStorage.getItem("hospitalAdmin") as string).hospitalId;
     const navigate = useNavigate();
 
-    const form = useForm<UserDataTypes>({
+    const form = useForm<HospitalUserDataTypes>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
             firstName: user?.firstName || "",
@@ -46,12 +47,13 @@ export default function ManageUserForm({ user }: { user?: UserDataTypes }) {
             phone: user?.phone || "",
             accountStatus: user?.accountStatus || "Active",
             id: user?.id || "",
-            role: user?.role || "Blood Bank Recorder",
-            bloodBankId: bloodBankId
+            role: user?.role || "Hospital Worker",
+            hospitalId: hospitalId,
+            hospitalName: user?.hospitalName || "",
         },
     })
 
-    function onSubmit(data: UserDataTypes) {
+    function onSubmit(data: HospitalUserDataTypes) {
         setIsLoading(true);
         if (user?.id) {
             updateUser(user.id, data)
@@ -59,7 +61,7 @@ export default function ManageUserForm({ user }: { user?: UserDataTypes }) {
                     form.setValue("accountStatus", response.user.accountStatus);
                     toast.success(response.message);
                     setIsLoading(false);
-                    navigate(`/dashboard/a/users`)
+                    navigate(`/hdash/${hospitalId}/a/users`)
                 })
                 .catch((error) => {
                     setIsLoading(false);
@@ -72,7 +74,7 @@ export default function ManageUserForm({ user }: { user?: UserDataTypes }) {
                     form.reset();
                     toast.success(response.message);
                     setIsLoading(false);
-                    navigate(`/dashboard/a/users`)
+                    navigate(`/dashboard/${hospitalId}/a/users`)
                 })
                 .catch((error) => {
                     setIsLoading(false);

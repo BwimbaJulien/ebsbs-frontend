@@ -3,14 +3,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 
 import { Button } from "@/components/ui/button"
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input";
 import { useState } from "react"
 import { updateUser } from "@/api/authentication"
@@ -24,7 +17,7 @@ const FormSchema = z.object({
     phone: z.string().min(10, { message: "Phone number must be at least 10 characters." }),
     accountStatus: z.enum(["Active", "Inactive"], { message: "Please select an account status." }),
     id: z.string().optional(),
-    role: z.enum(["Hospital Worker", "Blood Bank Admin", "Hospital Admin" , "Blood Bank Recorder"]),
+    role: z.enum(["Blood Bank Admin", "Blood Bank Recorder"]),
     bloodBankId: z.string(),
 })
 
@@ -32,11 +25,11 @@ export type UserDataTypes = z.infer<typeof FormSchema>
 
 export default function UserAccountForm({ user }: { user?: UserDataTypes }) {
     const [isLoading, setIsLoading] = useState(false);
-    let bloodBankId = "";
+    let hospitalId = "";
     if (user?.role === "Blood Bank Admin") {
-        bloodBankId = JSON.parse(localStorage.getItem("bloodbankAdmin") as string).bloodBankId;
+        hospitalId = JSON.parse(localStorage.getItem("hospitalAdmin") as string).hospitalId;
     } else if (user?.role === "Blood Bank Recorder") {
-        bloodBankId = JSON.parse(localStorage.getItem("bloodbankRecorder") as string).bloodBankId;
+        hospitalId = JSON.parse(localStorage.getItem("hospitalRecorder") as string).hospitalId;
     }
 
     const form = useForm<UserDataTypes>({
@@ -49,7 +42,7 @@ export default function UserAccountForm({ user }: { user?: UserDataTypes }) {
             accountStatus: user?.accountStatus || "Active",
             id: user?.id || "",
             role: user?.role || "Blood Bank Recorder",
-            bloodBankId: bloodBankId
+            bloodBankId: hospitalId
         },
     })
 
@@ -59,13 +52,9 @@ export default function UserAccountForm({ user }: { user?: UserDataTypes }) {
             updateUser(user.id, data)
                 .then((response) => {
                     if (response.user.role === "Blood Bank Admin") {
-                        localStorage.setItem("bloodbankAdmin", JSON.stringify(response.user));
-                    } else if (response.user.role === "Hospital Admin") {
                         localStorage.setItem("hospitalAdmin", JSON.stringify(response.user));
-                    } else if (response.user.role === "Hospital Worker") {
-                        localStorage.setItem("hospitalWorker", JSON.stringify(response.user));
                     } else if (response.user.role === "Blood Bank Recorder") {
-                        localStorage.setItem("bloodbankRecorder", JSON.stringify(response.user));
+                        localStorage.setItem("hospitalRecorder", JSON.stringify(response.user));
                     }
                     toast.success(response.message);
                     setIsLoading(false);

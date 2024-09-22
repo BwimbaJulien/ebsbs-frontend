@@ -43,12 +43,6 @@ export default function Applications() {
                             <Link to={`/dashboard/${params.userType}`}>Dashboard</Link>
                         </BreadcrumbLink>
                     </BreadcrumbItem>
-                    {/* <BreadcrumbSeparator />
-                    <BreadcrumbItem>
-                        <BreadcrumbLink asChild>
-                            <Link to={`/dashboard/${params.userType}/#`}>Dashboard</Link>
-                        </BreadcrumbLink>
-                    </BreadcrumbItem> */}
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
                         <BreadcrumbPage>Applications</BreadcrumbPage>
