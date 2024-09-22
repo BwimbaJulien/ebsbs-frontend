@@ -61,7 +61,7 @@ export default function ForgotPassword() {
         <span className="text-2xl font-bold sm:text-3xl flex items-center gap-2">
           <img src="/drc-flag.png" alt="logo" className="h-8 rounded-full w-auto sm:h-10" />
           <span className="">
-            EBSBS
+            EBSDS
           </span>
         </span>
         <span className="text-sm text-red-600">Blood Bank</span>

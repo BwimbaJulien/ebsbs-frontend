@@ -111,7 +111,7 @@ export const deleteBloodBag = async (id: string): Promise<DeleteBloodBagResponse
 }
 
 type UpdateBloodBagResponseTypes = {
-    bag: BloodBagTypes;
+    updatedBloodBag: BloodBagTypes;
     message: string;
     error?: string;
 }

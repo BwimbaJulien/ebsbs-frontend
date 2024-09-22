@@ -60,12 +60,6 @@ export default function ManageBloodBagForm({ bag }: { bag?: BloodBagTypes }) {
     if (bag?.id) {
       updateBloodBag(bag.id, data)
         .then((response) => {
-          form.setValue("amountInLitres", response.bag.amountInLitres);
-          form.setValue("bloodGroup", response.bag.bloodGroup);
-          form.setValue("bloodQuality", response.bag.bloodQuality);
-          form.setValue("bloodType", response.bag.bloodType);
-          form.setValue("rhesis", response.bag.rhesis);
-
           toast.success(response.message);
           setIsLoading(false);
           navigate(`/dashboard/r/bags`)
@@ -152,7 +146,7 @@ export default function ManageBloodBagForm({ bag }: { bag?: BloodBagTypes }) {
               <FormItem className="w-full md:w-[49%]">
                 <FormLabel>Amount (litres)</FormLabel>
                 <FormControl>
-                  <Input placeholder="Provide the blood quantity in litres" type="number" disabled={bag?.id ? true : false} {...field} />
+                  <Input placeholder="Provide the blood quantity in litres" type="number" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

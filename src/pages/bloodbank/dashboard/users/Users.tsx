@@ -4,11 +4,12 @@ import { Button } from "@/components/ui/button";
 import LoadingSkeleton from "@/components/widgets/LoadingSkeleton";
 import { UserDataTypes } from "@/components/forms/ManageUserForm";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 
 export default function Users() {
   const params = useParams();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [users, setUsers] = useState<UserDataTypes[]>([]);
   const bloodBankId = JSON.parse(localStorage.getItem("bloodbankAdmin") as string).bloodBankId;
@@ -43,9 +44,7 @@ export default function Users() {
       </Breadcrumb>
       <div className="flex items-center justify-between">
         <h1 className="text-lg font-semibold md:text-2xl">Users</h1>
-        <Button>
-          <Link to="/dashboard/a/users/new">Add User</Link>
-        </Button>
+        <Button type="button" variant={'default'} onClick={() => navigate("/dashboard/a/users/new")}>Add New User</Button>
       </div>
       <div
         className="flex flex-1 p-4 border rounded-lg shadow-sm"

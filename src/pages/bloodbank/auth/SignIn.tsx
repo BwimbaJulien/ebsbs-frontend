@@ -2,13 +2,7 @@ import { Button } from "@/components/ui/button"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import Cookies from 'js-cookie';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
@@ -16,14 +10,7 @@ import { Link } from "react-router-dom";
 import { z } from "zod";
 import { BloodBankSignInRequest } from "@/api/authentication";
 const environment = import.meta.env.VITE_ENVIRONMENT;
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import LoadingButton from "@/components/widgets/LoadingButton";
 import { Separator } from "@/components/ui/separator";
 
@@ -79,16 +66,12 @@ export default function SignIn() {
       <CardHeader>
         <span className="text-2xl font-bold sm:text-3xl flex items-center gap-2">
           <img src="/drc-flag.png" alt="logo" className="h-8 rounded-full w-auto sm:h-10" />
-          <span className="">
-            EBSBS
-          </span>
+          <span className="">EBSDS</span>
         </span>
         <span className="text-sm text-red-600">Blood Bank</span>
         <Separator />
         <CardTitle className="text-2xl mt-8">Login</CardTitle>
-        <CardDescription>
-          Enter your email and password below to login to your account
-        </CardDescription>
+        <CardDescription>Enter your email and password below to login to your account</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -127,7 +110,6 @@ export default function SignIn() {
             <div className="flex w-full justify-end">
               <Link to={"/bauth/forgotpassword"} className="text-sm text-right w-fit underline">Forgot Password?</Link>
             </div>
-
             {isLoading
               ? <LoadingButton label="Submitting..." btnClass={"w-full"} btnVariant={"default"} />
               : <Button className="w-full" type="submit">Login</Button>
