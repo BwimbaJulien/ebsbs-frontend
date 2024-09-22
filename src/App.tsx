@@ -48,6 +48,9 @@ import { ThemeProvider } from "./components/theme-provider";
 import AddNewBloodbag from "./pages/bloodbank/dashboard/bloodBags/AddNewBloodBag";
 import UpdateBloodbag from "./pages/bloodbank/dashboard/bloodBags/UpdateBloodBag";
 
+import HospitalAddUser from "./pages/hospital/dashboard/users/AddUser";
+import HospitalUpdateUser from "./pages/hospital/dashboard/users/UpdateUser";
+
 /**
  * The main application component that handles routing and navigation for the blood bank and hospital management system.
  *
@@ -94,6 +97,8 @@ export default function App() {
             <Route path="profile" element={<HospitalProfile />} />
             <Route path="settings" element={<HospitalSettings />} />
             <Route path="users" element={<HospitalUsers />} />
+            <Route path="users/new" element={<HospitalAddUser />} />
+            <Route path="users/:userId" element={<HospitalUpdateUser />} />
             <Route path="stock" element={<HospitalStock />} />
             <Route path="sentrequests" element={<HospitalSentRequests />} />
             <Route path="receivedrequests" element={<HospitalReceivedRequests />} />

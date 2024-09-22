@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
-import ManageUserForm from "@/components/forms/ManageUserForm";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import ManageHospitalUserForm from "@/components/forms/ManageHospitalUserForm";
 
 export default function AddUser() {
   const navigate = useNavigate();
@@ -32,10 +32,8 @@ export default function AddUser() {
         <h1 className="text-lg font-semibold md:text-2xl">Add New User</h1>
         <Button type="button" variant={'link'} onClick={() => navigate(-1)}>Go Back</Button>
       </div>
-      <div
-        className="flex flex-1 p-4 border rounded-lg shadow-sm"
-      >
-        <ManageUserForm />
+      <div className="flex flex-1 p-4 border rounded-lg shadow-sm">
+        <ManageHospitalUserForm />
       </div>
     </>
   )
