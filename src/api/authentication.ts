@@ -31,6 +31,7 @@ export const SignUpForHospital = async (data: HospitalApplicantSignUpTypes) => {
 
     return responseData;
 }
+
 export const BloodBankSignInRequest = async (data: SignInTypes) => {
     const response = await fetch(`${API_BASE_URL}/auth/bloodbank-sign-in`, {
         method: "POST",
@@ -55,6 +56,7 @@ export const BloodBankSignInRequest = async (data: SignInTypes) => {
 
     return responseData;
 }
+
 export const HospitalSignInRequest = async (data: SignInTypes) => {
     const response = await fetch(`${API_BASE_URL}/auth/hospital-sign-in`, {
         method: "POST",

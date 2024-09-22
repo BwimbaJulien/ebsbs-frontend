@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form";
+import { useForm } from "react-hook-form"
 import {
   Card,
   CardContent,
@@ -11,7 +11,7 @@ import {
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { z } from "zod";
 import {
   Form,
@@ -23,30 +23,33 @@ import {
 } from "@/components/ui/form";
 import LoadingButton from "@/components/widgets/LoadingButton";
 import { Separator } from "@/components/ui/separator";
-import { forgotPassword } from "@/api/authentication";
+import { resetPassword } from "@/api/authentication";
 
 const FormSchema = z.object({
-  email: z.string().email({ message: "Invalid email address." }),
+  password: z.string().min(8, { message: "Password must be at least 8 characters." }),
 });
 
-export type ForgotPasswordTypes = z.infer<typeof FormSchema>;
+export type ResetPasswordTypes = z.infer<typeof FormSchema>;
 
-export default function ForgotPassword() {
+export default function ResetPassword() {
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const params = useParams();
 
-  const form = useForm<ForgotPasswordTypes>({
+  const form = useForm<ResetPasswordTypes>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      email: "",
+      password: "",
     },
   });
 
-  function onSubmit(data: ForgotPasswordTypes) {
+  function onSubmit(data: ResetPasswordTypes) {
     setIsLoading(true);
-    forgotPassword(data)
+    resetPassword(data, params.token as string)
       .then((response) => {
         form.reset();
         toast.success(response.message);
+        setIsLoading(false);
         window.location.replace(`/hauth/signin`)
       })
       .catch((error) => {
@@ -64,29 +67,32 @@ export default function ForgotPassword() {
         </span>
         <span className="text-sm text-red-600">Blood Bank</span>
         <Separator />
-        <CardTitle className="text-2xl mt-8">Forgot Password?</CardTitle>
-        <CardDescription>
-          Enter your email to recieve a password reset link.
-        </CardDescription>
+        <CardTitle className="text-2xl mt-8">Create a New Password</CardTitle>
+        <CardDescription>Enter your new password</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
             <FormField
               control={form.control}
-              name="email"
+              name="password"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email address</FormLabel>
+                <FormItem className="w-full">
+                  <FormLabel className="flex justify-between items-center">
+                    <span>Password</span>
+                    <span className="text-sm" onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
+                      {isPasswordVisible ? "Hide" : "Show"} Password
+                    </span>
+                  </FormLabel>
                   <FormControl>
-                    <Input placeholder="Your email address" {...field} />
+                    <Input type={isPasswordVisible ? "text" : "password"} placeholder="Create password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <div className="flex w-full justify-end">
-              <Link to={"/hauth/signin"} className="text-sm text-right w-fit underline">Go back to Sign In</Link>
+              <Link to={"/hauth/signin"} className="text-sm text-right w-fit underline">Go to Login</Link>
             </div>
 
             {isLoading
