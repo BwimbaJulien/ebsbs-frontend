@@ -128,7 +128,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
         .then((response) => {
           toast.success(response.message);
           setIsLoading(false);
-          navigate(`/hdashboard/${hospitalId}/r/requests/sent`)
+          navigate(`/hdash/${hospitalId}/r/requests/incoming`)
         })
         .catch((error) => {
           setIsLoading(false);
@@ -142,7 +142,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
           form.reset();
           toast.success(response.message);
           setIsLoading(false);
-          navigate(`/hdashboard/${hospitalId}/r/requests/sent`)
+          navigate(`/hdash/${hospitalId}/r/requests/sent`)
         })
         .catch((error) => {
           setIsLoading(false);

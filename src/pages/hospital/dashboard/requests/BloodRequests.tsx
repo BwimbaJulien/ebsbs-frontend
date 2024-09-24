@@ -25,7 +25,7 @@ export default function BloodRequests() {
     if (params.requestType === "incoming") {
       getReceivedRequestsByHospital(hospitalId)
         .then((response) => {
-          setRequests(response.hospital);
+          setRequests(response.bloodRequests);
           setIsLoading(false);
         })
         .catch((error) => {
@@ -35,7 +35,7 @@ export default function BloodRequests() {
     } else if (params.requestType === "sent") {
       getHospitalSentRequests(hospitalId)
         .then((response) => {
-          setRequests(response.hospital);
+          setRequests(response.bloodRequests);
           setIsLoading(false);
         })
         .catch((error) => {

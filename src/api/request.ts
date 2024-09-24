@@ -10,7 +10,8 @@ type AddRequestResponseTypes = {
 }
 
 export const addRequest = async (data: RequestTypes): Promise<AddRequestResponseTypes> => {
-    const response = await fetch(`${API_BASE_URL}/requests/add`, {
+    console.log(data);
+    const response = await fetch(`${API_BASE_URL}/bloodrequests/add`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -33,7 +34,7 @@ export const addRequest = async (data: RequestTypes): Promise<AddRequestResponse
 }
 
 export const getRequestById = async (id: string) => {
-    const response = await fetch(`${API_BASE_URL}/requests/findById?id=${id}`, {
+    const response = await fetch(`${API_BASE_URL}/bloodrequests/findById?id=${id}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -61,7 +62,7 @@ type UpdateRequestResponseTypes = {
 }
 
 export const updateRequest = async (id: string, data: RequestTypes): Promise<UpdateRequestResponseTypes> => {
-    const response = await fetch(`${API_BASE_URL}/requests/update?id=${id}`, {
+    const response = await fetch(`${API_BASE_URL}/bloodrequests/update?id=${id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
@@ -84,7 +85,7 @@ export const updateRequest = async (id: string, data: RequestTypes): Promise<Upd
 }
 
 export const getHospitalSentRequests = async (hospitalId: string) => {
-    const response = await fetch(`${API_BASE_URL}/requests/findByHospital/?hospitalId=${hospitalId}`);
+    const response = await fetch(`${API_BASE_URL}/bloodrequests/findByHospital/?hospitalId=${hospitalId}`);
     const responseData = await response.json();
     if (!response.ok) {
         if (responseData.errors) {
@@ -101,7 +102,7 @@ export const getHospitalSentRequests = async (hospitalId: string) => {
 }
 
 export const getReceivedRequestsByHospital = async (hospitalId: string) => {
-    const response = await fetch(`${API_BASE_URL}/requests/findReceivedByHospital/?hospitalId=${hospitalId}`);
+    const response = await fetch(`${API_BASE_URL}/bloodrequests/findReceivedByHospital/?hospitalId=${hospitalId}`);
     const responseData = await response.json();
     if (!response.ok) {
         if (responseData.errors) {
@@ -118,7 +119,7 @@ export const getReceivedRequestsByHospital = async (hospitalId: string) => {
 }
 
 export const getRequestsForBloodBank = async (bloodBankId: string) => {
-    const response = await fetch(`${API_BASE_URL}/requests/findByBloodBank/?bloodBankId=${bloodBankId}`);
+    const response = await fetch(`${API_BASE_URL}/bloodrequests/findByBloodBank/?bloodBankId=${bloodBankId}`);
     const responseData = await response.json();
     if (!response.ok) {
         if (responseData.errors) {

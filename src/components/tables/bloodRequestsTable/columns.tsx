@@ -42,7 +42,7 @@ export const columns: ColumnDef<RequestTypes>[] = [
                 </Button>
             )
         },
-        cell: ({ row }) => <div>{new Date(row.getValue("createdAt")).toLocaleDateString()}</div>,
+        cell: ({ row }) => <div>{new Date(row.getValue("createdAt")).toLocaleString()}</div>,
     },
     {
         accessorKey: "status",
@@ -87,7 +87,9 @@ export const columns: ColumnDef<RequestTypes>[] = [
                 </Button>
             )
         },
-        cell: ({ row }) => <div>{new Date(row.getValue("updateAt")).toLocaleDateString()}</div>,
+        cell: ({ row }) => <div>
+            {row.getValue("updateAt") ? new Date(row.getValue("updateAt")).toLocaleString() : "-"}
+        </div>,
     },
     {
         id: "actions",

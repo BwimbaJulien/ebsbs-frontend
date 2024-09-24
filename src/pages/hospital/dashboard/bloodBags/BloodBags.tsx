@@ -15,7 +15,6 @@ export default function BloodBags() {
     getBloodBagsInHospital(hospitalId)
       .then((response) => {
         setIsLoading(false);
-        console.log(response.bloodBags);
         setBags(response.bloodBags);
       })
       .catch((error) => {
