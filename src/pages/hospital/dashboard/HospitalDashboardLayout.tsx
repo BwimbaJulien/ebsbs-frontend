@@ -33,6 +33,7 @@ type UserData = {
 }
 
 export default function BloodBankDashboardLayout() {
+  const pathName = window.location.pathname;
   const params = useParams();
   const [user, setUser] = useState<UserData>();
   useEffect(() => {
@@ -77,7 +78,7 @@ export default function BloodBankDashboardLayout() {
               {HospitalDashboardLinks.map((link, index) => {
                 if (params.userType === 'a' && link.user === "Admin") {
                   return (
-                    <NavLink key={index} to={link.to} className={cn(window.location.pathname.includes(link.to) && "bg-zinc-200 dark:bg-zinc-800 dark:text-white" ,"flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary")}>
+                    <NavLink key={index} to={link.to} className={cn((pathName.includes(link.to) && pathName.split('/').slice(-1)[0] !== "r") && "bg-zinc-200 dark:bg-zinc-800 dark:text-white" ,"flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary")}>
                       {link.icon}
                       {link.label}
                     </NavLink>
@@ -85,7 +86,7 @@ export default function BloodBankDashboardLayout() {
                 }
                 if (params.userType === 'r' && link.user === "Worker") {
                   return (
-                    <NavLink key={index} to={link.to} className={cn(window.location.pathname.includes(link.to) && "bg-zinc-200 dark:bg-zinc-800 dark:text-white" ,"flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary")}>
+                    <NavLink key={index} to={link.to} className={cn((pathName.includes(link.to) && pathName.split('/').slice(-1)[0] !== "r") && "bg-zinc-200 dark:bg-zinc-800 dark:text-white" ,"flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary")}>
                       {link.icon}
                       {link.label}
                     </NavLink>

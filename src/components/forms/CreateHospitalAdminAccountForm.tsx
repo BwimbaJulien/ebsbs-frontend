@@ -132,7 +132,7 @@ export default function CreateHospitalAdminAccountForm() {
                 <FormItem className="w-full md:w-[49%]">
                   <FormLabel className="flex justify-between items-center">
                     <span>Password</span>
-                    <span className="text-sm text-gray-800" onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
+                    <span className="text-sm text-gray-800 dark:text-foreground" onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
                       {isPasswordVisible ? "Hide" : "Show"} Password
                     </span>
                   </FormLabel>
