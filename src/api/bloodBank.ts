@@ -4,7 +4,7 @@ import { BloodBankDataTypes } from "@/components/forms/SettingsForm";
 const API_BASE_URL = import.meta.env.VITE_APP_BASE_URL;
 
 export const getBloodBankById = async (id: string) => {
-    const response = await fetch(`${API_BASE_URL}/bloodBanks/findById?id=${id}`, {
+    const response = await fetch(`${API_BASE_URL}/bloodbanks/findById?id=${id}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -32,7 +32,7 @@ type UpdateBloodBankResponseTypes = {
 }
 
 export const updateBloodBank = async (id: string, data: BloodBankDataTypes) : Promise<UpdateBloodBankResponseTypes> => { 
-    const response = await fetch(`${API_BASE_URL}/bloodBanks/update?id=${id}`, {
+    const response = await fetch(`${API_BASE_URL}/bloodbanks/update?id=${id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
@@ -48,6 +48,24 @@ export const updateBloodBank = async (id: string, data: BloodBankDataTypes) : Pr
             throw new Error(responseData.message);
         }
         if (responseData.error) {
+            throw new Error(responseData.error);
+        }
+    }
+    return responseData;
+}
+
+export const getBloodBanks = async () => {
+    const response = await fetch(`${API_BASE_URL}/bloodbanks/list`);
+    const responseData = await response.json();
+    
+    if (!response.ok) {
+        if (responseData.errors) {
+            throw new Error(responseData.errors);
+        }
+        if (responseData.message) {
+            throw new Error(responseData.message);
+        }
+        if (responseData.error) { 
             throw new Error(responseData.error);
         }
     }

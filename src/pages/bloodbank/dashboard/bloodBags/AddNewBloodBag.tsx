@@ -29,7 +29,7 @@ export default function AddNewBloodbag() {
                 </BreadcrumbList>
             </Breadcrumb>
             <div className="flex items-center justify-between">
-                <h1 className="text-lg font-semibold md:text-2xl">Add New User</h1>
+                <h1 className="text-lg font-semibold md:text-2xl">Add New Blood Bag</h1>
                 <Button type="button" variant={'link'} onClick={() => navigate(-1)}>Go Back</Button>
             </div>
             <div className="flex flex-1 p-4 border rounded-lg shadow-sm">

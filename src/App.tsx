@@ -38,8 +38,6 @@ import BloodBankStock from "./pages/bloodbank/dashboard/Stock";
 import HospitalStock from "./pages/hospital/dashboard/Stock";
 
 import BloodBankRequests from "./pages/bloodbank/dashboard/Requests";
-import HospitalSentRequests from "./pages/hospital/dashboard/BloodRequests";
-import HospitalReceivedRequests from "./pages/hospital/dashboard/RecievedRequests";
 import BloodBags from "./pages/bloodbank/dashboard/bloodBags/BloodBags";
 import Applications from "./pages/bloodbank/dashboard/Applications";
 import ApplicationDetails from "./pages/bloodbank/dashboard/ApplicationDetails";
@@ -52,6 +50,9 @@ import HospitalAddUser from "./pages/hospital/dashboard/users/AddUser";
 import HospitalUpdateUser from "./pages/hospital/dashboard/users/UpdateUser";
 
 import HospitalBloodBags from "./pages/hospital/dashboard/bloodBags/BloodBags"
+import CreateRequest from "./pages/hospital/dashboard/requests/CreateRequest";
+import BloodRequests from "./pages/hospital/dashboard/requests/BloodRequests";
+import RequestDetails from "./pages/hospital/dashboard/requests/RequestDetails";
 
 type User = {
   firstName: string;
@@ -124,8 +125,9 @@ export default function App() {
             <Route path="users/:userId" element={<HospitalUpdateUser />} />
             <Route path="stock" element={<HospitalStock />} />
             <Route path="bags" element={<HospitalBloodBags />} />
-            <Route path="sentrequests" element={<HospitalSentRequests />} />
-            <Route path="receivedrequests" element={<HospitalReceivedRequests />} />
+            <Route path="requests/:requestType" element={<BloodRequests />} />
+            <Route path="requests/:requestType/:requestId" element={<RequestDetails />} />
+            <Route path="requests/sent/new" element={<CreateRequest />} />
           </Route>
 
           <Route

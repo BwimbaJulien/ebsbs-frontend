@@ -1,11 +1,11 @@
 import {
     CircleUser,
-    // FileSearch,
     LineChart,
+    MailCheck,
+    MailPlus,
     Package,
     Package2,
     Settings,
-    ShoppingCart,
     Users,
   } from "lucide-react"
 
@@ -52,11 +52,19 @@ const HospitalDashboardLinks = [
     },
     {
         hospitalId: "",
-        label: "Requests",
+        label: "Sent Requests",
         destination: '',
-        to: "requests",
+        to: "requests/sent",
         user: "Worker",
-        icon: <ShoppingCart className="h-4 w-4" />,
+        icon: <MailCheck className="h-4 w-4" />,
+    },
+    {
+        hospitalId: "",
+        label: "Incoming Requests",
+        destination: '',
+        to: "requests/incoming",
+        user: "Worker",
+        icon: <MailPlus className="h-4 w-4" />,
     },
     {
         hospitalId: "",

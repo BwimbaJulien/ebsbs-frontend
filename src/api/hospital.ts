@@ -30,7 +30,7 @@ export const ApplyForHospital = async (data: HospitalApplicantionTypes) => {
         if (responseData.message) {
             throw new Error(responseData.message);
         }
-        if (responseData.error) { 
+        if (responseData.error) {
             throw new Error(responseData.error);
         }
     }
@@ -53,7 +53,7 @@ export const getInactiveHospitals = async () => {
         if (responseData.message) {
             throw new Error(responseData.message);
         }
-        if (responseData.error) { 
+        if (responseData.error) {
             throw new Error(responseData.error);
         }
     }
@@ -75,14 +75,14 @@ export const getHospitalById = async (id: string) => {
         if (responseData.message) {
             throw new Error(responseData.message);
         }
-        if (responseData.error) { 
+        if (responseData.error) {
             throw new Error(responseData.error);
         }
     }
     return responseData;
 }
 
-export const updateHospital = async (id: string, data: UpdateHospitalTypes) => { 
+export const updateHospital = async (id: string, data: UpdateHospitalTypes) => {
     const response = await fetch(`${API_BASE_URL}/hospitals/update?id=${id}`, {
         method: "PUT",
         headers: {
@@ -90,6 +90,57 @@ export const updateHospital = async (id: string, data: UpdateHospitalTypes) => {
         },
         body: JSON.stringify(data),
     });
+    const responseData = await response.json();
+    if (!response.ok) {
+        if (responseData.errors) {
+            throw new Error(responseData.errors);
+        }
+        if (responseData.message) {
+            throw new Error(responseData.message);
+        }
+        if (responseData.error) {
+            throw new Error(responseData.error);
+        }
+    }
+    return responseData;
+}
+
+export const listAllHospitals = async () => {
+    const response = await fetch(`${API_BASE_URL}/hospitals/list`);
+    const responseData = await response.json();
+    if (!response.ok) {
+        if (responseData.errors) {
+            throw new Error(responseData.errors);
+        }
+        if (responseData.message) {
+            throw new Error(responseData.message);
+        }
+        if (responseData.error) {
+            throw new Error(responseData.error);
+        }
+    }
+    return responseData;
+}
+
+export const listActiveHospitals = async () => {
+    const response = await fetch(`${API_BASE_URL}/hospitals/active`);
+    const responseData = await response.json();
+    if (!response.ok) {
+        if (responseData.errors) {
+            throw new Error(responseData.errors);
+        }
+        if (responseData.message) {
+            throw new Error(responseData.message);
+        }
+        if (responseData.error) {
+            throw new Error(responseData.error);
+        }
+    }
+    return responseData;
+}
+
+export const listInactiveHospitals = async () => {
+    const response = await fetch(`${API_BASE_URL}/hospitals/inactive`);
     const responseData = await response.json();
     if (!response.ok) {
         if (responseData.errors) {
