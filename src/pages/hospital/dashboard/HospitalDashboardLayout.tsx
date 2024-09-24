@@ -66,7 +66,7 @@ export default function BloodBankDashboardLayout() {
               </span>
             </Link>
             <span className="ml-auto font-bold underline">
-              {params.userType === "a" ? "Admin" : "Recorder"}
+              {params.userType === "a" ? "Admin" : "Pharmacist"}
             </span>
           </div>
           <div className="flex-1">
@@ -83,7 +83,7 @@ export default function BloodBankDashboardLayout() {
                     </NavLink>
                   )
                 }
-                if (params.userType === 'r' && link.user === "Recorder") {
+                if (params.userType === 'r' && link.user === "Worker") {
                   return (
                     <NavLink key={index} to={link.to} className={cn(window.location.pathname.includes(link.to) && "bg-zinc-200 dark:bg-zinc-800 dark:text-white" ,"flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary")}>
                       {link.icon}

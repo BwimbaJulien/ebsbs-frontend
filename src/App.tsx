@@ -51,6 +51,8 @@ import UpdateBloodbag from "./pages/bloodbank/dashboard/bloodBags/UpdateBloodBag
 import HospitalAddUser from "./pages/hospital/dashboard/users/AddUser";
 import HospitalUpdateUser from "./pages/hospital/dashboard/users/UpdateUser";
 
+import HospitalBloodBags from "./pages/hospital/dashboard/bloodBags/BloodBags"
+
 type User = {
   firstName: string;
   lastName: string;
@@ -121,6 +123,7 @@ export default function App() {
             <Route path="users/new" element={<HospitalAddUser />} />
             <Route path="users/:userId" element={<HospitalUpdateUser />} />
             <Route path="stock" element={<HospitalStock />} />
+            <Route path="bags" element={<HospitalBloodBags />} />
             <Route path="sentrequests" element={<HospitalSentRequests />} />
             <Route path="receivedrequests" element={<HospitalReceivedRequests />} />
           </Route>
