@@ -3,14 +3,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 
 import { Button } from "@/components/ui/button"
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input";
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
@@ -48,8 +41,7 @@ export default function ManageHospitalUserForm({ user }: { user?: HospitalUserDa
             accountStatus: user?.accountStatus || "Active",
             id: user?.id || "",
             role: user?.role || "Hospital Worker",
-            hospitalId: hospitalId,
-            hospitalName: user?.hospitalName || "",
+            hospitalId: user?.hospitalId || hospitalId,
         },
     })
 
@@ -61,7 +53,7 @@ export default function ManageHospitalUserForm({ user }: { user?: HospitalUserDa
                     form.setValue("accountStatus", response.user.accountStatus);
                     toast.success(response.message);
                     setIsLoading(false);
-                    navigate(`/hdash/${hospitalId}/a/users`)
+                    navigate(`/hdash/${hospitalId}/a/users`);
                 })
                 .catch((error) => {
                     setIsLoading(false);
@@ -74,7 +66,7 @@ export default function ManageHospitalUserForm({ user }: { user?: HospitalUserDa
                     form.reset();
                     toast.success(response.message);
                     setIsLoading(false);
-                    navigate(`/dashboard/${hospitalId}/a/users`)
+                    navigate(`/hdash/${hospitalId}/a/users`);
                 })
                 .catch((error) => {
                     setIsLoading(false);

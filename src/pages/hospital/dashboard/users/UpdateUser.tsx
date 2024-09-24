@@ -1,21 +1,23 @@
-import { getBloodBankRecorderById } from "@/api/authentication";
+import { gethospitalWorkerById } from "@/api/authentication";
 import { Button } from "@/components/ui/button";
-import ManageUserForm, { UserDataTypes } from "@/components/forms/ManageUserForm";
 import LoadingSkeleton from "@/components/widgets/LoadingSkeleton";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import DeleteDialog from "@/components/widgets/DeleteDialog";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
+import ManageHospitalUserForm from "@/components/forms/ManageHospitalUserForm";
+import { HospitalUserDataTypes } from "@/components/forms/HospitalUserAccountForm";
 
 export default function AddUser() {
   const params = useParams();
-  const [user, setUser] = useState<UserDataTypes>();
+  const navigate = useNavigate();
+  const [user, setUser] = useState<HospitalUserDataTypes>();
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
     if (params.userId as string) {
-      getBloodBankRecorderById(params.userId as string)
+      gethospitalWorkerById(params.userId as string)
         .then((res) => {
           if (res) {
             setIsLoading(false);
@@ -60,13 +62,11 @@ export default function AddUser() {
           {user?.id && <>
             <DeleteDialog user={user} />
           </>}
-          <Button type="button" variant={'link'}>
-            <Link to="/dashboard/a/users">Go Back</Link>
-          </Button>
+          <Button type="button" variant={'link'} onClick={() => navigate(-1)}>Go Back</Button>
         </div>
       </div>
       <div className="flex flex-1 p-4 border rounded-lg shadow-sm">
-        <ManageUserForm user={user} />
+        <ManageHospitalUserForm user={user} />
       </div>
     </>
   )

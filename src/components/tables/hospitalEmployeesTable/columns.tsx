@@ -96,7 +96,7 @@ export const columns: ColumnDef<HospitalUserDataTypes>[] = [
 
             return (
                 <Button variant="link" size={'sm'}>
-                    <Link to={`/dashboard/a/users/${user.id}`}>View More</Link>
+                    <Link to={`/hdash/${user.hospitalId}/a/users/${user.id}`}>View More</Link>
                 </Button>
             )
         },

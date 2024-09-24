@@ -15,9 +15,10 @@ import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import { useState } from "react"
 import LoadingButton from "./LoadingButton"
+import { HospitalUserDataTypes } from "../forms/ManageHospitalUserForm"
 
 
-export default function DeleteDialog({ user }: { user: UserDataTypes }) {
+export default function DeleteDialog({ user }: { user: UserDataTypes | HospitalUserDataTypes}) {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
     const deleteAccount = (e: React.FormEvent<HTMLFormElement>) => {
@@ -30,7 +31,7 @@ export default function DeleteDialog({ user }: { user: UserDataTypes }) {
                 .then((res) => {
                     if (res) {
                         toast.success("Account deleted successfully");
-                        navigate("/dashboard/a/users");
+                        navigate(-1);
                     }
                 })
                 .catch((err) => {

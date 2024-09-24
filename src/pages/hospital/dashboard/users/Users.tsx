@@ -33,7 +33,7 @@ export default function Users() {
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link to={`/dashboard/${params.userType}`}>Dashboard</Link>
+              <Link to={`/hdash/${hospitalId}/${params.userType}`}>Dashboard</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />

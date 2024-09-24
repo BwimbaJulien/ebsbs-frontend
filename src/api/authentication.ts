@@ -173,6 +173,28 @@ export const getBloodBankRecorderById = async (userId: string): Promise<UserData
     return responseData.user;
 }
 
+export const gethospitalWorkerById = async (userId: string): Promise<HospitalUserDataTypes> => {
+    const response = await fetch(`${API_BASE_URL}/auth/findHospitalPharmacistById?id=${userId}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+    const responseData = await response.json();
+    if (!response.ok) {
+        if (responseData.errors) {
+            throw new Error(responseData.errors);
+        }
+        if (responseData.message) {
+            throw new Error(responseData.message);
+        }
+        if (responseData.error) {
+            throw new Error(responseData.error);
+        }
+    }
+    return responseData.user;
+}
+
 export const addNewUser = async (data: UserDataTypes | HospitalUserDataTypes) => {
     const response = await fetch(`${API_BASE_URL}/auth/add`, {
         method: "POST",

@@ -51,6 +51,19 @@ import UpdateBloodbag from "./pages/bloodbank/dashboard/bloodBags/UpdateBloodBag
 import HospitalAddUser from "./pages/hospital/dashboard/users/AddUser";
 import HospitalUpdateUser from "./pages/hospital/dashboard/users/UpdateUser";
 
+type User = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  accountStatus: string;
+  userType: string;
+  hospitalId: string;
+  role: string;
+  hospitalName: string;
+  id: string;
+}
+
 /**
  * The main application component that handles routing and navigation for the blood bank and hospital management system.
  *
@@ -62,6 +75,14 @@ export default function App() {
   const isHospitalAdminToken = localStorage.getItem("hospitalAdminToken");
   const isHospitalWorkerToken = localStorage.getItem("hospitalWorkerToken");
 
+  let user: User | undefined = undefined;
+
+  if (isHospitalWorkerToken) {
+    user = JSON.parse(localStorage.getItem("hospitalWorker") as string);
+  } else if (isHospitalAdminToken) {
+    user = JSON.parse(localStorage.getItem("hospitalAdmin") as string);
+  }
+
   return (
     <Router>
       <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
@@ -70,9 +91,9 @@ export default function App() {
           <Route path="/" element={<CreateAccountForHospital />} />
           <Route path="/apply/:applicantId" element={<ApplyForHospital />} />
 
-          <Route path="/hauth" element={(!isHospitalAdminToken && !isHospitalWorkerToken) ? <HospitalAuthLayout /> : <Navigate replace to='/hauth/signin' />}>
+          <Route path="/hauth" element={(!isHospitalAdminToken && !isHospitalWorkerToken) ? <HospitalAuthLayout /> : <Navigate replace to={`/hdash/${user?.hospitalId}/${isHospitalAdminToken ? 'a' : 'r'}`} />}>
             <Route path="" element={<HospitalSignIn />} />
-            <Route path="signin" element={(!isHospitalAdminToken && !isHospitalWorkerToken) ? <HospitalSignIn /> : <Navigate replace to='/hauth/signin' />} />
+            <Route path="signin" element={(!isHospitalAdminToken && !isHospitalWorkerToken) ? <HospitalSignIn /> : <Navigate replace to={`/hdash/${user?.hospitalId}/${isHospitalAdminToken ? 'a' : 'r'}`} />} />
             <Route path="forgotpassword" element={<HospitalForgotPassword />} />
             <Route path="reset-password/:token/:id" element={<HospitalResetPassword />} />
           </Route>

@@ -25,12 +25,6 @@ export type UserDataTypes = z.infer<typeof FormSchema>
 
 export default function UserAccountForm({ user }: { user?: UserDataTypes }) {
     const [isLoading, setIsLoading] = useState(false);
-    let hospitalId = "";
-    if (user?.role === "Blood Bank Admin") {
-        hospitalId = JSON.parse(localStorage.getItem("hospitalAdmin") as string).hospitalId;
-    } else if (user?.role === "Blood Bank Recorder") {
-        hospitalId = JSON.parse(localStorage.getItem("hospitalRecorder") as string).hospitalId;
-    }
 
     const form = useForm<UserDataTypes>({
         resolver: zodResolver(FormSchema),
@@ -42,7 +36,7 @@ export default function UserAccountForm({ user }: { user?: UserDataTypes }) {
             accountStatus: user?.accountStatus || "Active",
             id: user?.id || "",
             role: user?.role || "Blood Bank Recorder",
-            bloodBankId: hospitalId
+            bloodBankId: user?.bloodBankId
         },
     })
 

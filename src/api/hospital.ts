@@ -9,7 +9,7 @@ type UpdateHospitalTypes = {
     province: string;
     town: string;
     specialization: string;
-    hospitalType: "Public" | "Private";
+    hospitalType: string;
     accessStatus: "Active" | "Inactive";
 }
 
