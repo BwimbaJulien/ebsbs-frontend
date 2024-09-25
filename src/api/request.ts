@@ -85,7 +85,7 @@ export const updateRequest = async (id: string, data: RequestTypes): Promise<Upd
 }
 
 export const getHospitalSentRequests = async (hospitalId: string) => {
-    const response = await fetch(`${API_BASE_URL}/bloodrequests/findByHospital/?hospitalId=${hospitalId}`);
+    const response = await fetch(`${API_BASE_URL}/bloodrequests/findByHospital?hospitalId=${hospitalId}`);
     const responseData = await response.json();
     if (!response.ok) {
         if (responseData.errors) {
@@ -102,7 +102,7 @@ export const getHospitalSentRequests = async (hospitalId: string) => {
 }
 
 export const getReceivedRequestsByHospital = async (hospitalId: string) => {
-    const response = await fetch(`${API_BASE_URL}/bloodrequests/findReceivedByHospital/?hospitalId=${hospitalId}`);
+    const response = await fetch(`${API_BASE_URL}/bloodrequests/findReceivedByHospital?hospitalId=${hospitalId}`);
     const responseData = await response.json();
     if (!response.ok) {
         if (responseData.errors) {
@@ -119,7 +119,7 @@ export const getReceivedRequestsByHospital = async (hospitalId: string) => {
 }
 
 export const getRequestsForBloodBank = async (bloodBankId: string) => {
-    const response = await fetch(`${API_BASE_URL}/bloodrequests/findByBloodBank/?bloodBankId=${bloodBankId}`);
+    const response = await fetch(`${API_BASE_URL}/bloodrequests/findByBloodBank?bloodBankId=${bloodBankId}`);
     const responseData = await response.json();
     if (!response.ok) {
         if (responseData.errors) {

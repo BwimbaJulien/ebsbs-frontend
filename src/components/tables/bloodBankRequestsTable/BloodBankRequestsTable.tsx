@@ -10,7 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "
 import { columns } from "./columns"
 import { RequestTypes } from "@/components/forms/ManageBloodRequestForm"
 
-export function BloodRequestsTable({ bloodRequests }: { bloodRequests: RequestTypes[] }) {
+export function BloodBankRequestsTable({ bloodRequests }: { bloodRequests: RequestTypes[] }) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
@@ -40,9 +40,9 @@ export function BloodRequestsTable({ bloodRequests }: { bloodRequests: RequestTy
       <div className="flex items-center py-4">
         <Input
           placeholder="Search by Create Date"
-          value={(table.getColumn("code")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("createdAt")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("code")?.setFilterValue(event.target.value)
+            table.getColumn("createdAt")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

@@ -37,7 +37,7 @@ import HospitalUsers from "./pages/hospital/dashboard/users/Users";
 import BloodBankStock from "./pages/bloodbank/dashboard/Stock";
 import HospitalStock from "./pages/hospital/dashboard/Stock";
 
-import BloodBankRequests from "./pages/bloodbank/dashboard/Requests";
+import BloodBankRequests from "./pages/bloodbank/dashboard/requests/Requests";
 import BloodBags from "./pages/bloodbank/dashboard/bloodBags/BloodBags";
 import Applications from "./pages/bloodbank/dashboard/Applications";
 import ApplicationDetails from "./pages/bloodbank/dashboard/ApplicationDetails";
@@ -51,8 +51,11 @@ import HospitalUpdateUser from "./pages/hospital/dashboard/users/UpdateUser";
 
 import HospitalBloodBags from "./pages/hospital/dashboard/bloodBags/BloodBags"
 import CreateRequest from "./pages/hospital/dashboard/requests/CreateRequest";
-import BloodRequests from "./pages/hospital/dashboard/requests/BloodRequests";
-import RequestDetails from "./pages/hospital/dashboard/requests/RequestDetails";
+import SentRequests from "./pages/hospital/dashboard/requests/SentRequests";
+import ReceivedRequests from "./pages/hospital/dashboard/requests/ReceivedRequests";
+import RecievedRequestDetails from "./pages/hospital/dashboard/requests/RecievedRequestDetails";
+import SentRequestDetails from "./pages/hospital/dashboard/requests/SentRequestDetails";
+import BloodBankRequestsDetails from "./pages/bloodbank/dashboard/requests/RequestDetails";
 
 type User = {
   firstName: string;
@@ -125,8 +128,10 @@ export default function App() {
             <Route path="users/:userId" element={<HospitalUpdateUser />} />
             <Route path="stock" element={<HospitalStock />} />
             <Route path="bags" element={<HospitalBloodBags />} />
-            <Route path="requests/:requestType" element={<BloodRequests />} />
-            <Route path="requests/:requestType/:requestId" element={<RequestDetails />} />
+            <Route path="requests/incoming" element={<ReceivedRequests />} />
+            <Route path="requests/incoming/:requestId" element={<RecievedRequestDetails />} />
+            <Route path="requests/sent" element={<SentRequests />} />
+            <Route path="requests/sent/:requestId" element={<SentRequestDetails />} />
             <Route path="requests/sent/new" element={<CreateRequest />} />
           </Route>
 
@@ -152,6 +157,7 @@ export default function App() {
             <Route path="bags/:bagId" element={<UpdateBloodbag />} />
             <Route path="profile" element={<BloodBankProfile />} />
             <Route path="requests" element={<BloodBankRequests />} />
+            <Route path="requests/:requestId" element={<BloodBankRequestsDetails />} />
           </Route>
 
           <Route path="/not-found" element={<NotFound />} />

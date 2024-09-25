@@ -30,6 +30,21 @@ export const columns: ColumnDef<RequestTypes>[] = [
         enableHiding: false,
     },
     {
+        accessorKey: "id",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Id
+                    <CaretSortIcon className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
+        cell: ({ row }) => <div>{row.getValue("id")}</div>,
+    },
+    {
         accessorKey: "createdAt",
         header: ({ column }) => {
             return (
@@ -99,7 +114,7 @@ export const columns: ColumnDef<RequestTypes>[] = [
 
             return (
                 <Button variant="link" size={'sm'}>
-                    <Link to={`/hdash/${request.hospitalId}/r/requests/${request.id}`}>View More</Link>
+                    <Link to={`/hdash/${request.hospitalId}/r/requests/incoming/${request.id}`}>View More</Link>
                 </Button>
             )
         },
