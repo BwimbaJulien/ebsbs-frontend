@@ -56,7 +56,7 @@ export const getRequestById = async (id: string) => {
 }
 
 type UpdateRequestResponseTypes = {
-    user: RequestTypes;
+    updatedRequest: RequestTypes;
     message: string;
     error?: string;
 }

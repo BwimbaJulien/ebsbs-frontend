@@ -23,7 +23,7 @@ import { BloodBankDataTypes } from "./SettingsForm"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 
-const FormSchema = z.object({
+export const RequestFormSchema = z.object({
   id: z.string().optional(),
   hospitalId: z.string(),
   idOfOtherHospital: z.string().optional(),
@@ -65,7 +65,7 @@ const FormSchema = z.object({
   bloodBankId: z.string().optional(),
 });
 
-export type RequestTypes = z.infer<typeof FormSchema>;
+export type RequestTypes = z.infer<typeof RequestFormSchema>;
 
 type Props = {
   request?: RequestTypes,
@@ -79,50 +79,51 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
   const navigate = useNavigate();
 
   const form = useForm<RequestTypes>({
-    resolver: zodResolver(FormSchema),
+    resolver: zodResolver(RequestFormSchema),
     defaultValues: {
       id: request?.id || "",
       hospitalId: hospitalId,
       idOfOtherHospital: request?.idOfOtherHospital || "",
-      status: request?.status || 'Pending',
-      rhP_O: request?.rhP_O || "0",
-      rhP_A: request?.rhP_A || "0",
-      rhP_B: request?.rhP_B || "0",
-      rhP_AB: request?.rhP_AB || "0",
-      rhN_O: request?.rhN_O || "0",
-      rhN_A: request?.rhN_A || "0",
-      rhN_B: request?.rhN_B || "0",
-      rhN_AB: request?.rhN_AB || "0",
-      plasmaRhP_O: request?.plasmaRhP_O || "0",
-      plasmaRhP_A: request?.plasmaRhP_A || "0",
-      plasmaRhP_B: request?.plasmaRhP_B || "0",
-      plasmaRhP_AB: request?.plasmaRhP_AB || "0",
-      plasmaRhN_O: request?.plasmaRhN_O || "0",
-      plasmaRhN_A: request?.plasmaRhN_A || "0",
-      plasmaRhN_B: request?.plasmaRhN_B || "0",
-      plasmaRhN_AB: request?.plasmaRhN_AB || "0",
-      plateletRhP_O: request?.plateletRhP_O || "0",
-      plateletRhP_A: request?.plateletRhP_A || "0",
-      plateletRhP_B: request?.plateletRhP_B || "0",
-      plateletRhP_AB: request?.plateletRhP_AB || "0",
-      plateletRhN_O: request?.plateletRhN_O || "0",
-      plateletRhN_A: request?.plateletRhN_A || "0",
-      plateletRhN_B: request?.plateletRhN_B || "0",
-      plateletRhN_AB: request?.plateletRhN_AB || "0",
-      rbcP_O: request?.rbcP_O || "0",
-      rbcP_A: request?.rbcP_A || "0",
-      rbcP_B: request?.rbcP_B || "0",
-      rbcP_AB: request?.rbcP_AB || "0",
-      rbcN_O: request?.rbcN_O || "0",
-      rbcN_A: request?.rbcN_A || "0",
-      rbcN_B: request?.rbcN_B || "0",
-      rbcN_AB: request?.rbcN_AB || "0",
+      status: request?.status.toString() || 'Pending',
+      rhP_O: request?.rhP_O.toString() || "0",
+      rhP_A: request?.rhP_A.toString() || "0",
+      rhP_B: request?.rhP_B.toString() || "0",
+      rhP_AB: request?.rhP_AB.toString() || "0",
+      rhN_O: request?.rhN_O.toString() || "0",
+      rhN_A: request?.rhN_A.toString() || "0",
+      rhN_B: request?.rhN_B.toString() || "0",
+      rhN_AB: request?.rhN_AB.toString() || "0",
+      plasmaRhP_O: request?.plasmaRhP_O.toString() || "0",
+      plasmaRhP_A: request?.plasmaRhP_A.toString() || "0",
+      plasmaRhP_B: request?.plasmaRhP_B.toString() || "0",
+      plasmaRhP_AB: request?.plasmaRhP_AB.toString() || "0",
+      plasmaRhN_O: request?.plasmaRhN_O.toString() || "0",
+      plasmaRhN_A: request?.plasmaRhN_A.toString() || "0",
+      plasmaRhN_B: request?.plasmaRhN_B.toString() || "0",
+      plasmaRhN_AB: request?.plasmaRhN_AB.toString() || "0",
+      plateletRhP_O: request?.plateletRhP_O.toString() || "0",
+      plateletRhP_A: request?.plateletRhP_A.toString() || "0",
+      plateletRhP_B: request?.plateletRhP_B.toString() || "0",
+      plateletRhP_AB: request?.plateletRhP_AB.toString() || "0",
+      plateletRhN_O: request?.plateletRhN_O.toString() || "0",
+      plateletRhN_A: request?.plateletRhN_A.toString() || "0",
+      plateletRhN_B: request?.plateletRhN_B.toString() || "0",
+      plateletRhN_AB: request?.plateletRhN_AB.toString() || "0",
+      rbcP_O: request?.rbcP_O.toString() || "0",
+      rbcP_A: request?.rbcP_A.toString() || "0",
+      rbcP_B: request?.rbcP_B.toString() || "0",
+      rbcP_AB: request?.rbcP_AB.toString() || "0",
+      rbcN_O: request?.rbcN_O.toString() || "0",
+      rbcN_A: request?.rbcN_A.toString() || "0",
+      rbcN_B: request?.rbcN_B.toString() || "0",
+      rbcN_AB: request?.rbcN_AB.toString() || "0",
       bloodBankId: request?.bloodBankId || "",
     },
   })
 
   function onSubmit(data: RequestTypes) {
     setIsLoading(true);
+    
     if (request?.id) {
       updateRequest(request.id, data)
         .then((response) => {
