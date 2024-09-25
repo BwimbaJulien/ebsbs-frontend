@@ -56,6 +56,7 @@ import ReceivedRequests from "./pages/hospital/dashboard/requests/ReceivedReques
 import RecievedRequestDetails from "./pages/hospital/dashboard/requests/RecievedRequestDetails";
 import SentRequestDetails from "./pages/hospital/dashboard/requests/SentRequestDetails";
 import BloodBankRequestsDetails from "./pages/bloodbank/dashboard/requests/RequestDetails";
+import LandingPage from "./pages/LandingPage";
 
 type User = {
   firstName: string;
@@ -94,7 +95,8 @@ export default function App() {
       <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
         <Toaster position="top-right" richColors />
         <Routes>
-          <Route path="/" element={<CreateAccountForHospital />} />
+          <Route path="" element={<LandingPage />} />
+          <Route path="/create-account" element={<CreateAccountForHospital />} />
           <Route path="/apply/:applicantId" element={<ApplyForHospital />} />
 
           <Route path="/hauth" element={(!isHospitalAdminToken && !isHospitalWorkerToken) ? <HospitalAuthLayout /> : <Navigate replace to={`/hdash/${user?.hospitalId}/${isHospitalAdminToken ? 'a' : 'r'}`} />}>

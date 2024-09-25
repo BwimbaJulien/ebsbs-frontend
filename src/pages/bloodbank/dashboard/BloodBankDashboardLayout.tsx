@@ -59,9 +59,11 @@ export default function BloodBankDashboardLayout() {
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link to={`/dashboard/${params.userType}`} className="flex items-center gap-2 font-semibold">
-              <img src="/drc-flag.png" alt="logo" className="h-8 rounded-full w-auto sm:h-10" />
+              <div className="flex items-center p-4">
+                <img src="https://cpts-nk.org/wp-content/uploads/2024/06/CPTS-NK-logo.png" alt="logo" className="h-8 w-auto bg-white sm:h-10" />
+              </div>
               <span className="">
-                CPTS
+                C.P.T.S
               </span>
             </Link>
             <span className="ml-auto font-bold underline">
@@ -76,7 +78,7 @@ export default function BloodBankDashboardLayout() {
               {BloodBankDashboardLinks.map((link, index) => {
                 if (params.userType === 'a' && link.user === "Admin") {
                   return (
-                    <NavLink key={index} to={link.to} className={cn(window.location.pathname === link.to && "bg-zinc-200 dark:bg-zinc-800 dark:text-white" ,"flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary")}>
+                    <NavLink key={index} to={link.to} className={cn(window.location.pathname === link.to && "bg-zinc-200 dark:bg-zinc-800 dark:text-white", "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary")}>
                       {link.icon}
                       {link.label}
                     </NavLink>
@@ -84,7 +86,7 @@ export default function BloodBankDashboardLayout() {
                 }
                 if (params.userType === 'r' && link.user === "Recorder") {
                   return (
-                    <NavLink key={index} to={link.to} className={cn(window.location.pathname === link.to && "bg-zinc-200 dark:bg-zinc-800 dark:text-white" ,"flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary")}>
+                    <NavLink key={index} to={link.to} className={cn(window.location.pathname === link.to && "bg-zinc-200 dark:bg-zinc-800 dark:text-white", "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary")}>
                       {link.icon}
                       {link.label}
                     </NavLink>
@@ -119,7 +121,7 @@ export default function BloodBankDashboardLayout() {
                 {BloodBankDashboardLinks.map((link, index) => {
                   if (params.userType === 'a' && link.user === "Admin") {
                     return (
-                      <NavLink key={index} to={link.to} className={cn(window.location.pathname === link.to && "bg-zinc-200 dark:bg-zinc-800 dark:text-white" ,"mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground")}>
+                      <NavLink key={index} to={link.to} className={cn(window.location.pathname === link.to && "bg-zinc-200 dark:bg-zinc-800 dark:text-white", "mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground")}>
                         {link.icon}
                         {link.label}
                       </NavLink>
@@ -127,7 +129,7 @@ export default function BloodBankDashboardLayout() {
                   }
                   if (params.userType === 'r' && link.user === "Recorder") {
                     return (
-                      <NavLink key={index} to={link.to} className={cn(window.location.pathname === link.to && "bg-zinc-200 dark:bg-zinc-800 dark:text-white" ,"mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground")}>
+                      <NavLink key={index} to={link.to} className={cn(window.location.pathname === link.to && "bg-zinc-200 dark:bg-zinc-800 dark:text-white", "mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground")}>
                         {link.icon}
                         {link.label}
                       </NavLink>

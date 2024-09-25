@@ -64,9 +64,9 @@ export default function SignIn() {
   return (
     <Card className="mx-auto max-w-sm">
       <CardHeader>
-        <span className="text-2xl font-bold sm:text-3xl flex items-center gap-2">
-          <img src="/drc-flag.png" alt="logo" className="h-8 rounded-full w-auto sm:h-10" />
-          <span className="">EBSDS</span>
+        <span className="text-2xl font-bold sm:text-3xl flex items-center flex-col gap-2">
+          <img src="https://cpts-nk.org/wp-content/uploads/2024/06/CPTS-NK-logo.png" alt="logo" className="h-20 w-auto" />
+          <span className="">C.P.T.S</span>
         </span>
         <span className="text-sm text-red-600">Blood Bank</span>
         <Separator />
