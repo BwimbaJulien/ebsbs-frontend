@@ -134,3 +134,25 @@ export const getRequestsForBloodBank = async (bloodBankId: string) => {
     }
     return responseData;
 }
+
+export const deleteRequest = async (id: string) => {
+    const response = await fetch(`${API_BASE_URL}/bloodrequests/delete?id=${id}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+    const responseData = await response.json();
+    if (!response.ok) {
+        if (responseData.errors) {
+            throw new Error(responseData.errors);
+        }
+        if (responseData.message) {
+            throw new Error(responseData.message);
+        }
+        if (responseData.error) {
+            throw new Error(responseData.error);
+        }
+    }
+    return responseData;
+}
