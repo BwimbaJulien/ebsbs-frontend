@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input";
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import LoadingButton from "../widgets/LoadingButton"
 import { toast } from "sonner"
 import { Separator } from "../ui/separator"
@@ -70,20 +70,33 @@ export type RequestTypes = z.infer<typeof RequestFormSchema>;
 type Props = {
   request?: RequestTypes,
   hospitals: HospitalDataTypes[],
-  bloodBanks: BloodBankDataTypes[]
+  bloodBanks: BloodBankDataTypes[],
+  queriedHospital: string
 }
 
 export default function ManageBloodRequestForm({ request, hospitals, bloodBanks }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const hospitalId = JSON.parse(localStorage.getItem("hospitalWorker") as string).hospitalId;
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  let otherHospital = "";
+  if (searchParams.get("hospital") !== null || searchParams.get("hospital") !== undefined) {
+    otherHospital = searchParams.get("hospital") as string;
+  }
+  if (request?.idOfOtherHospital !== null){
+    otherHospital = request?.idOfOtherHospital as string;
+  }
+
+  console.log(otherHospital);
 
   const form = useForm<RequestTypes>({
     resolver: zodResolver(RequestFormSchema),
     defaultValues: {
       id: request?.id || "",
-      hospitalId: hospitalId,
-      idOfOtherHospital: request?.idOfOtherHospital || "",
+      hospitalId: request?.hospitalId || hospitalId,
+      bloodBankId: request?.bloodBankId !== null ? request?.bloodBankId : "",
+      idOfOtherHospital: otherHospital || "",
       status: request?.status.toString() || 'Pending',
       rhP_O: request?.rhP_O.toString() || "0",
       rhP_A: request?.rhP_A.toString() || "0",
@@ -117,19 +130,18 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
       rbcN_A: request?.rbcN_A.toString() || "0",
       rbcN_B: request?.rbcN_B.toString() || "0",
       rbcN_AB: request?.rbcN_AB.toString() || "0",
-      bloodBankId: request?.bloodBankId || "",
     },
   })
 
   function onSubmit(data: RequestTypes) {
     setIsLoading(true);
-    
+
     if (request?.id) {
       updateRequest(request.id, data)
         .then((response) => {
           toast.success(response.message);
           setIsLoading(false);
-          navigate(`/hdash/${hospitalId}/r/requests/incoming`)
+          navigate(`/hdash/${hospitalId}/r/requests/sent`)
         })
         .catch((error) => {
           setIsLoading(false);
@@ -137,7 +149,12 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
           console.log(error);
         })
     } else {
-      console.log(data);
+      if (data.bloodBankId === undefined && data.idOfOtherHospital === undefined) {
+        toast.error("Please select a blood bank or hospital to send a request");
+        setIsLoading(false);
+        return;
+      }
+
       addRequest(data)
         .then((response) => {
           form.reset();
@@ -225,7 +242,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group O +</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -238,7 +255,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group A +</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -251,7 +268,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group B +</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -264,7 +281,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group AB +</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -279,7 +296,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group O -</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -292,7 +309,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group A -</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -305,7 +322,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group B -</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -318,7 +335,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group AB -</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -337,7 +354,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group O +</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -350,7 +367,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group A +</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -363,7 +380,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group B +</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -376,7 +393,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group AB +</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -391,7 +408,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group O -</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -404,7 +421,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group A -</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -417,7 +434,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group B -</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -430,7 +447,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group AB -</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -449,7 +466,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group O +</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -462,7 +479,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group A +</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -475,7 +492,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group B +</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -488,7 +505,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group AB +</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -503,7 +520,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group O -</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -516,7 +533,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group A -</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -529,7 +546,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group B -</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -542,7 +559,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group AB -</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -561,7 +578,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group O +</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -574,7 +591,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group A +</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -587,7 +604,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group B +</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -600,7 +617,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group AB +</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -615,7 +632,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group O -</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -628,7 +645,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group A -</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -641,7 +658,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group B -</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -654,7 +671,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
                 <FormItem className="w-full">
                   <FormLabel>Group AB -</FormLabel>
                   <FormControl>
-                    <Input type="string" {...field} />
+                    <Input type="string" disabled={request?.status === "Recieved/In Process"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

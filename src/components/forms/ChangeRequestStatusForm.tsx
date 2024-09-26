@@ -30,14 +30,14 @@ type Props = {
 
 export default function ChangeRequestStatusForm({ request, setRequest }: Props) {
     const [isLoading, setIsLoading] = useState(false);
-    console.log(request);
 
     const form = useForm<RequestTypes>({
         resolver: zodResolver(RequestFormSchema),
         defaultValues: {
             id: request?.id || "",
             hospitalId: request?.hospitalId || "",
-            idOfOtherHospital: request?.idOfOtherHospital || "",
+            bloodBankId: request?.bloodBankId !== null ? request?.bloodBankId : "",
+            idOfOtherHospital: request?.idOfOtherHospital !== null ? request?.idOfOtherHospital : "",
             status: request?.status || 'Pending',
             rhP_O: request?.rhP_O.toString() || "0",
             rhP_A: request?.rhP_A.toString() || "0",
@@ -75,9 +75,6 @@ export default function ChangeRequestStatusForm({ request, setRequest }: Props) 
     })
 
     function onSubmit(data: RequestTypes) {
-        
-        console.log(data);
-
         setIsLoading(true);
         updateRequest(request.id as string, data)
             .then((response) => {

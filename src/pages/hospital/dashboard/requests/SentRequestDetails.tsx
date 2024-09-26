@@ -10,6 +10,7 @@ import { BloodBankDataTypes } from "@/components/forms/SettingsForm";
 import { HospitalDataTypes } from "@/components/forms/HospitalSettingsForm";
 import { getBloodBanks } from "@/api/bloodBank";
 import { listActiveHospitals } from "@/api/hospital";
+import RequestDataTable from "@/components/tables/RequestDataTable";
 
 export default function SentRequestsDetails() {
   const params = useParams();
@@ -98,7 +99,10 @@ export default function SentRequestsDetails() {
         {isLoading && <LoadingSkeleton />}
         {(!isLoading && request) &&
           <div className="w-full flex flex-1 flex-col space-y-6">
-            <ManageBloodRequestForm request={request} hospitals={hospitals} bloodBanks={bloodBanks} />
+            {request.status === "Pending" ?
+              <ManageBloodRequestForm request={request} hospitals={hospitals} bloodBanks={bloodBanks} /> :
+              <RequestDataTable request={request} />
+            }
           </div>
         }
       </div>

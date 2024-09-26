@@ -156,3 +156,5 @@ export const deleteRequest = async (id: string) => {
     }
     return responseData;
 }
+
+// export const searchHospital

@@ -90,7 +90,7 @@ export const columns: ColumnDef<RequestTypes>[] = [
         },
     },
     {
-        accessorKey: "updateAt",
+        accessorKey: "updatedAt",
         header: ({ column }) => {
             return (
                 <Button
@@ -103,7 +103,7 @@ export const columns: ColumnDef<RequestTypes>[] = [
             )
         },
         cell: ({ row }) => <div>
-            {row.getValue("updateAt") ? new Date(row.getValue("updateAt")).toLocaleString() : "-"}
+            {row.getValue("updatedAt") ? new Date(row.getValue("updatedAt")).toLocaleString() : "-"}
         </div>,
     },
     {

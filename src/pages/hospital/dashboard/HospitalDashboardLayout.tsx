@@ -1,24 +1,13 @@
-import {
-  Bell,
-  CircleUser,
-  Menu,
-} from "lucide-react"
-
+import { Bell, CircleUser, Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Link, NavLink, Outlet, useParams } from "react-router-dom"
 import { ModeToggle } from "@/components/mode-toggle"
 import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
 import HospitalDashboardLinks from "@/components/widgets/HospitalDashboardLinks"
+import SearchHospitalsDrawer from "@/components/forms/SearchHospitalsDrawer"
 
 type UserData = {
   id: string;
@@ -78,7 +67,7 @@ export default function BloodBankDashboardLayout() {
               {HospitalDashboardLinks.map((link, index) => {
                 if (params.userType === 'a' && link.user === "Admin") {
                   return (
-                    <NavLink key={index} to={link.to} className={cn((pathName.includes(link.to) && pathName.split('/').slice(-1)[0] !== "r") && "bg-zinc-200 dark:bg-zinc-800 dark:text-white" ,"flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary")}>
+                    <NavLink key={index} to={link.to} className={cn((pathName.includes(link.to) && pathName.split('/').slice(-1)[0] !== "r") && "bg-zinc-200 dark:bg-zinc-800 dark:text-white", "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary")}>
                       {link.icon}
                       {link.label}
                     </NavLink>
@@ -86,7 +75,7 @@ export default function BloodBankDashboardLayout() {
                 }
                 if (params.userType === 'r' && link.user === "Worker") {
                   return (
-                    <NavLink key={index} to={link.to} className={cn((pathName.includes(link.to) && pathName.split('/').slice(-1)[0] !== "r") && "bg-zinc-200 dark:bg-zinc-800 dark:text-white" ,"flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary")}>
+                    <NavLink key={index} to={link.to} className={cn((pathName.includes(link.to) && pathName.split('/').slice(-1)[0] !== "r") && "bg-zinc-200 dark:bg-zinc-800 dark:text-white", "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary")}>
                       {link.icon}
                       {link.label}
                     </NavLink>
@@ -121,7 +110,7 @@ export default function BloodBankDashboardLayout() {
                 {HospitalDashboardLinks.map((link, index) => {
                   if (params.userType === 'a' && link.user === "Admin") {
                     return (
-                      <NavLink key={index} to={link.to} className={cn(window.location.pathname.includes(link.to) && "bg-zinc-200 dark:bg-zinc-800 dark:text-white" ,"mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground")}>
+                      <NavLink key={index} to={link.to} className={cn(window.location.pathname.includes(link.to) && "bg-zinc-200 dark:bg-zinc-800 dark:text-white", "mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground")}>
                         {link.icon}
                         {link.label}
                       </NavLink>
@@ -129,7 +118,7 @@ export default function BloodBankDashboardLayout() {
                   }
                   if (params.userType === 'r' && link.user === "Recorder") {
                     return (
-                      <NavLink key={index} to={link.to} className={cn(window.location.pathname.includes(link.to) && "bg-zinc-200 dark:bg-zinc-800 dark:text-white" ,"mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground")}>
+                      <NavLink key={index} to={link.to} className={cn(window.location.pathname.includes(link.to) && "bg-zinc-200 dark:bg-zinc-800 dark:text-white", "mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground")}>
                         {link.icon}
                         {link.label}
                       </NavLink>
@@ -143,6 +132,7 @@ export default function BloodBankDashboardLayout() {
             <span className="mr-auto block md:hidden font-bold underline">
               {params.userType === "a" ? "Admin" : "Recorder"}
             </span>
+            <SearchHospitalsDrawer />
             <div className="flex items-center space-x-4 ml-auto">
               <ModeToggle />
               <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
