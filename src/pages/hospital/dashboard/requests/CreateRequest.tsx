@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import ManageBloodRequestForm from "@/components/forms/ManageBloodRequestForm";
 import { useEffect, useState } from "react";
@@ -16,6 +16,7 @@ export default function AddNewBloodbag() {
   const params = useParams();
   const [bloodBanks, setBloodBanks] = useState<BloodBankDataTypes[]>([]);
   const [hospitals, setHospitals] = useState<HospitalDataTypes[]>([]);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     setIsLoading(true);
@@ -66,7 +67,7 @@ export default function AddNewBloodbag() {
         <Button type="button" variant={'link'} onClick={() => navigate(-1)}>Go Back</Button>
       </div>
       <div className="flex flex-1 p-4 border rounded-lg shadow-sm">
-        {!isLoading && <ManageBloodRequestForm hospitals={hospitals} bloodBanks={bloodBanks} />}
+        {!isLoading && <ManageBloodRequestForm hospitals={hospitals} bloodBanks={bloodBanks} queriedHospital={searchParams.get("hospital")} />}
         {isLoading && <LoadingSkeleton />}
       </div>
     </>

@@ -132,7 +132,7 @@ export default function BloodBankDashboardLayout() {
             <span className="mr-auto block md:hidden font-bold underline">
               {params.userType === "a" ? "Admin" : "Recorder"}
             </span>
-            <SearchHospitalsDrawer />
+            {params.userType === "r" && <SearchHospitalsDrawer />}
             <div className="flex items-center space-x-4 ml-auto">
               <ModeToggle />
               <Button variant="outline" size="icon" className="ml-auto h-8 w-8">

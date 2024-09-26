@@ -3,7 +3,8 @@ import AddBloodBagForm, { BloodBagTypes } from "@/components/forms/ManageBloodBa
 import { Button } from "@/components/ui/button";
 import LoadingSkeleton from "@/components/widgets/LoadingSkeleton";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 
 export default function UpdateBloodbag() {
     const navigate = useNavigate();
@@ -34,6 +35,25 @@ export default function UpdateBloodbag() {
 
     return (
         <>
+        <Breadcrumb className="hidden md:flex">
+                <BreadcrumbList>
+                    <BreadcrumbItem>
+                        <BreadcrumbLink asChild>
+                            <Link to={`/dashboard/${params.userType}`}>Dashboard</Link>
+                        </BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                        <BreadcrumbLink asChild>
+                            <Link to={`/dashboard/${params.userType}/bags`}>Bags</Link>
+                        </BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                        <BreadcrumbPage>Details</BreadcrumbPage>
+                    </BreadcrumbItem>
+                </BreadcrumbList>
+            </Breadcrumb>
             <div className="flex items-center justify-between gap-4 flex-wrap">
                 <h1 className="text-lg font-semibold md:text-2xl">Update Blood Bag: <span className="text-slate-500">{params.bagId}</span></h1>
                 <div className="flex justify-between w-full md:w-fit gap-12 items-center">

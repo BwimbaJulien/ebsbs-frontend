@@ -5,7 +5,6 @@ import LoadingSkeleton from "@/components/widgets/LoadingSkeleton";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
-
 export type StockTypes = {
   id: string;
   name: string;

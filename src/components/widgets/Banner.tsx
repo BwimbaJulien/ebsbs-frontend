@@ -16,7 +16,7 @@ export default function Banner() {
                             Register Your Hospital
                         </a>
 
-                        <a href="#" className="block w-full rounded bg-white px-12 py-3 text-sm font-medium text-rose-600 shadow hover:text-rose-700 focus:outline-none focus:ring active:text-rose-500 sm:w-auto">
+                        <a href="/hauth/signin" className="block w-full rounded bg-white px-12 py-3 text-sm font-medium text-rose-600 shadow hover:text-rose-700 focus:outline-none focus:ring active:text-rose-500 sm:w-auto">
                             Login To Your Hospital
                         </a>
                     </div>

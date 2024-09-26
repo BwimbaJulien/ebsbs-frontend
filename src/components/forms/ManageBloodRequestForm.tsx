@@ -1,19 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-
 import { Button } from "@/components/ui/button"
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input";
 import { useState } from "react"
-import { useNavigate, useSearchParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import LoadingButton from "../widgets/LoadingButton"
 import { toast } from "sonner"
 import { Separator } from "../ui/separator"
@@ -71,24 +63,24 @@ type Props = {
   request?: RequestTypes,
   hospitals: HospitalDataTypes[],
   bloodBanks: BloodBankDataTypes[],
-  queriedHospital: string
+  queriedHospital: string | null
 }
 
-export default function ManageBloodRequestForm({ request, hospitals, bloodBanks }: Props) {
+export default function ManageBloodRequestForm({ request, hospitals, bloodBanks, queriedHospital }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const hospitalId = JSON.parse(localStorage.getItem("hospitalWorker") as string).hospitalId;
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
 
   let otherHospital = "";
-  if (searchParams.get("hospital") !== null || searchParams.get("hospital") !== undefined) {
-    otherHospital = searchParams.get("hospital") as string;
+  if (queriedHospital as string) {
+    otherHospital = queriedHospital as string;
   }
   if (request?.idOfOtherHospital !== null){
     otherHospital = request?.idOfOtherHospital as string;
   }
 
-  console.log(otherHospital);
+  console.log("Queried Hospital");
+  console.log(queriedHospital);
 
   const form = useForm<RequestTypes>({
     resolver: zodResolver(RequestFormSchema),
