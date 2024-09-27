@@ -57,6 +57,8 @@ import RecievedRequestDetails from "./pages/hospital/dashboard/requests/Recieved
 import SentRequestDetails from "./pages/hospital/dashboard/requests/SentRequestDetails";
 import BloodBankRequestsDetails from "./pages/bloodbank/dashboard/requests/RequestDetails";
 import LandingPage from "./pages/LandingPage";
+import Hospitals from "./pages/bloodbank/dashboard/hospital/Hospitals";
+import HospitalDetails from "./pages/bloodbank/dashboard/hospital/HospitalDetails";
 
 type User = {
   firstName: string;
@@ -155,6 +157,8 @@ export default function App() {
             <Route path="users/:userId" element={<BloodBankUpdateUser />} />
             <Route path="stock" element={<BloodBankStock />} />
             <Route path="bags" element={<BloodBags />} />
+            <Route path="hospitals" element={<Hospitals />} />
+            <Route path="hospitals/:hospitalId" element={<HospitalDetails />} />
             <Route path="bags/add" element={<AddNewBloodbag />} />
             <Route path="bags/:bagId" element={<UpdateBloodbag />} />
             <Route path="profile" element={<BloodBankProfile />} />

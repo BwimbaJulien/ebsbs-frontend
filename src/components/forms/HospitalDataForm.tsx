@@ -1,47 +1,44 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
+
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input";
 import { useState } from "react"
 import LoadingButton from "../widgets/LoadingButton"
 import { toast } from "sonner"
-import { updateBloodBank } from "@/api/bloodBank"
+import { updateHospital } from "@/api/hospital"
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
+import { FormSchema } from "./HospitalSettingsForm"
 
-const FormSchema = z.object({
-    id: z.string(),
-    name: z.string().min(3, { message: "Name must be at least 3 characters." }),
-    googleLocation: z.string().min(3, { message: "Google location must be at least 3 characters." }),
-    province: z.string().min(3, { message: "Province must be at least 3 characters." }),
-    town: z.string().min(3, { message: "Town must be at least 3 characters." }),
-    email: z.string().min(3, { message: "Email must be provided" }),
-    phone: z.string().min(3, { message: "Phone must be provided" }),
-    POBox: z.string().min(3, { message: "POBox must be provided" }),
-})
+export interface HospitalDataTypes extends z.infer<typeof FormSchema>{
+    createdAt: Date,
+    updatedAt: Date
+}
 
-export type BloodBankDataTypes = z.infer<typeof FormSchema>
-
-export default function SettingsForm({ bloodBank }: { bloodBank?: BloodBankDataTypes }) {
+export default function HospitalDataForm({ hospital }: { hospital?: HospitalDataTypes }) {
     const [isLoading, setIsLoading] = useState(false);
-    const form = useForm<BloodBankDataTypes>({
+    const form = useForm<HospitalDataTypes>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
-            id: bloodBank?.id || "",
-            name: bloodBank?.name || "",
-            googleLocation: bloodBank?.googleLocation || "",
-            province: bloodBank?.province || "",
-            town: bloodBank?.town || "",
-            email: bloodBank?.email || "",
-            phone: bloodBank?.phone || "",
-            POBox: bloodBank?.POBox || ""
+            id: hospital?.id || "",
+            name: hospital?.name || "",
+            googleLocation: hospital?.googleLocation || "",
+            province: hospital?.province || "",
+            town: hospital?.town || "",
+            hospitalType: hospital?.hospitalType || "Private",
+            specialization: hospital?.specialization || "",
+            accessStatus: hospital?.accessStatus || "Active",
+            createdAt: hospital?.createdAt || new Date(),
+            updatedAt: hospital?.updatedAt || new Date(),
         },
     })
 
-    function onSubmit(data: BloodBankDataTypes) {
+    function onSubmit(data: HospitalDataTypes) {
         setIsLoading(true);
-        if (bloodBank?.id) {
-            updateBloodBank(bloodBank.id, data)
+        if (hospital?.id) {
+            updateHospital(hospital.id, data)
                 .then((response) => {
                     toast.success(response.message);
                     setIsLoading(false);
@@ -115,12 +112,12 @@ export default function SettingsForm({ bloodBank }: { bloodBank?: BloodBankDataT
                     />
                     <FormField
                         control={form.control}
-                        name="phone"
+                        name="specialization"
                         render={({ field }) => (
                             <FormItem className="w-full md:w-[49%]">
-                                <FormLabel>Phone number</FormLabel>
+                                <FormLabel>Specialization</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Your phone number" type="tel" maxLength={10} minLength={10} {...field} />
+                                    <Input placeholder="What is your specialization" type="tel" maxLength={10} minLength={10} {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -130,25 +127,33 @@ export default function SettingsForm({ bloodBank }: { bloodBank?: BloodBankDataT
                 <div className="w-full flex flex-wrap space-y-4 md:space-y-0 items-start justify-between">
                     <FormField
                         control={form.control}
-                        name="email"
+                        name="hospitalType"
                         render={({ field }) => (
-                            <FormItem className="w-full md:w-[49%]">
-                                <FormLabel>Contact Email</FormLabel>
+                            <FormItem className="space-y-3">
+                                <FormLabel>Hospital Type</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Email" type="email" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="POBox"
-                        render={({ field }) => (
-                            <FormItem className="w-full md:w-[49%]">
-                                <FormLabel>Postal Box</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Postal box" type="tel" maxLength={10} minLength={10} {...field} />
+                                    <RadioGroup
+                                        onValueChange={field.onChange}
+                                        defaultValue={field.value}
+                                        className="flex flex-col space-y-1"
+                                    >
+                                        <FormItem className="flex items-center space-x-3 space-y-0">
+                                            <FormControl>
+                                                <RadioGroupItem value="Public" />
+                                            </FormControl>
+                                            <FormLabel className="font-normal">
+                                                Public
+                                            </FormLabel>
+                                        </FormItem>
+                                        <FormItem className="flex items-center space-x-3 space-y-0">
+                                            <FormControl>
+                                                <RadioGroupItem value="Private" />
+                                            </FormControl>
+                                            <FormLabel className="font-normal">
+                                                Private
+                                            </FormLabel>
+                                        </FormItem>
+                                    </RadioGroup>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -159,7 +164,7 @@ export default function SettingsForm({ bloodBank }: { bloodBank?: BloodBankDataT
                 <div className="flex mt-8 justify-between items-center w-full">
                     {isLoading
                         ? <LoadingButton label="Submitting..." btnClass={"w-fit"} btnVariant={"default"} />
-                        : <Button type="submit">{bloodBank?.id ? "Confirm changes" : "Submit"}</Button>
+                        : <Button type="submit">{hospital?.id ? "Confirm changes" : "Submit"}</Button>
                     }
                 </div>
             </form>

@@ -11,7 +11,7 @@ import { toast } from "sonner"
 import { updateHospital } from "@/api/hospital"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 
-const FormSchema = z.object({
+export const FormSchema = z.object({
     id: z.string(),
     name: z.string().min(3, { message: "Name must be at least 3 characters." }),
     googleLocation: z.string().min(3, { message: "Google location must be at least 3 characters." }),
@@ -135,7 +135,7 @@ export default function HospitalSettingsForm({ hospital }: { hospital?: Hospital
                         name="hospitalType"
                         render={({ field }) => (
                             <FormItem className="space-y-3">
-                                <FormLabel>Notify me about...</FormLabel>
+                                <FormLabel>Hospital Type</FormLabel>
                                 <FormControl>
                                     <RadioGroup
                                         onValueChange={field.onChange}

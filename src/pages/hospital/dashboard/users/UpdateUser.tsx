@@ -13,6 +13,7 @@ export default function AddUser() {
   const navigate = useNavigate();
   const [user, setUser] = useState<HospitalUserDataTypes>();
   const [isLoading, setIsLoading] = useState(false);
+  const hospitalId = JSON.parse(localStorage.getItem("hospitalAdmin") as string).hospitalId;
 
   useEffect(() => {
     setIsLoading(true);
@@ -41,13 +42,13 @@ export default function AddUser() {
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link to={`/dashboard/${params.userType}`}>Dashboard</Link>
+              <Link to={`/hdash/${hospitalId}/${params.userType}`}>Dashboard</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link to={`/dashboard/${params.userType}/users`}>Users</Link>
+              <Link to={`/hdash/${hospitalId}/${params.userType}/users`}>Users</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />

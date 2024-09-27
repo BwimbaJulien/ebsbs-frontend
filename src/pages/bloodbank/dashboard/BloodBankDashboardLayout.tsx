@@ -1,18 +1,6 @@
-import {
-  Bell,
-  CircleUser,
-  Menu,
-} from "lucide-react"
-
+import { Bell, CircleUser, Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Link, NavLink, Outlet, useParams } from "react-router-dom"
 import BloodBankDashboardLinks from "@/components/widgets/BloodBankDashboardLinks"
@@ -71,9 +59,7 @@ export default function BloodBankDashboardLayout() {
             </span>
           </div>
           <div className="flex-1">
-            {
-
-            }
+            {}
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               {BloodBankDashboardLinks.map((link, index) => {
                 if (params.userType === 'a' && link.user === "Admin") {

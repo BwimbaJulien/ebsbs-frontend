@@ -53,6 +53,12 @@ const BloodBankDashboardLinks = [
         icon: <Users className="h-4 w-4" />,
     },
     {
+        label: "Hospitals",
+        to: "/dashboard/a/hospitals",
+        user: "Admin",
+        icon: <Users className="h-4 w-4" />,
+    },
+    {
         label: "Settings",
         to: "/dashboard/a/settings",
         user: "Admin",

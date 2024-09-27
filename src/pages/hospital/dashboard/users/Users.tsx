@@ -46,9 +46,7 @@ export default function Users() {
         <h1 className="text-lg font-semibold md:text-2xl">Users</h1>
         <Button type="button" variant={'default'} onClick={() => navigate(`/hdash/${hospitalId}/a/users/new`)}>Add New User</Button>
       </div>
-      <div
-        className="flex flex-1 p-4 border rounded-lg shadow-sm"
-      >
+      <div className="flex flex-1 p-4 border rounded-lg shadow-sm">
         {!isLoading && <HospitalUsersTable users={users} />}
         {isLoading && <LoadingSkeleton />}
       </div>
