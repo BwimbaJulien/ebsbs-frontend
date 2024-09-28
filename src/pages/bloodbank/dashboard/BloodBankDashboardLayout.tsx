@@ -7,6 +7,8 @@ import BloodBankDashboardLinks from "@/components/widgets/BloodBankDashboardLink
 import { ModeToggle } from "@/components/mode-toggle"
 import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
+import { getNotificationsByBloodBankId } from "@/api/notification"
+import NotificationContainer, { Notification } from "@/components/widgets/NotificationContainer"
 
 type UserData = {
   id: string;
@@ -21,12 +23,29 @@ type UserData = {
 
 export default function BloodBankDashboardLayout() {
   const params = useParams();
+  const [notifications, setNotifications] = useState<Notification[]>();
   const [user, setUser] = useState<UserData>();
+
   useEffect(() => {
     if (params.userType === "a") {
       setUser(JSON.parse(localStorage.getItem("bloodbankAdmin") as string))
+      getNotificationsByBloodBankId(JSON.parse(localStorage.getItem("bloodbankAdmin") as string).bloodBankId)
+        .then((response) => {
+          setNotifications(response.notifications)
+        })
+        .catch((error) => {
+          console.error(error);
+        })
     } else {
       setUser(JSON.parse(localStorage.getItem("bloodbankRecorder") as string))
+      getNotificationsByBloodBankId(JSON.parse(localStorage.getItem("bloodbankRecorder") as string).bloodBankId)
+        .then((response) => {
+          setNotifications(response.notifications);
+          console.log(response.notifications);
+        })
+        .catch((error) => {
+          console.error(error);
+        })
     }
   }, [params.userType])
 
@@ -59,7 +78,7 @@ export default function BloodBankDashboardLayout() {
             </span>
           </div>
           <div className="flex-1">
-            {}
+            { }
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               {BloodBankDashboardLinks.map((link, index) => {
                 if (params.userType === 'a' && link.user === "Admin") {
@@ -131,10 +150,59 @@ export default function BloodBankDashboardLayout() {
             </span>
             <div className="flex items-center space-x-4 ml-auto">
               <ModeToggle />
-              <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
-                <Bell className="h-4 w-4" />
-                <span className="sr-only">Toggle notifications</span>
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="secondary" size="icon" className="rounded-full">
+                    <Bell className="h-5 w-5" />
+                    <span className="sr-only">Toggle notitication</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuLabel><span>Notifications</span></DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <div>
+                    {notifications && notifications.length > 0 && notifications.map((notification, index) => (
+                      <DropdownMenuItem className="flex flex-col justify-start items-start gap-2">
+                        <NotificationContainer key={index} notification={notification} />
+                      </DropdownMenuItem>
+                    ))}
+                  </div>
+                  <DropdownMenuItem>
+                    {notifications && notifications.length === 0 && <span>No notifications available</span>}
+                  </DropdownMenuItem>
+                  {/* <DropdownMenuItem>
+                    <Link to={`/dashboard/${params.userType}/notifications`} className="w-fit text-sm underline">
+                      View all notifications
+                    </Link>
+                  </DropdownMenuItem> */}
+                </DropdownMenuContent>
+              </DropdownMenu>
+              {/* <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="secondary" size="icon" className="rounded-full">
+                    <Bell className="h-5 w-5" />
+                    <span className="sr-only">Toggle notitication</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel className="flex flex-col gap-1">
+                    <span>Notifications</span>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    {notifications && notifications.length > 0 && notifications.map((notification, index) => (
+                      <NotificationContainer key={index} notification={notification} />
+                    ))}
+                    {notifications && notifications.length === 0 && <span>No notifications available</span>}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <Link to={`/dashboard/${params.userType}/notifications`} className="w-fit text-sm underline">
+                    View all notifications
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenu> */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="secondary" size="icon" className="rounded-full">
@@ -156,11 +224,11 @@ export default function BloodBankDashboardLayout() {
               </DropdownMenu>
             </div>
           </div>
-        </header>
+        </header >
         <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
           <Outlet />
         </main>
-      </div>
-    </div>
+      </div >
+    </div >
   )
 }
