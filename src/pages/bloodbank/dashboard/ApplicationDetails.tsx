@@ -26,10 +26,14 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import LoadingButton from "@/components/widgets/LoadingButton";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
+import { APIProvider } from "@vis.gl/react-google-maps";
+import CustomMap from "@/components/widgets/CustomMap";
 
 const FormSchema = z.object({
     accessStatus: z.enum(["Active", "Inactive"]),
 })
+
+const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_APP_GOOGLE_API_KEY;
 
 interface HospitalInfoTypes extends z.infer<typeof FormSchema> {
     name: string;
@@ -167,9 +171,7 @@ export default function ApplicationDetails() {
                 </Button>
             </div>
             <div className="flex w-full gap-4 flex-wrap justify-between items-start flex-1 p-4 border rounded-lg shadow-sm">
-                <div
-                    className="flex w-full flex-wrap lg:w-[60%] justify-between items-start p-4 border rounded-lg shadow-sm"
-                >
+                <div className="flex w-full flex-wrap lg:w-[60%] justify-between items-start p-4 border rounded-lg shadow-sm">
                     <h2 className="text-lg font-semibold w-full pb-4">Hospital: <span className="text-primary">{application?.name}</span></h2>
                     <Separator />
                     <table className="w-full">
@@ -272,6 +274,9 @@ export default function ApplicationDetails() {
                     </div>
                 </div>
             </div>
+            <APIProvider apiKey={GOOGLE_MAPS_API_KEY}>
+                <CustomMap coordinates={application.googleLocation} />
+            </APIProvider>
         </>
     )
 }
