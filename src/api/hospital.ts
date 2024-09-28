@@ -4,7 +4,7 @@ import { SearchHospitalsTypes } from "@/components/forms/SearchHospitalsDrawer";
 
 const API_BASE_URL = import.meta.env.VITE_APP_BASE_URL;
 
-type UpdateHospitalTypes = {
+export type UpdateHospitalTypes = {
     name: string;
     googleLocation: string;
     province: string;

@@ -1,5 +1,5 @@
-import { getHospitalById } from "@/api/hospital";
-import HospitalDataForm, { HospitalDataTypes } from "@/components/forms/HospitalDataForm";
+import { getHospitalById, UpdateHospitalTypes } from "@/api/hospital";
+import HospitalDataForm from "@/components/forms/HospitalDataForm";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import LoadingSkeleton from "@/components/widgets/LoadingSkeleton";
 import { useEffect, useState } from "react";
@@ -8,13 +8,13 @@ import { Link, useParams } from "react-router-dom";
 export default function HospitalDetails() {
     const params = useParams();
     const [isLoading, setIsLoading] = useState(false);
-    const [hospital, setHospital] = useState<HospitalDataTypes[]>([])
+    const [hospital, setHospital] = useState<UpdateHospitalTypes | null>(null)
 
     useEffect(() => {
         setIsLoading(true);
         getHospitalById(params.hospitalId as string)
             .then((response) => {
-                setHospital(response.hospitals);
+                setHospital(response.hospital);
                 setIsLoading(false);
             })
             .catch((error) => {
@@ -45,10 +45,10 @@ export default function HospitalDetails() {
                 </BreadcrumbList>
             </Breadcrumb>
             <div className="flex items-center">
-                <h1 className="text-lg font-semibold md:text-2xl">Hospitals Details</h1>
+                <h1 className="text-lg font-semibold md:text-2xl">Hospital Details</h1>
             </div>
             <div className="flex flex-1 p-4 border rounded-lg shadow-sm">
-                {!isLoading && <HospitalDataForm hospital={hospital} />}
+                {!isLoading && hospital && <HospitalDataForm id={params.hospitalId as string} hospital={hospital} />}
                 {isLoading && <LoadingSkeleton />}
             </div>
         </>

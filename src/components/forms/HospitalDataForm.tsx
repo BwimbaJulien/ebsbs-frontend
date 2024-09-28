@@ -1,173 +1,105 @@
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-
 import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input";
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import LoadingButton from "../widgets/LoadingButton"
 import { toast } from "sonner"
-import { updateHospital } from "@/api/hospital"
-import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
-import { FormSchema } from "./HospitalSettingsForm"
+import { updateHospital, UpdateHospitalTypes } from "@/api/hospital"
+import { Switch } from "../ui/switch";
+import { Label } from "../ui/label"
+import { APIProvider } from "@vis.gl/react-google-maps";
+import CustomMap from "../widgets/CustomMap";
+import { Separator } from "../ui/separator"
 
-export interface HospitalDataTypes extends z.infer<typeof FormSchema>{
-    createdAt: Date,
-    updatedAt: Date
+const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_APP_GOOGLE_API_KEY;
+
+type Props = {
+    id: string,
+    hospital: UpdateHospitalTypes
 }
 
-export default function HospitalDataForm({ hospital }: { hospital?: HospitalDataTypes }) {
+export default function HospitalDataForm({ id, hospital }: Props) {
     const [isLoading, setIsLoading] = useState(false);
-    const form = useForm<HospitalDataTypes>({
-        resolver: zodResolver(FormSchema),
-        defaultValues: {
-            id: hospital?.id || "",
-            name: hospital?.name || "",
-            googleLocation: hospital?.googleLocation || "",
-            province: hospital?.province || "",
-            town: hospital?.town || "",
-            hospitalType: hospital?.hospitalType || "Private",
-            specialization: hospital?.specialization || "",
-            accessStatus: hospital?.accessStatus || "Active",
-            createdAt: hospital?.createdAt || new Date(),
-            updatedAt: hospital?.updatedAt || new Date(),
-        },
-    })
+    const [data, setData] = useState<UpdateHospitalTypes>();
+    const [access, setAccess] = useState(false);
 
-    function onSubmit(data: HospitalDataTypes) {
-        setIsLoading(true);
-        if (hospital?.id) {
-            updateHospital(hospital.id, data)
-                .then((response) => {
-                    toast.success(response.message);
-                    setIsLoading(false);
-                    window.location.reload();
-                })
-                .catch((error) => {
-                    setIsLoading(false);
-                    toast.error(error.message);
-                    console.log(error);
-                })
+    useEffect(() => {
+        setData(hospital);
+        if (hospital.accessStatus === "Active") {
+            setAccess(true);
+        } else {
+            setAccess(false);
         }
+    }, [hospital])
+
+    function handleUpdate(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+
+        const updatedData: UpdateHospitalTypes = {
+            ...data!,
+            accessStatus: access ? "Active" : "Inactive"
+        };
+
+        setData(updatedData);
+
+        setIsLoading(true);
+        updateHospital(id, updatedData)
+            .then((response) => {
+                toast.success(response.message);
+                setIsLoading(false);
+                window.location.reload();
+            })
+            .catch((error) => {
+                setIsLoading(false);
+                if (error instanceof Error && error.name === "NetworkError") {
+                    toast.error("Network error. Please check your connection.");
+                } else if (error instanceof Error && error.name === "ValidationError") {
+                    toast.error("Validation error. Please check your input.");
+                } else {
+                    toast.error("An unexpected error occurred. Please try again.");
+                }
+                console.error(error);
+            });
     }
 
     return (
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
-                <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                        <FormItem className="w-full">
-                            <FormLabel>Blood Bank Name</FormLabel>
-                            <FormControl>
-                                <Input placeholder="Name" type="text" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <div className="w-full flex flex-wrap space-y-4 items-start md:space-y-0 justify-between">
-                    <FormField
-                        control={form.control}
-                        name="googleLocation"
-                        render={({ field }) => (
-                            <FormItem className="w-full md:w-[49%]">
-                                <FormLabel>Google Maps Location</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Google Location" type="text" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="province"
-                        render={({ field }) => (
-                            <FormItem className="w-full md:w-[49%]">
-                                <FormLabel>Province</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Province" type="text" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+        <form onSubmit={handleUpdate} className="w-full space-y-4">
+            <div className="flex flex-col gap-1">
+                <Label className="font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Name</Label>
+                <span>{data?.name}</span>
+            </div>
+            <Separator />
+            <div className="flex flex-col gap-2">
+                <Label className="font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Address</Label>
+                <div className="flex flex-col">
+                    <span>Province: {data?.province}</span>
+                    <span>Town: {data?.town}</span>
                 </div>
-                <div className="w-full flex flex-wrap space-y-4 md:space-y-0 items-start justify-between">
-                    <FormField
-                        control={form.control}
-                        name="town"
-                        render={({ field }) => (
-                            <FormItem className="w-full md:w-[49%]">
-                                <FormLabel>Town</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="town" type="text" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="specialization"
-                        render={({ field }) => (
-                            <FormItem className="w-full md:w-[49%]">
-                                <FormLabel>Specialization</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="What is your specialization" type="tel" maxLength={10} minLength={10} {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+            </div>
+            <Separator />
+            <div className="flex flex-col gap-2">
+                <Label className="font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">More info</Label>
+                <div className="flex flex-col">
+                    <span>Type: {data?.hospitalType}</span>
+                    <span>Specialization: {data?.specialization}</span>
                 </div>
-                <div className="w-full flex flex-wrap space-y-4 md:space-y-0 items-start justify-between">
-                    <FormField
-                        control={form.control}
-                        name="hospitalType"
-                        render={({ field }) => (
-                            <FormItem className="space-y-3">
-                                <FormLabel>Hospital Type</FormLabel>
-                                <FormControl>
-                                    <RadioGroup
-                                        onValueChange={field.onChange}
-                                        defaultValue={field.value}
-                                        className="flex flex-col space-y-1"
-                                    >
-                                        <FormItem className="flex items-center space-x-3 space-y-0">
-                                            <FormControl>
-                                                <RadioGroupItem value="Public" />
-                                            </FormControl>
-                                            <FormLabel className="font-normal">
-                                                Public
-                                            </FormLabel>
-                                        </FormItem>
-                                        <FormItem className="flex items-center space-x-3 space-y-0">
-                                            <FormControl>
-                                                <RadioGroupItem value="Private" />
-                                            </FormControl>
-                                            <FormLabel className="font-normal">
-                                                Private
-                                            </FormLabel>
-                                        </FormItem>
-                                    </RadioGroup>
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+            </div>
+            <Separator />
+            <div className="flex justify-between items-center rounded-lg p-3 border">
+                <div className="flex flex-col gap-1">
+                    <Label className="font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Access Status</Label>
+                    <span className="text-sm text-muted-foreground">Activate or disactivate hospital's access to the system</span>
                 </div>
+                <Switch id="airplane-mode" checked={access} onCheckedChange={(value) => setAccess(value)} />
+            </div>
 
-                <div className="flex mt-8 justify-between items-center w-full">
-                    {isLoading
-                        ? <LoadingButton label="Submitting..." btnClass={"w-fit"} btnVariant={"default"} />
-                        : <Button type="submit">{hospital?.id ? "Confirm changes" : "Submit"}</Button>
-                    }
-                </div>
-            </form>
-        </Form>
+            <div className="flex mt-8 justify-end items-center w-full">
+                {isLoading
+                    ? <LoadingButton label="Submitting..." btnClass={"w-fit"} btnVariant={"default"} />
+                    : <Button type="submit">Confirm changes</Button>
+                }
+            </div>
+            <APIProvider apiKey={GOOGLE_MAPS_API_KEY}>
+                <CustomMap coordinates={hospital.googleLocation} />
+            </APIProvider>
+        </form>
     )
 }

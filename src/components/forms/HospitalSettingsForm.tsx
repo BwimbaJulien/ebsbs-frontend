@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input";
@@ -20,6 +19,8 @@ export const FormSchema = z.object({
     specialization: z.string().min(3, { message: "Specialization must be at least 3 characters." }),
     hospitalType: z.enum(["Public", "Private"]),
     accessStatus: z.enum(["Active", "Inactive"]),
+    createdAt: z.date(),
+    updatedAt: z.date(),
 })
 
 export type HospitalDataTypes = z.infer<typeof FormSchema>
@@ -37,6 +38,8 @@ export default function HospitalSettingsForm({ hospital }: { hospital?: Hospital
             hospitalType: hospital?.hospitalType || "Private",
             specialization: hospital?.specialization || "",
             accessStatus: hospital?.accessStatus || "Active",
+            createdAt: hospital?.createdAt || new Date(),
+            updatedAt: hospital?.updatedAt || new Date(),
         },
     })
 
