@@ -6,6 +6,7 @@ import { getBloodBankRecorderOverviewData } from "@/api/bloodBank";
 import LoadingSkeleton from "./LoadingSkeleton";
 import { RequestTypes } from "../forms/ManageBloodRequestForm";
 import { BloodBagTypes } from "../forms/ManageBloodBagForm";
+import RequestsLineChart from "./RequestsLineChart";
 
 type FilterRangeTypes = {
   startDate: string | null;
@@ -102,7 +103,7 @@ export default function BloodBankRecorderOverviewContent() {
           </CardContent>
         </Card>
       </div>
-      
+      <RequestsLineChart />
     </div>
   )
 }
