@@ -12,7 +12,7 @@ export default function BloodBankAdminOverviewContent() {
   const [isLoading, setIsLoading] = useState(false);
   const [users, setUsers] = useState<UserDataTypes[]>();
   const [applications, setApplications] = useState<ApplicationsTypes[]>();
-  const [notifications, setNotifications] = useState();
+  const [notifications, setNotifications] = useState<Notification[]>();
   const [hospitals, setHospitals] = useState<HospitalDataTypes[]>();
   const bloodBankId = JSON.parse(localStorage.getItem("bloodbankAdmin") as string).bloodBankId;
 
@@ -70,10 +70,10 @@ export default function BloodBankAdminOverviewContent() {
         <Card>
           <CardHeader className="pb-2">
             <CardDescription>Notifications</CardDescription>
-            <CardTitle className="text-4xl">{0}</CardTitle>
+            <CardTitle className="text-4xl">{notifications?.length || 0}</CardTitle>
           </CardHeader>
           <CardContent>
-            <Link className="text-sm text-primary hover:underline" to={'/dashboard/a/notifications'}>View More</Link>
+            {/* <Link className="text-sm text-primary hover:underline" to={'/dashboard/a/notifications'}>View More</Link> */}
           </CardContent>
         </Card>
       </div>

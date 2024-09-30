@@ -31,7 +31,10 @@ export default function BloodBankDashboardLayout() {
       setUser(JSON.parse(localStorage.getItem("bloodbankAdmin") as string))
       getNotificationsByBloodBankId(JSON.parse(localStorage.getItem("bloodbankAdmin") as string).bloodBankId)
         .then((response) => {
-          setNotifications(response.notifications)
+          const inDescendingOrder = response.notifications.sort((a:Notification, b:Notification) => {
+            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime() ;
+          });
+          setNotifications(inDescendingOrder)
         })
         .catch((error) => {
           console.error(error);

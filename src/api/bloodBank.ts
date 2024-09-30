@@ -88,3 +88,37 @@ export const getAdminOverviewData = async (bloodBankId: string) => {
     }
     return responseData;
 }
+
+type FilterTypes = {
+    bloodBankId: string;
+    month: number | null;
+    year: number | null;
+    startDate: string | null;
+    endDate: string | null;
+}
+
+export const getBloodBankRecorderOverviewData = async ({ bloodBankId, month, year, startDate, endDate }: FilterTypes) => {
+    let endPoint = "";
+    if (month && year) {
+        endPoint = `${API_BASE_URL}/bloodbanks/recorderOverviewData?id=${bloodBankId}&month=${month}&year=${year}`;
+    } else if (startDate && endDate) {
+        endPoint = `${API_BASE_URL}/bloodbanks/recorderOverviewData?id=${bloodBankId}&startDate=${startDate}&endDate=${endDate}`;
+    } else if (!startDate && !endDate && !month && !year) {
+        endPoint = `${API_BASE_URL}/bloodbanks/recorderOverviewData?id=${bloodBankId}`;
+    }
+    console.log(endPoint);
+    const response = await fetch(endPoint);
+    const responseData = await response.json();
+    if (!response.ok) {
+        if (responseData.errors) {
+            throw new Error(responseData.errors);
+        }
+        if (responseData.message) {
+            throw new Error(responseData.message);
+        }
+        if (responseData.error) {
+            throw new Error(responseData.error);
+        }
+    }
+    return responseData;
+}
