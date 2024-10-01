@@ -17,49 +17,45 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart"
+import { RequestTypes } from "../forms/ManageBloodRequestForm"
+import { getMonthName } from "@/lib/months"
 
 export const description = "A line chart with a label"
 
-const chartData = [
-    { month: "January", desktop: 186, mobile: 80 },
-    { month: "February", desktop: 200, mobile: 200 },
-    { month: "March", desktop: 237, mobile: 120 },
-    { month: "April", desktop: 173, mobile: 190 },
-    { month: "May", desktop: 209, mobile: 130 },
-    { month: "June", desktop: 214, mobile: 140 },
-]
-
 const chartConfig = {
     desktop: {
-        label: "Desktop",
+        label: "Requests",
         color: "hsl(var(--chart-1))",
-    },
-    mobile: {
-        label: "Mobile",
-        color: "hsl(var(--chart-2))",
-    },
+    }
 } satisfies ChartConfig
 
-export default function RequestsLineChart() {
+type Props = {
+    filterYear: number,
+    filterMonth: number,
+    data: RequestTypes[]
+}
+
+export default function RequestsLineChart({ filterYear, filterMonth, data }: Props) {
+    console.log(data);
 
     return (
-        <Card className="h-fit">
+        <Card className="">
             <CardHeader>
                 <CardTitle>Blood Requests</CardTitle>
-                <CardDescription>January - June 2024</CardDescription>
+                <CardDescription>{filterYear} - From January to {getMonthName(filterMonth)}</CardDescription>
             </CardHeader>
             <CardContent>
-                <ChartContainer config={chartConfig}>
+                <ChartContainer className="h-60 w-full" config={chartConfig}>
                     <LineChart
                         accessibilityLayer
-                        data={chartData}
+                        data={data}
                         margin={{
                             top: 20,
                             left: 12,
                             right: 12,
                         }}
                     >
-                        <CartesianGrid vertical={false} />
+                        <CartesianGrid vertical={true} />
                         <XAxis
                             dataKey="month"
                             tickLine={false}
@@ -72,8 +68,9 @@ export default function RequestsLineChart() {
                             content={<ChartTooltipContent indicator="line" />}
                         />
                         <Line
-                            dataKey="desktop"
-                            type="natural"
+                            dataKey="request"
+                            type="bump"
+                            // type="linear"
                             stroke="var(--color-desktop)"
                             strokeWidth={2}
                             dot={{
@@ -95,10 +92,10 @@ export default function RequestsLineChart() {
             </CardContent>
             <CardFooter className="flex-col items-start gap-2 text-sm">
                 <div className="flex gap-2 font-medium leading-none">
-                    Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+                    Blood Requests in {filterYear} <TrendingUp className="h-4 w-4" />
                 </div>
                 <div className="leading-none text-muted-foreground">
-                    Showing total visitors for the last 6 months
+                    Showing total blood requests in the last 12 months
                 </div>
             </CardFooter>
         </Card>

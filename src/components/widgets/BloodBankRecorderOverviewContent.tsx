@@ -15,18 +15,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { CalendarIcon } from "@radix-ui/react-icons"
-import { addDays, format } from "date-fns"
-import { DateRange } from "react-day-picker"
+// import { CalendarIcon } from "@radix-ui/react-icons"
+// import { addDays } from "date-fns"
+// import { DateRange } from "react-day-picker"
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
+// import { cn } from "@/lib/utils"
+// import { Button } from "@/components/ui/button"
+// import { Calendar } from "@/components/ui/calendar"
+// import {
+//   Popover,
+//   PopoverContent,
+//   PopoverTrigger,
+// } from "@/components/ui/popover"
 
 
 type FilterRangeTypes = {
@@ -40,12 +40,10 @@ export default function BloodBankRecorderOverviewContent() {
   const [pendingRequests, setPendingRequests] = useState<RequestTypes[]>();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [bloodBags, setBloodBags] = useState<BloodBagTypes[]>([]);
-  const [filterYear, setFilterYear] = useState<number | null>(new Date().getFullYear());
-  const [date, setDate] = useState<DateRange | undefined>({
-    from: new Date(2022, 0, 20),
-    to: addDays(new Date(2022, 0, 20), 20),
-  })
-  const [filterMonth, setFilterMonth] = useState<number | null>(new Date().getMonth());
+  const [chartData, setChartData] = useState([]);
+  const [filterYear, setFilterYear] = useState<number>(new Date().getFullYear());
+  const [filterMonth, setFilterMonth] = useState<number>(new Date().getMonth());
+
   const [filterRange, setFilterRange] = useState<FilterRangeTypes>({
     startDate: "",
     endDate: "",
@@ -59,14 +57,6 @@ export default function BloodBankRecorderOverviewContent() {
   const handleYearChange = (year: number) => {
     console.log(year);
     setFilterYear(year);
-  };
-
-  const handleDateChange = (range: DateRange) => {
-    setDate(range);
-    setFilterRange({
-      startDate: format(range.from, "yyyy-MM-dd"),
-      endDate: format(range.to, "yyyy-MM-dd"),
-    });
   };
 
   const bloodBankId = JSON.parse(localStorage.getItem("bloodbankRecorder") as string).bloodBankId;
@@ -86,12 +76,9 @@ export default function BloodBankRecorderOverviewContent() {
         setPendingRequests(response.requests.filter((request: RequestTypes) => request.status === "Pending"));
         setBloodBags(response.bloodBags);
         setNotifications(response.notifications);
-        // setFilterRange({
-        //   startDate: response.filters.dateRangeStart,
-        //   endDate: response.filter.dateRangeEnd,
-        // });
         setFilterYear(response.filters.year);
         setFilterMonth(response.filters.month);
+        setChartData(response.chartData);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -133,59 +120,23 @@ export default function BloodBankRecorderOverviewContent() {
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Months</SelectLabel>
-                  <SelectItem value="0">January</SelectItem>
-                  <SelectItem value="1">February</SelectItem>
-                  <SelectItem value="2">March</SelectItem>
-                  <SelectItem value="3">April</SelectItem>
-                  <SelectItem value="4">May</SelectItem>
-                  <SelectItem value="5">June</SelectItem>
-                  <SelectItem value="6">July</SelectItem>
-                  <SelectItem value="7">August</SelectItem>
-                  <SelectItem value="8">September</SelectItem>
-                  <SelectItem value="9">October</SelectItem>
-                  <SelectItem value="10">November</SelectItem>
-                  <SelectItem value="11">December</SelectItem>
+                  <SelectItem value="1">January</SelectItem>
+                  <SelectItem value="2">February</SelectItem>
+                  <SelectItem value="3">March</SelectItem>
+                  <SelectItem value="4">April</SelectItem>
+                  <SelectItem value="5">May</SelectItem>
+                  <SelectItem value="6">June</SelectItem>
+                  <SelectItem value="7">July</SelectItem>
+                  <SelectItem value="8">August</SelectItem>
+                  <SelectItem value="9">September</SelectItem>
+                  <SelectItem value="10">October</SelectItem>
+                  <SelectItem value="11">November</SelectItem>
+                  <SelectItem value="12">December</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
           </div>
           <div className="flex items-end gap-2">
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  id="date"
-                  variant={"outline"}
-                  className={cn(
-                    "w-[300px] justify-start text-left font-normal",
-                    !date && "text-muted-foreground"
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {date?.from ? (
-                    date.to ? (
-                      <>
-                        {format(date.from, "LLL dd, y")} -{" "}
-                        {format(date.to, "LLL dd, y")}
-                      </>
-                    ) : (
-                      format(date.from, "LLL dd, y")
-                    )
-                  ) : (
-                    <span>Pick a date</span>
-                  )}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  initialFocus
-                  mode="range"
-                  defaultMonth={date?.from}
-                  selected={date}
-                  onSelect={setDate}
-                  numberOfMonths={2}
-                />
-              </PopoverContent>
-            </Popover>
           </div>
         </div>
         <div className="flex justify-end items-center gap-2">
@@ -238,11 +189,10 @@ export default function BloodBankRecorderOverviewContent() {
             <CardTitle className="text-4xl">{notifications?.length || 0}</CardTitle>
           </CardHeader>
           <CardContent>
-            {/* <Link className="text-sm text-primary hover:underline" to={'/dashboard/a/notifications'}>View More</Link> */}
           </CardContent>
         </Card>
       </div>
-      <RequestsLineChart />
+      <RequestsLineChart data={chartData} filterMonth={filterMonth} filterYear={filterYear} />
     </div>
   )
 }
