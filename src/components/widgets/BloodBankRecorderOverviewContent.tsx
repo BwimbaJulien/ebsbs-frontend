@@ -148,7 +148,7 @@ export default function BloodBankRecorderOverviewContent() {
             <SelectContent>
               <SelectGroup>
                 <SelectItem value="stock">Stock</SelectItem>
-                <SelectItem value="bags">Blood Bags</SelectItem>
+                <SelectItem value="requests">Requests</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>

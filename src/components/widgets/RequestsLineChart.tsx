@@ -6,7 +6,7 @@ import { CartesianGrid, LabelList, Line, LineChart, XAxis } from "recharts"
 import {
     Card,
     CardContent,
-    CardDescription,
+    // CardDescription,
     CardFooter,
     CardHeader,
     CardTitle,
@@ -17,7 +17,6 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart"
-import { RequestTypes } from "../forms/ManageBloodRequestForm"
 import { getMonthName } from "@/lib/months"
 
 export const description = "A line chart with a label"
@@ -32,7 +31,7 @@ const chartConfig = {
 type Props = {
     filterYear: number,
     filterMonth: number,
-    data: RequestTypes[]
+    data: { month: string; request: number; }[] | { day: string; request: number; }[]
 }
 
 export default function RequestsLineChart({ filterYear, filterMonth, data }: Props) {
@@ -42,7 +41,7 @@ export default function RequestsLineChart({ filterYear, filterMonth, data }: Pro
         <Card className="">
             <CardHeader>
                 <CardTitle>Blood Requests</CardTitle>
-                <CardDescription>{filterYear} - From January to {getMonthName(filterMonth)}</CardDescription>
+                {/* <CardDescription>{filterYear} -s From January to {getMonthName(filterMonth)}</CardDescription> */}
             </CardHeader>
             <CardContent>
                 <ChartContainer className="h-60 w-full" config={chartConfig}>
@@ -92,11 +91,11 @@ export default function RequestsLineChart({ filterYear, filterMonth, data }: Pro
             </CardContent>
             <CardFooter className="flex-col items-start gap-2 text-sm">
                 <div className="flex gap-2 font-medium leading-none">
-                    Blood Requests in {filterYear} <TrendingUp className="h-4 w-4" />
+                    Blood Requests in {getMonthName(filterMonth)} - {filterYear}<TrendingUp className="h-4 w-4" />
                 </div>
-                <div className="leading-none text-muted-foreground">
+                {/* <div className="leading-none text-muted-foreground">
                     Showing total blood requests in the last 12 months
-                </div>
+                </div> */}
             </CardFooter>
         </Card>
     )
