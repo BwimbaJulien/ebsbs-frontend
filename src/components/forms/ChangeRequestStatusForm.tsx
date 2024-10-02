@@ -108,7 +108,6 @@ export default function ChangeRequestStatusForm({ request, setRequest }: Props) 
                                     <SelectItem value="Pending">Pending</SelectItem>
                                     <SelectItem value="Recieved/In Process">Received/In Process</SelectItem>
                                     <SelectItem value="Delivered">Delivered</SelectItem>
-                                    <SelectItem value="Reception Confirmed">Confirm Delivery Reception</SelectItem>
                                 </SelectContent>
                             </Select>
                             <FormDescription>

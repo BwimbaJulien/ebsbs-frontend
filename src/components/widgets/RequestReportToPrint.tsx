@@ -25,11 +25,10 @@ export const RequestReportToPrint = forwardRef<HTMLDivElement, Props>(({ allRequ
                         <h2>Generated on: {new Date().toDateString()}</h2>
                     </div>
                     <div className=''>
-                        <div className='flex gap-2'>
+                        <div className='flex flex-col gap-2 items-center'>
                             <img src="https://cpts-nk.org/wp-content/uploads/2024/06/CPTS-NK-logo.png" className='w-[100px]' alt="C.P.T.S Logo" />
                             <div className='flex flex-col'>
-                                <span className='font-bold text-lg'>C.P.T.S</span>
-                                <span className='text-gray-500'>Banque de Sang</span>
+                                <span className='font-bold text-base'>Centre Provinciale de Transfusion Sanguine</span>
                             </div>
                         </div>
                     </div>
@@ -37,11 +36,11 @@ export const RequestReportToPrint = forwardRef<HTMLDivElement, Props>(({ allRequ
 
                 {/* Report content */}
                 <div className='flex flex-col w-full'>
-                    <div className=''>
-                        <span>Total Requests: {allRequests.length}</span>
-                        <span>Pending Requests: {pendingRequests.length}</span>
+                    <div className='flex flex-col my-4'>
+                        <span>Total Requests: <strong>{allRequests.length}</strong></span>
+                        <span>Pending Requests: <strong>{pendingRequests.length}</strong></span>
                     </div>
-                    <h2>Received Requests</h2>
+                    <h2 className='text-lg font-bold mb-2'>Received Requests</h2>
                     <table className=''>
                         <thead className='bg-gray-400'>
                             <tr>
@@ -61,7 +60,7 @@ export const RequestReportToPrint = forwardRef<HTMLDivElement, Props>(({ allRequ
                         </tbody>
                     </table>
 
-                    <h2 className=''>Pending Requests</h2>
+                    <h2 className='text-lg font-bold mb-2 mt-4'>Pending Requests</h2>
                     <table className=''>
                         <thead className='bg-gray-400'>
                             <tr>

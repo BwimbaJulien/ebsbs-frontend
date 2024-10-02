@@ -101,7 +101,7 @@ export default function SignIn() {
                     </span>
                   </FormLabel>
                   <FormControl>
-                    <Input type={isPasswordVisible ? "text" : "password"} placeholder="Create password" {...field} />
+                    <Input type={isPasswordVisible ? "text" : "password"} placeholder="Your password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

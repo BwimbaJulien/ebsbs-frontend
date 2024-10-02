@@ -54,7 +54,7 @@ export default function HospitalDashboardLayout() {
             </Link>
             <div className="flex flex-col justify-start">
               <span className="">{user?.hospitalName || "Hospital"}</span>
-              <span className="font-bold underline text-sm">{params.userType === "a" ? "Hospital Director" : "Lab Technitian"}</span>
+              <span className="font-bold underline text-sm">{params.userType === "a" ? "Hospital Director" : "Pharmacist"}</span>
             </div>
           </div>
           <div className="flex-1">
@@ -125,7 +125,7 @@ export default function HospitalDashboardLayout() {
           </Sheet>
           <div className="flex gap-4 justify-between w-full">
             <span className="mr-auto block md:hidden font-bold underline">
-              {params.userType === "a" ? "Hospital Director" : "Lab Technitian"}
+              {params.userType === "a" ? "Hospital Director" : "Pharmacist"}
             </span>
             {params.userType === "r" && <SearchHospitalsDrawer />}
             <div className="flex items-center space-x-4 ml-auto">

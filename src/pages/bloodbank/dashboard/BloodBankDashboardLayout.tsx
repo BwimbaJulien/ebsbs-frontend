@@ -31,8 +31,8 @@ export default function BloodBankDashboardLayout() {
       setUser(JSON.parse(localStorage.getItem("bloodbankAdmin") as string))
       getNotificationsByBloodBankId(JSON.parse(localStorage.getItem("bloodbankAdmin") as string).bloodBankId)
         .then((response) => {
-          const inDescendingOrder = response.notifications.sort((a:Notification, b:Notification) => {
-            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime() ;
+          const inDescendingOrder = response.notifications.sort((a: Notification, b: Notification) => {
+            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
           });
           setNotifications(inDescendingOrder)
         })
@@ -69,16 +69,12 @@ export default function BloodBankDashboardLayout() {
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link to={`/dashboard/${params.userType}`} className="flex items-center gap-2 font-semibold">
-              <div className="flex items-center p-4">
-                <img src="https://cpts-nk.org/wp-content/uploads/2024/06/CPTS-NK-logo.png" alt="logo" className="h-8 w-auto bg-white sm:h-10" />
-              </div>
-              <span className="">
-                C.P.T.S
-              </span>
+              <img src="https://cpts-nk.org/wp-content/uploads/2024/06/CPTS-NK-logo.png" alt="logo" className="h-8 w-auto bg-white sm:h-10" />
             </Link>
-            <span className="ml-auto font-bold underline">
-              {params.userType === "a" ? "Admin" : "Recorder"}
-            </span>
+            <div className="flex flex-col justify-start ml-2">
+              <span className="">C.P.T.S</span>
+              <span className="ml-auto font-bold underline">{params.userType === "a" ? "Admin" : "Lab Technitian"}</span>
+            </div>
           </div>
           <div className="flex-1">
             { }
@@ -149,7 +145,7 @@ export default function BloodBankDashboardLayout() {
           </Sheet>
           <div className="flex gap-4 justify-between w-full">
             <span className="mr-auto block md:hidden font-bold underline">
-              {params.userType === "a" ? "Admin" : "Recorder"}
+              {params.userType === "a" ? "Admin" : "Lab Technitian"}
             </span>
             <div className="flex items-center space-x-4 ml-auto">
               <ModeToggle />
