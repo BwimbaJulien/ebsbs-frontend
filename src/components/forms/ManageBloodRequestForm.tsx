@@ -4,8 +4,8 @@ import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input";
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import LoadingButton from "../widgets/LoadingButton"
 import { toast } from "sonner"
 import { Separator } from "../ui/separator"
@@ -18,7 +18,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 export const RequestFormSchema = z.object({
   id: z.string().optional(),
   hospitalId: z.string(),
+  hospitalName: z.string().optional(),
+  hospital: z.object({ id: z.string(), name: z.string() }).optional(),
+  recipientName: z.string().optional(),
+  bloodBank: z.object({ id: z.string(), name: z.string() }).optional(),
+  otherHospital: z.object({ id: z.string(), name: z.string() }).optional(),
   idOfOtherHospital: z.string().optional(),
+  recipientType: z.enum(["Hospital", "Blood Bank"]).optional(),
   status: z.string().default('Pending'),
   rhP_O: z.string().default("0"),
   rhP_A: z.string().default("0"),
@@ -63,24 +69,13 @@ type Props = {
   request?: RequestTypes,
   hospitals: HospitalDataTypes[],
   bloodBanks: BloodBankDataTypes[],
-  queriedHospital: string | null
 }
 
-export default function ManageBloodRequestForm({ request, hospitals, bloodBanks, queriedHospital }: Props) {
+export default function ManageBloodRequestForm({ request, hospitals, bloodBanks }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const hospitalId = JSON.parse(localStorage.getItem("hospitalWorker") as string).hospitalId;
   const navigate = useNavigate();
-
-  let otherHospital = "";
-  if (queriedHospital as string) {
-    otherHospital = queriedHospital as string;
-  }
-  if (request?.idOfOtherHospital !== null){
-    otherHospital = request?.idOfOtherHospital as string;
-  }
-
-  console.log("Queried Hospital");
-  console.log(queriedHospital);
+  const [searchParams] = useSearchParams();
 
   const form = useForm<RequestTypes>({
     resolver: zodResolver(RequestFormSchema),
@@ -88,7 +83,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks,
       id: request?.id || "",
       hospitalId: request?.hospitalId || hospitalId,
       bloodBankId: request?.bloodBankId !== null ? request?.bloodBankId : "",
-      idOfOtherHospital: otherHospital || "",
+      idOfOtherHospital: request?.idOfOtherHospital !== null && request?.idOfOtherHospital || searchParams.get("hospital") || undefined,
       status: request?.status.toString() || 'Pending',
       rhP_O: request?.rhP_O.toString() || "0",
       rhP_A: request?.rhP_A.toString() || "0",
@@ -125,9 +120,13 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks,
     },
   })
 
+  useEffect(() => {
+    console.log(searchParams.get("hospital"));
+    // console.log(form.getValues())
+  }, [searchParams])
+
   function onSubmit(data: RequestTypes) {
     setIsLoading(true);
-
     if (request?.id) {
       updateRequest(request.id, data)
         .then((response) => {
@@ -166,7 +165,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks,
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
         <span>Choose Request Recipient</span>
-        <Tabs defaultValue="account" className="w-[400px]">
+        <Tabs defaultValue={searchParams.get("hospital") ? "otherHospital" : "bloodBank"} className="w-[400px]">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="bloodBank">Blood Bank</TabsTrigger>
             <TabsTrigger value="otherHospital">Other Hospital</TabsTrigger>

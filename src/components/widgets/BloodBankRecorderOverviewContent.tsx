@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Link } from "react-router-dom"
 import { getBloodBankRecorderOverviewData } from "@/api/bloodBank";
 import LoadingSkeleton from "./LoadingSkeleton";
@@ -15,19 +15,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-// import { CalendarIcon } from "@radix-ui/react-icons"
-// import { addDays } from "date-fns"
-// import { DateRange } from "react-day-picker"
-
-// import { cn } from "@/lib/utils"
-// import { Button } from "@/components/ui/button"
-// import { Calendar } from "@/components/ui/calendar"
-// import {
-//   Popover,
-//   PopoverContent,
-//   PopoverTrigger,
-// } from "@/components/ui/popover"
-
+import { useReactToPrint } from "react-to-print"
+import { RequestReportToPrint } from "./RequestReportToPrint";
+import { Button } from "../ui/button";
+import { StockTypes } from "@/pages/bloodbank/dashboard/Stock";
+import { BloodBankDataTypes } from "../forms/SettingsForm";
+import { File } from "lucide-react";
 
 type FilterRangeTypes = {
   startDate: string | null;
@@ -35,14 +28,27 @@ type FilterRangeTypes = {
 }
 
 export default function BloodBankRecorderOverviewContent() {
+  // Report configurations 
+  const requestReportRef = useRef(null);
+  const stockReportRef = useRef(null);
+  const handlePrintRequestReport = useReactToPrint({
+    content: () => requestReportRef.current,
+  });
+  const handlePrintStockReport = useReactToPrint({
+    content: () => stockReportRef.current,
+  });
+  
   const [isLoading, setIsLoading] = useState(false);
   const [allRequests, setAllRequests] = useState<RequestTypes[]>([]);
-  const [pendingRequests, setPendingRequests] = useState<RequestTypes[]>();
+  const [pendingRequests, setPendingRequests] = useState<RequestTypes[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [bloodBags, setBloodBags] = useState<BloodBagTypes[]>([]);
   const [chartData, setChartData] = useState([]);
   const [filterYear, setFilterYear] = useState<number>(new Date().getFullYear());
   const [filterMonth, setFilterMonth] = useState<number>(new Date().getMonth());
+  const [stock, setStock] = useState<StockTypes[]>();
+  const [bloodBank, setBloodBank] = useState<BloodBankDataTypes>({ id: '', name: '', googleLocation: '', province: '', town: '', email: '', phone: '', POBox: ''});
+  const [bloodOutTransactions, setBloodOutTransactions] = useState();
 
   const [filterRange, setFilterRange] = useState<FilterRangeTypes>({
     startDate: "",
@@ -78,6 +84,18 @@ export default function BloodBankRecorderOverviewContent() {
         setNotifications(response.notifications);
         setFilterYear(response.filters.year);
         setFilterMonth(response.filters.month);
+        setStock(response.stock);
+        setBloodBank(response.bloodBank || {
+          id: '',
+          name: '',
+          googleLocation: '',
+          province: '',
+          town: '',
+          email: '',
+          phone: '',
+          POBox: ''
+        });
+        setBloodOutTransactions(response.bloodOutTransactions);
         setChartData(response.chartData);
         setIsLoading(false);
       })
@@ -141,17 +159,10 @@ export default function BloodBankRecorderOverviewContent() {
         </div>
         <div className="flex justify-end items-center gap-2">
           <span className="font-semibold text-sm">Reports</span>
-          <Select>
-            <SelectTrigger className="w-fit">
-              <SelectValue placeholder="Choose Report" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="stock">Stock</SelectItem>
-                <SelectItem value="requests">Requests</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <Button onClick={handlePrintRequestReport} size={"sm"} variant="outline">
+            <File size={20} className="mr-2" />
+            Requests Report
+          </Button>
         </div>
       </div>
 
@@ -193,6 +204,16 @@ export default function BloodBankRecorderOverviewContent() {
         </Card>
       </div>
       <RequestsLineChart data={chartData} filterMonth={filterMonth} filterYear={filterYear} />
+      <div className="">
+        <RequestReportToPrint 
+          ref={requestReportRef}
+          allRequests={allRequests} 
+          pendingRequests={pendingRequests} 
+          filterYear={filterYear} 
+          filterMonth={filterMonth}        
+          bloodBank={bloodBank}
+        />
+      </div>
     </div>
   )
 }

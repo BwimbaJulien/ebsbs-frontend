@@ -7,7 +7,6 @@ import { Search } from "lucide-react"
 import { useState } from "react"
 import { z } from "zod"
 import { HospitalDataTypes } from "./HospitalSettingsForm"
-import { useNavigate } from "react-router-dom"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { searchHospitalsByBlood } from "@/api/hospital"
 import { toast } from "sonner"
@@ -25,7 +24,6 @@ export type SearchHospitalsTypes = z.infer<typeof FormSchema>;
 export default function SearchHospitalsDrawer() {
     const [isLoading, setIsLoading] = useState(false);
     const [hospitals, setHospitals] = useState<HospitalDataTypes[]>([]);
-    const navigate = useNavigate();
     const hospitalId = JSON.parse(localStorage.getItem("hospitalWorker") as string).hospitalId;
 
     const form = useForm<SearchHospitalsTypes>({
@@ -217,25 +215,46 @@ export default function SearchHospitalsDrawer() {
                 </Form>
                 <DialogFooter>
                     <div className="flex flex-col w-full space-y-2">
-                        <Separator />
+                        {(hospitals && hospitals.length !== 0) && <Separator />}
                         {(hospitals && hospitals.length > 0) && <p className="font-bold">Search Results</p>}
-                        <div className="flex flex-col w-full gap-2">
-                            {hospitals && hospitals.map((hospital, index) => (
-                                <div key={hospital.id} className="flex w-full justify-between">
-                                    <p>
-                                        <span>{index + 1}. </span>
-                                        <span>{hospital.name}</span>
-                                    </p>
-                                    <Button
-                                        variant={"outline"}
-                                        className="w-fit"
-                                        size={"sm"}
-                                        onClick={() => navigate(`/hdash/${hospitalId}/r/requests/sent/new?hospital=${hospital.id}`)}>
-                                        Create Request
-                                    </Button>
-                                </div>
-                            ))}
-                        </div>
+                        {hospitals && hospitals.length !== 0 && <div className="flex bg-secondary flex-col w-full gap-2 border p-2 rounded-md">
+                            {hospitals.map((hospital) => {
+                                if (!hospital || !hospital.name) return null;
+                                if (hospital.id === hospitalId) return null;
+                                return (
+                                    <div key={hospital.id} className="flex w-full justify-between">
+                                        <p>
+                                            <span className="text-sm">{hospital.name}</span>
+                                        </p>
+                                        <p>
+                                            <span className="text-sm p-1 bg-secondary border rounded-md">Hospital</span>
+                                        </p>
+                                        <Button
+                                            variant={"outline"}
+                                            className="w-fit"
+                                            size={"sm"}
+                                            onClick={() => window.location.replace(`/hdash/${hospitalId}/r/requests/sent/new?hospital=${hospital.id}`)}>
+                                            Create Request
+                                        </Button>
+                                    </div>
+                                )
+                            })}
+                            <div className="flex w-full justify-between">
+                                <p>
+                                    <span className="text-sm font-bold">Blood Bank</span>
+                                </p>
+                                <p>
+
+                                </p>
+                                <Button
+                                    variant={"outline"}
+                                    className="w-fit"
+                                    size={"sm"}
+                                    onClick={() => window.location.replace(`/hdash/${hospitalId}/r/requests/sent/new`)}>
+                                    Create Request
+                                </Button>
+                            </div>
+                        </div>}
                     </div>
                 </DialogFooter>
             </DialogContent>

@@ -55,7 +55,7 @@ export default function UpdateBloodbag() {
                 </BreadcrumbList>
             </Breadcrumb>
             <div className="flex items-center justify-between gap-4 flex-wrap">
-                <h1 className="text-lg font-semibold md:text-2xl">Update Blood Bag: <span className="text-slate-500">{params.bagId}</span></h1>
+                <h1 className="text-lg font-semibold md:text-2xl">Update Blood Bag - <span className="text-slate-500">{bag?.code}</span></h1>
                 <div className="flex justify-between w-full md:w-fit gap-12 items-center">
                     {bag?.id && <>
                         {/* <DeleteDialog user={user} /> */}

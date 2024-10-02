@@ -22,6 +22,9 @@ export default function Requests() {
     setIsLoading(true);
     getRequestsForBloodBank(bloodbankId)
       .then((response) => {
+        response.bloodRequests.map((bloodRequest: RequestTypes) => {
+          bloodRequest.hospitalName = bloodRequest.hospital?.name
+        })
         setRequests(response.bloodRequests);
         setIsLoading(false);
       })

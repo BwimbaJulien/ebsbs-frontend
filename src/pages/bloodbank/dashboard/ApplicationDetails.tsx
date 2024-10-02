@@ -165,7 +165,7 @@ export default function ApplicationDetails() {
                 </BreadcrumbList>
             </Breadcrumb>
             <div className="flex items-center justify-between">
-                <h1 className="text-lg font-semibold md:text-2xl">Application No: {params.id}</h1>
+                <h1 className="text-lg font-semibold md:text-2xl">Application Details</h1>
                 <Button variant="link" className="flex items-center gap-2">
                     <Link to={`/dashboard/a/applications`} className="flex items-center gap-2">Back to Applications</Link>
                 </Button>

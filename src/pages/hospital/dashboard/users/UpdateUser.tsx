@@ -58,7 +58,7 @@ export default function AddUser() {
         </BreadcrumbList>
       </Breadcrumb>
       <div className="flex items-center justify-between gap-4 flex-wrap">
-        <h1 className="text-lg font-semibold md:text-2xl">Update User: <span className="text-slate-500">{params.userId}</span></h1>
+        <h1 className="text-lg font-semibold md:text-2xl">User Info</h1>
         <div className="flex justify-between w-full md:w-fit gap-12 items-center">
           {user?.id && <>
             <DeleteDialog user={user} />

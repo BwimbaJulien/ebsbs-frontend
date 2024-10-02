@@ -16,6 +16,7 @@ export default function SentRequestsDetails() {
   const params = useParams();
   const navigate = useNavigate();
   const [request, setRequest] = useState<RequestTypes>();
+  const [requestRecipient, setRequestRecipient] = useState("")
   const [isLoading, setIsLoading] = useState(false);
   const hospitalId = JSON.parse(localStorage.getItem("hospitalWorker") as string).hospitalId;
   const [bloodBanks, setBloodBanks] = useState<BloodBankDataTypes[]>([]);
@@ -29,6 +30,11 @@ export default function SentRequestsDetails() {
           if (res) {
             setIsLoading(false);
             setRequest(res.bloodRequest);
+            if (res.bloodRequest.idOfOtherHospital) {
+              setRequestRecipient(res.bloodRequest.otherHospital.name);
+            } else {
+              setRequestRecipient(res.bloodRequest.bloodBank.name);
+            }
           }
         })
         .catch((err) => {
@@ -87,7 +93,7 @@ export default function SentRequestsDetails() {
         </BreadcrumbList>
       </Breadcrumb>
       <div className="flex items-center justify-between gap-4 flex-wrap">
-        <h1 className="text-lg font-semibold md:text-2xl">Update Request: <span className="text-slate-500">{params.requestId}</span></h1>
+        <h1 className="text-lg font-semibold md:text-2xl">Update Request sent to <span className="text-slate-500">{requestRecipient}</span></h1>
         <div className="flex justify-between w-full md:w-fit gap-12 items-center">
           {params.requestId && request && (
             <DeleteRequestDialog request={request} />

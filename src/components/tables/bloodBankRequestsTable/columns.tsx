@@ -30,19 +30,19 @@ export const columns: ColumnDef<RequestTypes>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "id",
+        accessorKey: "hospitalName",
         header: ({ column }) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    Id
+                    Hospital
                     <CaretSortIcon className="ml-2 h-4 w-4" />
                 </Button>
             )
         },
-        cell: ({ row }) => <div>{row.getValue("id")}</div>,
+        cell: ({ row }) => <div>{row.getValue("hospitalName")}</div>,
     },
     {
         accessorKey: "createdAt",

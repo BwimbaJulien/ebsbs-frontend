@@ -58,7 +58,7 @@ export default function RequestDetails() {
                 </BreadcrumbList>
             </Breadcrumb>
             <div className="flex items-center justify-between gap-4 flex-wrap">
-                <h1 className="text-lg font-semibold md:text-2xl">Update Request: <span className="text-slate-500">{params.requestId}</span></h1>
+                <h1 className="text-lg font-semibold md:text-2xl">Update Request from <span className="text-slate-500">{request?.hospital?.name}</span></h1>
                 <div className="flex justify-between w-full md:w-fit gap-12 items-center">
                     {params.requestId && request && (
                         <DeleteRequestDialog request={request} />

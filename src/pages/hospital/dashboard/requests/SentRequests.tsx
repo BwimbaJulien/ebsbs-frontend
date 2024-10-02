@@ -24,6 +24,15 @@ export default function SentRequests() {
     setIsLoading(true);
     getHospitalSentRequests(hospitalId)
       .then((response) => {
+        response.bloodRequests.map((bloodRequest: RequestTypes) => {
+          if (bloodRequest.idOfOtherHospital?.toString()) {
+            bloodRequest.recipientName = bloodRequest.otherHospital?.name ?? ''
+            bloodRequest.recipientType = 'Hospital'
+          } else if (bloodRequest.bloodBankId?.toString()) {
+            bloodRequest.recipientName = bloodRequest.bloodBank?.name ?? ''
+            bloodRequest.recipientType = 'Blood Bank'
+          }
+        });
         setRequests(response.bloodRequests);
         setIsLoading(false);
       })

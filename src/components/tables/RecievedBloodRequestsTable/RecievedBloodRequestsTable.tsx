@@ -39,10 +39,10 @@ export function RecievedBloodRequestsTable({ bloodRequests }: { bloodRequests: R
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Search by Create Date"
-          value={(table.getColumn("createdAt")?.getFilterValue() as string) ?? ""}
+          placeholder="Search by Hospital Name"
+          value={(table.getColumn("hospitalName")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("createdAt")?.setFilterValue(event.target.value)
+            table.getColumn("hospitalName")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

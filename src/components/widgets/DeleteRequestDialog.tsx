@@ -19,7 +19,7 @@ export default function DeleteRequestDialog({ request }: { request: RequestTypes
             deleteRequest(request.id)
                 .then((res) => {
                     if (res) {
-                        toast.success("Account deleted successfully");
+                        toast.success("Request deleted successfully");
                         navigate(-1);
                     }
                 })

@@ -21,7 +21,7 @@ type UserData = {
   hospitalName: string;
 }
 
-export default function BloodBankDashboardLayout() {
+export default function HospitalDashboardLayout() {
   const pathName = window.location.pathname;
   const params = useParams();
   const [user, setUser] = useState<UserData>();
@@ -48,21 +48,16 @@ export default function BloodBankDashboardLayout() {
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <div className="hidden border-r bg-muted/40 md:block">
         <div className="flex h-full max-h-screen flex-col gap-2">
-          <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
+          <div className="flex gap-4 h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link to={`/hdash/${user?.hospitalId}/${params.userType}`} className="flex items-center gap-2 font-semibold">
-              <img src="/drc-flag.png" alt="logo" className="h-8 rounded-full w-auto sm:h-10" />
-              <span className="">
-                {user?.hospitalName || "Hospital"}
-              </span>
+              <img src="/vecteezy_round-medical-cross-symbol-on-transparent-background_17177954.png" alt="logo" className="h-8 rounded-full w-auto sm:h-10" />
             </Link>
-            <span className="ml-auto font-bold underline">
-              {params.userType === "a" ? "Admin" : "Pharmacist"}
-            </span>
+            <div className="flex flex-col justify-start">
+              <span className="">{user?.hospitalName || "Hospital"}</span>
+              <span className="font-bold underline text-sm">{params.userType === "a" ? "Hospital Director" : "Lab Technitian"}</span>
+            </div>
           </div>
           <div className="flex-1">
-            {
-
-            }
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               {HospitalDashboardLinks.map((link, index) => {
                 if (params.userType === 'a' && link.user === "Admin") {
@@ -116,7 +111,7 @@ export default function BloodBankDashboardLayout() {
                       </NavLink>
                     )
                   }
-                  if (params.userType === 'r' && link.user === "Recorder") {
+                  if (params.userType === 'r' && link.user === "Worker") {
                     return (
                       <NavLink key={index} to={link.to} className={cn(window.location.pathname.includes(link.to) && "bg-zinc-200 dark:bg-zinc-800 dark:text-white", "mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground")}>
                         {link.icon}
@@ -130,7 +125,7 @@ export default function BloodBankDashboardLayout() {
           </Sheet>
           <div className="flex gap-4 justify-between w-full">
             <span className="mr-auto block md:hidden font-bold underline">
-              {params.userType === "a" ? "Admin" : "Recorder"}
+              {params.userType === "a" ? "Hospital Director" : "Lab Technitian"}
             </span>
             {params.userType === "r" && <SearchHospitalsDrawer />}
             <div className="flex items-center space-x-4 ml-auto">
@@ -152,8 +147,8 @@ export default function BloodBankDashboardLayout() {
                     <span className="text-sm font-extralight">{user?.email}</span>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  {params.userType === "a" && <DropdownMenuItem><Link to={`/dashboard/${params.userType}/settings`}>Settings</Link></DropdownMenuItem>}
-                  <DropdownMenuItem><Link to={`/dashboard/${params.userType}/profile`}>Profile</Link></DropdownMenuItem>
+                  {params.userType === "a" && <DropdownMenuItem><Link to={`/hdash/${user?.hospitalId}/${params.userType}/settings`}>Settings</Link></DropdownMenuItem>}
+                  <DropdownMenuItem><Link to={`/hdash/${user?.hospitalId}/${params.userType}/profile`}>Profile</Link></DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => signOut()}>Logout</DropdownMenuItem>
                 </DropdownMenuContent>

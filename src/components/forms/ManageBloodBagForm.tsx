@@ -25,6 +25,7 @@ const FormSchema = z.object({
     return val;
   }, z.number().default(0.35)),
   bloodBankId: z.string(),
+  code: z.string().optional(),
   bloodQuality: z.enum(["Good", "Moderate", "Expired"]),
 });
 

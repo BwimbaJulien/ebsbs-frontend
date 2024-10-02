@@ -24,6 +24,10 @@ export default function ReceivedRequests() {
     setIsLoading(true);
     getReceivedRequestsByHospital(hospitalId)
       .then((response) => {
+        console.log(response.bloodRequests);
+        response.bloodRequests.map((bloodRequest: RequestTypes) => {
+          bloodRequest.hospitalName = bloodRequest.hospital?.name
+        })
         setRequests(response.bloodRequests);
         setIsLoading(false);
       })
