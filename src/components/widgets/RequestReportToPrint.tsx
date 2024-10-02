@@ -37,8 +37,12 @@ export const RequestReportToPrint = forwardRef<HTMLDivElement, Props>(({ allRequ
 
                 {/* Report content */}
                 <div className='flex flex-col w-full'>
+                    <div className=''>
+                        <span>Total Requests: {allRequests.length}</span>
+                        <span>Pending Requests: {pendingRequests.length}</span>
+                    </div>
                     <h2>Received Requests</h2>
-                    <table className='mt-8'>
+                    <table className=''>
                         <thead className='bg-gray-400'>
                             <tr>
                                 <th className='text-left'>Hospital</th>
@@ -58,7 +62,7 @@ export const RequestReportToPrint = forwardRef<HTMLDivElement, Props>(({ allRequ
                     </table>
 
                     <h2 className=''>Pending Requests</h2>
-                    <table className='mt-8'>
+                    <table className=''>
                         <thead className='bg-gray-400'>
                             <tr>
                                 <th className='text-left'>Hospital</th>
