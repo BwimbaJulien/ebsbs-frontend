@@ -145,7 +145,7 @@ export default function BloodBankDashboardLayout() {
           </Sheet>
           <div className="flex gap-4 justify-between w-full">
             <span className="mr-auto block md:hidden font-bold underline">
-              {params.userType === "a" ? "Admin" : "Lab Technitian"}
+              {params.userType === "a" ? "Admin" : "Lab Technician"}
             </span>
             <div className="flex items-center space-x-4 ml-auto">
               <ModeToggle />

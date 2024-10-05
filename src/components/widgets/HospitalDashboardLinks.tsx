@@ -68,7 +68,7 @@ const HospitalDashboardLinks = [
     },
     {
         hospitalId: "",
-        label: "Users",
+        label: "Pharmacists",
         destination: '',
         to: "users",
         user: "Admin",

@@ -8,6 +8,8 @@ import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
 import HospitalDashboardLinks from "@/components/widgets/HospitalDashboardLinks"
 import SearchHospitalsDrawer from "@/components/forms/SearchHospitalsDrawer"
+import { getNotificationsByHospitalId } from "@/api/notification"
+import NotificationContainer, { Notification } from "@/components/widgets/NotificationContainer"
 
 type UserData = {
   id: string;
@@ -25,9 +27,21 @@ export default function HospitalDashboardLayout() {
   const pathName = window.location.pathname;
   const params = useParams();
   const [user, setUser] = useState<UserData>();
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+
   useEffect(() => {
     if (params.userType === "a") {
       setUser(JSON.parse(localStorage.getItem("hospitalAdmin") as string))
+      getNotificationsByHospitalId(JSON.parse(localStorage.getItem("hospitalAdmin") as string).bloodBankId)
+        .then((response) => {
+          const inDescendingOrder = response.notifications.sort((a: Notification, b: Notification) => {
+            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+          });
+          setNotifications(inDescendingOrder)
+        })
+        .catch((error) => {
+          console.error(error);
+        })
     } else {
       setUser(JSON.parse(localStorage.getItem("hospitalWorker") as string))
     }
@@ -43,6 +57,7 @@ export default function HospitalDashboardLayout() {
     }
     window.location.replace("/hauth/signin");
   }
+
 
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
@@ -130,10 +145,33 @@ export default function HospitalDashboardLayout() {
             {params.userType === "r" && <SearchHospitalsDrawer />}
             <div className="flex items-center space-x-4 ml-auto">
               <ModeToggle />
-              <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
-                <Bell className="h-4 w-4" />
-                <span className="sr-only">Toggle notifications</span>
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="secondary" size="icon" className="rounded-full">
+                    <Bell className="h-5 w-5" />
+                    <span className="sr-only">Toggle notitication</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuLabel><span>Notifications</span></DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <div className="overflow-y-scroll h-96">
+                    {notifications && notifications.length > 0 && notifications.map((notification, index) => (
+                      <DropdownMenuItem className="flex flex-col justify-start items-start gap-2">
+                        <NotificationContainer key={index} notification={notification} />
+                      </DropdownMenuItem>
+                    ))}
+                  </div>
+                  <DropdownMenuItem>
+                    {notifications && notifications.length === 0 && <span>No notifications available</span>}
+                  </DropdownMenuItem>
+                  {/* <DropdownMenuItem>
+                    <Link to={`/dashboard/${params.userType}/notifications`} className="w-fit text-sm underline">
+                      View all notifications
+                    </Link>
+                  </DropdownMenuItem> */}
+                </DropdownMenuContent>
+              </DropdownMenu>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="secondary" size="icon" className="rounded-full">

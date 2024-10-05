@@ -217,7 +217,7 @@ export default function SearchHospitalsDrawer() {
                     <div className="flex flex-col w-full space-y-2">
                         {(hospitals && hospitals.length !== 0) && <Separator />}
                         {(hospitals && hospitals.length > 0) && <p className="font-bold">Search Results</p>}
-                        {hospitals && hospitals.length !== 0 && <div className="flex bg-secondary flex-col w-full gap-2 border p-2 rounded-md">
+                        {hospitals.length !== 0 && <div className="flex bg-secondary flex-col w-full gap-2 border p-2 rounded-md">
                             {hospitals.map((hospital) => {
                                 if (!hospital || !hospital.name) return null;
                                 if (hospital.id === hospitalId) return null;

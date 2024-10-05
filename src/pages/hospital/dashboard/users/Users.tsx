@@ -38,13 +38,13 @@ export default function Users() {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>Users</BreadcrumbPage>
+            <BreadcrumbPage>Pharmacists</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
       <div className="flex items-center justify-between">
-        <h1 className="text-lg font-semibold md:text-2xl">Users</h1>
-        <Button type="button" variant={'default'} onClick={() => navigate(`/hdash/${hospitalId}/a/users/new`)}>Add New User</Button>
+        <h1 className="text-lg font-semibold md:text-2xl">Pharmacists</h1>
+        <Button type="button" variant={'default'} onClick={() => navigate(`/hdash/${hospitalId}/a/users/new`)}>Add New Pharmacist</Button>
       </div>
       <div className="flex flex-1 p-4 border rounded-lg shadow-sm">
         {!isLoading && <HospitalUsersTable users={users} />}

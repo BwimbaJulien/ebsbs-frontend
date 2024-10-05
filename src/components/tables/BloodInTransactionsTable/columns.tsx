@@ -3,7 +3,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { CaretSortIcon } from "@radix-ui/react-icons"
 import { ColumnDef } from "@tanstack/react-table"
 import { Link } from "react-router-dom"
-import { BloodInTransactionsTypes } from "./RecievedBloodRequestsTable"
+import { BloodInTransactionsTypes } from "./BloodInTransactionTable"
 
 export const columns: ColumnDef<BloodInTransactionsTypes>[] = [
     {

@@ -62,24 +62,25 @@ export interface BloodInTransactionsTypes {
 }
 
 export function BloodInTransactionsTable({ bloodInTransactions }: { bloodInTransactions: BloodInTransactionsTypes[] }) {
-  let plasmas = 0;
-  let platelets = 0;
-  let redBloodCells = 0;
-  let wholeBlood = 0;
-  
+
   bloodInTransactions.forEach((transaction: BloodInTransactionsTypes) => {
+    let plasmas = 0;
+    let platelets = 0;
+    let redBloodCells = 0;
+    let wholeBlood = 0;
+
     plasmas += transaction.plasmaRhN_A + transaction.plasmaRhN_B + transaction.plasmaRhN_O + transaction.plasmaRhP_A + transaction.plasmaRhP_B + transaction.plasmaRhP_O + transaction.plasmaRhP_AB + transaction.plasmaRhN_AB;
     platelets += transaction.plateletRhN_A + transaction.plateletRhN_B + transaction.plateletRhN_O + transaction.plateletRhP_A + transaction.plateletRhP_B + transaction.plateletRhP_O + transaction.plateletRhP_AB + transaction.plateletRhN_AB;
     redBloodCells += transaction.rbcN_A + transaction.rbcN_B + transaction.rbcN_O + transaction.rbcN_AB + transaction.rbcP_A + transaction.rbcP_B + transaction.rbcP_O + transaction.rbcP_AB;
     wholeBlood += transaction.rhN_A + transaction.rhN_B + transaction.rhN_O + transaction.rhP_A + transaction.rhP_B + transaction.rhP_O + transaction.rhP_AB + transaction.rhN_AB;
-    
+
     transaction.totalPlasmas = plasmas;
     transaction.totalPlatelets = platelets;
     transaction.totalRedBloodCells = redBloodCells;
     transaction.totalWholeBlood = wholeBlood;
     transaction.totalBags = plasmas + platelets + redBloodCells + wholeBlood;
   })
-  
+
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})

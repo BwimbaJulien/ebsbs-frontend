@@ -1,6 +1,6 @@
 import { forwardRef, useEffect } from 'react';
 import { getMonthName } from '@/lib/months';
-import { BloodInTransactionsTypes } from '../tables/BloodInTransactionsTable/RecievedBloodRequestsTable';
+import { BloodInTransactionsTypes } from '../tables/BloodInTransactionsTable/BloodInTransactionTable';
 import { HospitalDataTypes } from '../forms/HospitalSettingsForm';
 
 type Props = {
@@ -13,12 +13,12 @@ type Props = {
 export const BloodInTransactionsReportToPrint = forwardRef<HTMLDivElement, Props>(({ bloodInTransactions, hospital, filterYear, filterMonth }, ref) => {
 
     useEffect(() => {
-        let plasmas = 0;
-        let platelets = 0;
-        let redBloodCells = 0;
-        let wholeBlood = 0;
-
         bloodInTransactions?.forEach((transaction: BloodInTransactionsTypes) => {
+            let plasmas = 0;
+            let platelets = 0;
+            let redBloodCells = 0;
+            let wholeBlood = 0;
+
             plasmas += transaction.plasmaRhN_A + transaction.plasmaRhN_B + transaction.plasmaRhN_O + transaction.plasmaRhP_A + transaction.plasmaRhP_B + transaction.plasmaRhP_O + transaction.plasmaRhP_AB + transaction.plasmaRhN_AB;
             platelets += transaction.plateletRhN_A + transaction.plateletRhN_B + transaction.plateletRhN_O + transaction.plateletRhP_A + transaction.plateletRhP_B + transaction.plateletRhP_O + transaction.plateletRhP_AB + transaction.plateletRhN_AB;
             redBloodCells += transaction.rbcN_A + transaction.rbcN_B + transaction.rbcN_O + transaction.rbcN_AB + transaction.rbcP_A + transaction.rbcP_B + transaction.rbcP_O + transaction.rbcP_AB;
@@ -88,7 +88,7 @@ export const BloodInTransactionsReportToPrint = forwardRef<HTMLDivElement, Props
                                 </tr>
                             ))}
                         </tbody>
-                    </table>    
+                    </table>
                 </div>
 
                 {/* Footer  */}

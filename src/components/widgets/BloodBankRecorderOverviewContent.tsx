@@ -17,13 +17,13 @@ import { getMonthName } from "@/lib/months";
 export default function BloodBankRecorderOverviewContent() {
   // Report configurations 
   const requestReportRef = useRef(null);
-  const stockReportRef = useRef(null);
+  // const stockReportRef = useRef(null);
   const handlePrintRequestReport = useReactToPrint({
     content: () => requestReportRef.current,
   });
-  const handlePrintStockReport = useReactToPrint({
-    content: () => stockReportRef.current,
-  });
+  // const handlePrintStockReport = useReactToPrint({
+  //   content: () => stockReportRef.current,
+  // });
 
   const [isLoading, setIsLoading] = useState(false);
   const [allRequests, setAllRequests] = useState<RequestTypes[]>([]);

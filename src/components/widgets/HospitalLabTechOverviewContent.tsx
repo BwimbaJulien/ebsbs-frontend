@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import { useReactToPrint } from "react-to-print"
 import { Button } from "../ui/button";
 import { File } from "lucide-react";
-import { BloodInTransactionsTable, BloodInTransactionsTypes } from "../tables/BloodInTransactionsTable/RecievedBloodRequestsTable";
+import { BloodInTransactionsTable, BloodInTransactionsTypes } from "../tables/BloodInTransactionsTable/BloodInTransactionTable";
 import { getLabTechnitianOverviewData } from "@/api/hospital";
 import { HospitalDataTypes } from "../forms/HospitalSettingsForm";
 import { getMonthName } from "@/lib/months";
@@ -137,7 +137,7 @@ export default function HospitalLabTechOverviewContent() {
             <CardTitle className="text-4xl">{receivedBloodRequests?.length || 0}</CardTitle>
           </CardHeader>
           <CardContent>
-            <Link className="text-sm text-primary hover:underline" to={'/dashboard/r/requests'}>View More</Link>
+            <Link className="text-sm text-primary hover:underline" to={`/hdash/${hospitalId}/r/requests/incoming`}>View More</Link>
           </CardContent>
         </Card>
         <Card >
@@ -146,7 +146,7 @@ export default function HospitalLabTechOverviewContent() {
             <CardTitle className="text-4xl">{bloodRequests?.length || 0}</CardTitle>
           </CardHeader>
           <CardContent>
-            <Link className="text-sm text-primary hover:underline" to={'/dashboard/r/requests'}>View More</Link>
+            <Link className="text-sm text-primary hover:underline" to={`/hdash/${hospitalId}/r/requests/sent`}>View More</Link>
           </CardContent>
         </Card>
         <Card >
@@ -155,7 +155,7 @@ export default function HospitalLabTechOverviewContent() {
             <CardTitle className="text-4xl">{bloodInTransactions?.length || 0}</CardTitle>
           </CardHeader>
           <CardContent>
-            <Link className="text-sm text-primary hover:underline" to={'/dashboard/r/requests'}>View More</Link>
+            <Link className="text-sm text-primary hover:underline" to={`/hdash/${hospitalId}/r/requests`}>View More</Link>
           </CardContent>
         </Card>
         <Card>

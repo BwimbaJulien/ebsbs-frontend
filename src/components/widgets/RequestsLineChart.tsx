@@ -88,7 +88,7 @@ export default function RequestsLineChart({ filterYear, filterMonth, data }: Pro
             </CardContent>
             <CardFooter className="flex-col items-start gap-2 text-sm">
                 <div className="flex gap-2 font-medium leading-none">
-                    Blood Requests in {getMonthName(filterMonth)} - {filterYear}<TrendingUp className="h-4 w-4" />
+                    Blood Requests in {getMonthName(filterMonth+1)} - {filterYear}<TrendingUp className="h-4 w-4" />
                 </div>
                 {/* <div className="leading-none text-muted-foreground">
                     Showing total blood requests in the last 12 months
