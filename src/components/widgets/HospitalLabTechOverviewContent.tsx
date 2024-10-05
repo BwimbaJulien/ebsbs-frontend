@@ -1,39 +1,39 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { useEffect, useRef, useState } from "react"
 import { Link } from "react-router-dom"
-import { getBloodBankRecorderOverviewData } from "@/api/bloodBank";
 import LoadingSkeleton from "./LoadingSkeleton";
 import { RequestTypes } from "../forms/ManageBloodRequestForm";
-import { BloodBagTypes } from "../forms/ManageBloodBagForm";
-import RequestsLineChart from "./RequestsLineChart";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useReactToPrint } from "react-to-print"
-import { RequestReportToPrint } from "./RequestReportToPrint";
 import { Button } from "../ui/button";
-import { BloodBankDataTypes } from "../forms/SettingsForm";
 import { File } from "lucide-react";
+import { BloodInTransactionsTable, BloodInTransactionsTypes } from "../tables/BloodInTransactionsTable/RecievedBloodRequestsTable";
+import { getLabTechnitianOverviewData } from "@/api/hospital";
+import { HospitalDataTypes } from "../forms/HospitalSettingsForm";
 import { getMonthName } from "@/lib/months";
+import { BloodInTransactionsReportToPrint } from "./BloodInTransactionsReportToPrint";
 
-export default function BloodBankRecorderOverviewContent() {
+export default function HospitalLabTechOverviewContent() {
   // Report configurations 
-  const requestReportRef = useRef(null);
-  const stockReportRef = useRef(null);
-  const handlePrintRequestReport = useReactToPrint({
-    content: () => requestReportRef.current,
+  const bloodInTransactionReportRef = useRef(null);
+  // const stockReportRef = useRef(null);
+
+  const handlePrintBloodInTransactionsReport = useReactToPrint({
+    content: () => bloodInTransactionReportRef.current,
   });
-  const handlePrintStockReport = useReactToPrint({
-    content: () => stockReportRef.current,
-  });
+  
+  // const handlePrintStockReport = useReactToPrint({
+  //   content: () => stockReportRef.current,
+  // });
 
   const [isLoading, setIsLoading] = useState(false);
-  const [allRequests, setAllRequests] = useState<RequestTypes[]>([]);
-  const [pendingRequests, setPendingRequests] = useState<RequestTypes[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [bloodBags, setBloodBags] = useState<BloodBagTypes[]>([]);
-  const [chartData, setChartData] = useState([]);
   const [filterYear, setFilterYear] = useState<string>(new Date().getFullYear().toString());
   const [filterMonth, setFilterMonth] = useState<string>(new Date().getMonth().toString());
-  const [bloodBank, setBloodBank] = useState<BloodBankDataTypes>({ id: '', name: '', googleLocation: '', province: '', town: '', email: '', phone: '', POBox: '' });
+  const [hospital, setHospital] = useState<HospitalDataTypes>();
+  const [bloodRequests, setBloodRequests] = useState<RequestTypes[]>();
+  const [receivedBloodRequests, setReceivedBloodRequests] = useState<RequestTypes[]>();
+  const [bloodInTransactions, setBloodInTransactions] = useState<BloodInTransactionsTypes[]>();
 
   const handleMonthChange = (month: string) => {
     setFilterMonth(month);
@@ -43,41 +43,31 @@ export default function BloodBankRecorderOverviewContent() {
     setFilterYear(year);
   };
 
-  const bloodBankId = JSON.parse(localStorage.getItem("bloodbankRecorder") as string).bloodBankId;
+  const hospitalId = JSON.parse(localStorage.getItem("hospitalWorker") as string).hospitalId;
 
   useEffect(() => {
     setIsLoading(true);
-    getBloodBankRecorderOverviewData({
-      bloodBankId,
+    getLabTechnitianOverviewData({
+      hospitalId: hospitalId,
       month: Number(filterMonth),
       year: Number(filterYear)
     })
       .then((response) => {
         console.log(response);
-        setAllRequests(response.requests);
-        setPendingRequests(response.requests.filter((request: RequestTypes) => request.status === "Pending"));
-        setBloodBags(response.bloodBags);
-        setNotifications(response.notifications);
-        setFilterYear(response.filters.year);
-        setFilterMonth(response.filters.month);
-        setBloodBank(response.bloodBank || {
-          id: '',
-          name: '',
-          googleLocation: '',
-          province: '',
-          town: '',
-          email: '',
-          phone: '',
-          POBox: ''
-        });
-        setChartData(response.chartData);
+        setNotifications(response.hospital.notifications);
+        setBloodRequests(response.hospital.bloodRequests);
+        setReceivedBloodRequests(response.receivedBloodRequests)
+        setBloodInTransactions(response.hospital.bloodInTransactions);
+        setHospital(response.hospital);
+        setFilterYear(response.filters.year.toString());
+        setFilterMonth(response.filters.month.toString());
         setIsLoading(false);
       })
       .catch((error) => {
         console.log(error);
         setIsLoading(false);
       })
-  }, [bloodBankId, filterMonth, filterYear])
+  }, [hospitalId, filterMonth, filterYear])
 
   if (isLoading) {
     return <LoadingSkeleton />
@@ -107,7 +97,7 @@ export default function BloodBankRecorderOverviewContent() {
             </Select>
             <Select name="filterMonth" onValueChange={(value) => handleMonthChange(value)}>
               <SelectTrigger className="w-fit">
-                <SelectValue placeholder={getMonthName(Number(filterMonth) + 1)} />
+                <SelectValue placeholder={getMonthName(Number(filterMonth)+1)} />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
@@ -133,9 +123,9 @@ export default function BloodBankRecorderOverviewContent() {
         </div>
         <div className="flex justify-end items-center gap-2">
           <span className="font-semibold text-sm">Reports</span>
-          <Button onClick={handlePrintRequestReport} size={"sm"} variant="outline">
+          <Button onClick={handlePrintBloodInTransactionsReport} size={"sm"} variant="outline">
             <File size={20} className="mr-2" />
-            Requests Report
+            Blood In Transactions Report
           </Button>
         </div>
       </div>
@@ -143,8 +133,8 @@ export default function BloodBankRecorderOverviewContent() {
       <div className="grid gap-4 grid-cols-2 w-full md:grid-cols-4">
         <Card className="">
           <CardHeader className="pb-2">
-            <CardDescription>All Received Requests</CardDescription>
-            <CardTitle className="text-4xl">{allRequests?.length || 0}</CardTitle>
+            <CardDescription>Received Requests</CardDescription>
+            <CardTitle className="text-4xl">{receivedBloodRequests?.length || 0}</CardTitle>
           </CardHeader>
           <CardContent>
             <Link className="text-sm text-primary hover:underline" to={'/dashboard/r/requests'}>View More</Link>
@@ -152,20 +142,20 @@ export default function BloodBankRecorderOverviewContent() {
         </Card>
         <Card >
           <CardHeader className="pb-2">
-            <CardDescription>Pending Requests</CardDescription>
-            <CardTitle className="text-4xl">{pendingRequests?.length || 0}</CardTitle>
+            <CardDescription>Sent Requests</CardDescription>
+            <CardTitle className="text-4xl">{bloodRequests?.length || 0}</CardTitle>
           </CardHeader>
           <CardContent>
             <Link className="text-sm text-primary hover:underline" to={'/dashboard/r/requests'}>View More</Link>
           </CardContent>
         </Card>
-        <Card>
+        <Card >
           <CardHeader className="pb-2">
-            <CardDescription>Blood Bags in Stock</CardDescription>
-            <CardTitle className="text-4xl">{bloodBags?.length || 0}</CardTitle>
+            <CardDescription>Blood In Transactions</CardDescription>
+            <CardTitle className="text-4xl">{bloodInTransactions?.length || 0}</CardTitle>
           </CardHeader>
           <CardContent>
-            <Link className="text-sm text-primary hover:underline" to={'/dashboard/r/bags'}>View More</Link>
+            <Link className="text-sm text-primary hover:underline" to={'/dashboard/r/requests'}>View More</Link>
           </CardContent>
         </Card>
         <Card>
@@ -177,15 +167,19 @@ export default function BloodBankRecorderOverviewContent() {
           </CardContent>
         </Card>
       </div>
-      <RequestsLineChart data={chartData} filterMonth={Number(filterMonth)} filterYear={Number(filterYear)} />
+      {bloodInTransactions &&
+        <div className="flex-col mt-2">
+          <h3 className="text-xl font-semibold">{hospital?.name}'s Blood In Transactions</h3>
+          <BloodInTransactionsTable bloodInTransactions={bloodInTransactions} />
+        </div>
+      }
       <div className="hidden">
-        <RequestReportToPrint
-          ref={requestReportRef}
-          allRequests={allRequests}
-          pendingRequests={pendingRequests}
-          filterYear={Number(filterYear)}
-          filterMonth={Number(filterMonth)}
-          bloodBank={bloodBank}
+        <BloodInTransactionsReportToPrint 
+          ref={bloodInTransactionReportRef}
+          bloodInTransactions={bloodInTransactions} 
+          filterYear={Number(filterYear)} 
+          filterMonth={Number(filterMonth)}        
+          hospital={hospital}
         />
       </div>
     </div>

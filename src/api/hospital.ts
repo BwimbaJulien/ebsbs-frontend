@@ -197,3 +197,26 @@ export const getAdminOverviewData = async (hospitalId: string) => {
     }
     return responseData; 
 }
+
+type labTechnitianRequestTypes = {
+    hospitalId: string;
+    month: number;
+    year: number;
+}
+
+export const getLabTechnitianOverviewData = async ({ hospitalId, month, year }: labTechnitianRequestTypes) => {
+    const response = await fetch(`${API_BASE_URL}/hospitals/labtech-overview?id=${hospitalId}&month=${month}&year=${year}`);
+    const responseData = await response.json();
+    if (!response.ok) {
+        if (responseData.errors) {
+            throw new Error(responseData.errors);
+        }
+        if (responseData.message) {
+            throw new Error(responseData.message);
+        }
+        if (responseData.error) {
+            throw new Error(responseData.error);
+        }
+    }
+    return responseData; 
+}

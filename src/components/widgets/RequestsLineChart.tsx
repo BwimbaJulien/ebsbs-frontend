@@ -6,7 +6,6 @@ import { CartesianGrid, LabelList, Line, LineChart, XAxis } from "recharts"
 import {
     Card,
     CardContent,
-    // CardDescription,
     CardFooter,
     CardHeader,
     CardTitle,
@@ -35,8 +34,6 @@ type Props = {
 }
 
 export default function RequestsLineChart({ filterYear, filterMonth, data }: Props) {
-    console.log(data);
-
     return (
         <Card className="">
             <CardHeader>

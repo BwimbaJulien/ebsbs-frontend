@@ -11,7 +11,7 @@ type Props = {
     filterMonth: number
 }
 
-export const RequestReportToPrint = forwardRef<HTMLDivElement, Props>(({ allRequests, pendingRequests, bloodBags, filterYear, filterMonth }, ref) => {
+export const RequestReportToPrint = forwardRef<HTMLDivElement, Props>(({ allRequests, pendingRequests, filterYear, filterMonth }, ref) => {
     return (
         <div ref={ref} className="w-full mx-auto p-16">
             <div>
@@ -20,7 +20,7 @@ export const RequestReportToPrint = forwardRef<HTMLDivElement, Props>(({ allRequ
                     <div className=''>
                         <h1 className='font-bold text-3xl'>Request Report</h1>
                         <h2 className='text-xl font-bold text-slate-400'>
-                            {filterYear} - {getMonthName(filterMonth)}
+                            {filterYear} - {getMonthName(filterMonth+1)}
                         </h2>
                         <h2>Generated on: {new Date().toDateString()}</h2>
                     </div>

@@ -93,20 +93,15 @@ type FilterTypes = {
     bloodBankId: string;
     month: number | null;
     year: number | null;
-    startDate: string | null;
-    endDate: string | null;
 }
 
-export const getBloodBankRecorderOverviewData = async ({ bloodBankId, month, year, startDate, endDate }: FilterTypes) => {
+export const getBloodBankRecorderOverviewData = async ({ bloodBankId, month, year }: FilterTypes) => {
     let endPoint = "";
     if (month && year) {
         endPoint = `${API_BASE_URL}/bloodbanks/recorderOverviewData?id=${bloodBankId}&month=${month}&year=${year}`;
-    } else if (startDate && endDate) {
-        endPoint = `${API_BASE_URL}/bloodbanks/recorderOverviewData?id=${bloodBankId}&startDate=${startDate}&endDate=${endDate}`;
-    } else if (!startDate && !endDate && !month && !year) {
+    } else if (!month && !year) {
         endPoint = `${API_BASE_URL}/bloodbanks/recorderOverviewData?id=${bloodBankId}`;
     }
-    console.log(endPoint);
     const response = await fetch(endPoint);
     const responseData = await response.json();
     if (!response.ok) {
