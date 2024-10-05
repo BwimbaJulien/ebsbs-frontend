@@ -82,7 +82,7 @@ export default function HospitalDashboardLayout() {
         </div>
       </div>
       <div className="flex flex-col">
-        <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6 bg-[url(/cptsxc.png)] bg-no-repeat bg-cover">
+        <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6 bg-[url(/bdpm.png)] bg-no-repeat bg-cover">
           <Sheet>
             <SheetTrigger asChild>
               <Button
@@ -97,7 +97,7 @@ export default function HospitalDashboardLayout() {
             <SheetContent side="left" className="flex flex-col">
               <nav className="grid gap-2 text-lg font-medium">
                 <Link to={`/dashboard/${params.userType}`} className="flex items-center gap-2 font-semibold">
-                  <img src="/drc-flag.png" alt="logo" className="h-8 rounded-full w-auto sm:h-10" />
+                  <img src="/vecteezy_round-medical-cross-symbol-on-transparent-background_17177954.png" alt="logo" className="h-8 rounded-full w-auto sm:h-10" />
                   <span className="">
                     EBSBS
                   </span>
