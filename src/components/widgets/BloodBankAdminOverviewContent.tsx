@@ -60,7 +60,7 @@ export default function BloodBankAdminOverviewContent() {
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardDescription>Internal Users</CardDescription>
+            <CardDescription>Lab Technicians</CardDescription>
             <CardTitle className="text-4xl">{users?.length || 0}</CardTitle>
           </CardHeader>
           <CardContent>
@@ -79,14 +79,14 @@ export default function BloodBankAdminOverviewContent() {
       </div>
       <Card className="sm:col-span-2">
         <CardHeader className="pb-3">
-          <CardTitle>Manage Users</CardTitle>
+          <CardTitle>Manage Lab Technicians</CardTitle>
           <CardDescription className="text-balance max-w-lg leading-relaxed">
             Add New Users to manage the blood bank
           </CardDescription>
         </CardHeader>
         <CardFooter>
           <Button>
-            <Link to="/dashboard/a/users/new">Add New User</Link>
+            <Link to="/dashboard/a/users/new">Add New Lab Technician</Link>
           </Button>
         </CardFooter>
       </Card>

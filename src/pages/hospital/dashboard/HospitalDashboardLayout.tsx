@@ -44,6 +44,16 @@ export default function HospitalDashboardLayout() {
         })
     } else {
       setUser(JSON.parse(localStorage.getItem("hospitalWorker") as string))
+      getNotificationsByHospitalId(JSON.parse(localStorage.getItem("hospitalWorker") as string).bloodBankId)
+        .then((response) => {
+          const inDescendingOrder = response.notifications.sort((a: Notification, b: Notification) => {
+            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+          });
+          setNotifications(inDescendingOrder)
+        })
+        .catch((error) => {
+          console.error(error);
+        })
     }
   }, [params.userType])
 

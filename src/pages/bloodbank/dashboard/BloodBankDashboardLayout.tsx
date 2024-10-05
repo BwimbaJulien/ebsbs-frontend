@@ -73,7 +73,7 @@ export default function BloodBankDashboardLayout() {
             </Link>
             <div className="flex flex-col justify-start ml-2">
               <span className="">C.P.T.S</span>
-              <span className="ml-auto font-bold underline">{params.userType === "a" ? "Admin" : "Lab Technitian"}</span>
+              <span className="ml-auto font-bold underline">{params.userType === "a" ? "Admin" : "Lab Technician"}</span>
             </div>
           </div>
           <div className="flex-1">

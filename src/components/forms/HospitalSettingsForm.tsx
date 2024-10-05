@@ -11,7 +11,7 @@ import { updateHospital } from "@/api/hospital"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 
 export const FormSchema = z.object({
-    id: z.string(),
+    id: z.string().optional(),
     name: z.string().min(3, { message: "Name must be at least 3 characters." }),
     googleLocation: z.string().min(3, { message: "Google location must be at least 3 characters." }),
     province: z.string().min(3, { message: "Province must be at least 3 characters." }),
@@ -19,13 +19,14 @@ export const FormSchema = z.object({
     specialization: z.string().min(3, { message: "Specialization must be at least 3 characters." }),
     hospitalType: z.enum(["Public", "Private"]),
     accessStatus: z.enum(["Active", "Inactive"]),
-    createdAt: z.date(),
-    updatedAt: z.date(),
+    createdAt: z.date().optional(),
+    updatedAt: z.date().optional(),
 })
 
 export type HospitalDataTypes = z.infer<typeof FormSchema>
 
 export default function HospitalSettingsForm({ hospital }: { hospital?: HospitalDataTypes }) {
+    console.log(hospital);
     const [isLoading, setIsLoading] = useState(false);
     const form = useForm<HospitalDataTypes>({
         resolver: zodResolver(FormSchema),

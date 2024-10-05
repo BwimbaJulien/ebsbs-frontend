@@ -38,13 +38,13 @@ export default function Users() {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>Users</BreadcrumbPage>
+            <BreadcrumbPage>Lab Technicians</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
       <div className="flex items-center justify-between">
-        <h1 className="text-lg font-semibold md:text-2xl">Users</h1>
-        <Button type="button" variant={'default'} onClick={() => navigate("/dashboard/a/users/new")}>Add New User</Button>
+        <h1 className="text-lg font-semibold md:text-2xl">Lab Technicians</h1>
+        <Button type="button" variant={'default'} onClick={() => navigate("/dashboard/a/users/new")}>Add New Lab Technician</Button>
       </div>
       <div
         className="flex flex-1 p-4 border rounded-lg shadow-sm"

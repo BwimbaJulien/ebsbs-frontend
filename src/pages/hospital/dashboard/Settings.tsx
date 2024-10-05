@@ -15,7 +15,6 @@ export default function Settings() {
     setIsLoading(true);
     getHospitalById(hospitalId)
       .then(response => {
-        console.log(response);
         setHospital(response.hospital);
         setIsLoading(false);
       })

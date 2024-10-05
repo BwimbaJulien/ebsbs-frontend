@@ -48,7 +48,7 @@ const BloodBankDashboardLinks = [
         icon: <FileSearch className="h-4 w-4" />,
     },
     {
-        label: "Users",
+        label: "Lab Technicians",
         to: "/dashboard/a/users",
         user: "Admin",
         icon: <Users className="h-4 w-4" />,
