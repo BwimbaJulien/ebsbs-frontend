@@ -130,7 +130,7 @@ export const columns: ColumnDef<BloodInTransactionsTypes>[] = [
 
             return (
                 <Button variant="link" size={'sm'}>
-                    <Link to={`/hdash/${transaction.hospitalId}/r/requests/semt/${transaction.requestId}`}>View More</Link>
+                    <Link to={`/hdash/${transaction.hospitalId}/r/requests/sent/${transaction.requestId}`}>View More</Link>
                 </Button>
             )
         },
