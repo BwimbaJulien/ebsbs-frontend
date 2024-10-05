@@ -55,9 +55,9 @@ export default function HospitalLabTechOverviewContent() {
       .then((response) => {
         console.log(response);
         setNotifications(response.hospital.notifications);
-        setBloodRequests(response.hospital.bloodRequests);
+        setBloodRequests(response.sentBloodRequests);
         setReceivedBloodRequests(response.receivedBloodRequests)
-        setBloodInTransactions(response.hospital.bloodInTransactions);
+        setBloodInTransactions(response.bloodInTransactions);
         setHospital(response.hospital);
         setFilterYear(response.filters.year.toString());
         setFilterMonth(response.filters.month.toString());
