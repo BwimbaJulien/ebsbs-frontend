@@ -155,7 +155,7 @@ export default function HospitalLabTechOverviewContent() {
             <CardTitle className="text-4xl">{bloodInTransactions?.length || 0}</CardTitle>
           </CardHeader>
           <CardContent>
-            <Link className="text-sm text-primary hover:underline" to={`/hdash/${hospitalId}/r/requests`}>View More</Link>
+            <Link className="text-sm text-primary hover:underline" to={`/hdash/${hospitalId}/r/requests/sent`}>View More</Link>
           </CardContent>
         </Card>
         <Card>
