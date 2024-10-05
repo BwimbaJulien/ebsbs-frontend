@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import ManageHospitalUserForm from "@/components/forms/ManageHospitalUserForm";
 
 export default function AddUser() {
   const navigate = useNavigate();
-  const params = useParams();
+  const hospitalId = JSON.parse(localStorage.getItem("hospitalAdmin") as string).hospitalId;
 
   return (
     <>
@@ -13,13 +13,13 @@ export default function AddUser() {
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link to={`/dashboard/${params.userType}`}>Dashboard</Link>
+              <Link to={`/hdash/${hospitalId}/a/`}>Dashboard</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link to={`/dashboard/${params.userType}/users`}>Users</Link>
+              <Link to={`/hdash/${hospitalId}/a/users`}>Users</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />

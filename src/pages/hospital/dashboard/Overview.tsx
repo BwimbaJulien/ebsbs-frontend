@@ -1,4 +1,5 @@
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
+import HospitalAdminOverviewContent from "@/components/widgets/HospitalAdminOverviewContent";
 import { Link, useParams } from "react-router-dom"
 
 export default function Overview() {
@@ -19,8 +20,8 @@ export default function Overview() {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        {/* {params.userType === "a" && <BloodBankAdminOverviewContent />}
-        {params.userType === "r" && <BloodBankRecorderOverviewContent />} */}
+        {params.userType === "a" && <HospitalAdminOverviewContent />}
+        {/* {params.userType === "r" && <BloodBankRecorderOverviewContent />} */}
       </div>
   )
 }
