@@ -30,10 +30,11 @@ const chartConfig = {
 type Props = {
     filterYear: number,
     filterMonth: number,
-    data: { month: string; request: number; }[] | { day: string; request: number; }[]
+    data: { day: string; request: number; }[] | { day: string; request: number; }[]
 }
 
 export default function RequestsLineChart({ filterYear, filterMonth, data }: Props) {
+    console.log(data);
     return (
         <Card className="">
             <CardHeader>
@@ -53,7 +54,7 @@ export default function RequestsLineChart({ filterYear, filterMonth, data }: Pro
                     >
                         <CartesianGrid vertical={true} />
                         <XAxis
-                            dataKey="month"
+                            dataKey="day"
                             tickLine={false}
                             axisLine={false}
                             tickMargin={8}

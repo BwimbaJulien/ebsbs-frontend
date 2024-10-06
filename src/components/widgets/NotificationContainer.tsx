@@ -1,5 +1,3 @@
-import { Link } from "react-router-dom";
-
 export interface Notification {
     id: string;
     title: string;
@@ -31,7 +29,7 @@ export default function NotificationContainer({ notification }: Props) {
             <div className="flex justify-between flex-col">
                 <p className="font-bold">{notification.title}</p>
                 <p>{notification.content}</p>
-                {notification.link && <Link to={notification.link as LinkProps['to']} className="text-blue-500">View More</Link>}
+                {notification.link && <a href={notification.link as LinkProps['hrefLang']} className="text-blue-500">View More</a>}
             </div>
             <div>
                 <span>{new Date(notification.createdAt).toLocaleString()}</span>

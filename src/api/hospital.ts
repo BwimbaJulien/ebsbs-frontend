@@ -1,4 +1,5 @@
 import { HospitalApplicantionTypes } from "@/components/forms/ApplyForHospitalForm";
+import { HospitalDataTypes } from "@/components/forms/HospitalSettingsForm";
 import { SearchHospitalsTypes } from "@/components/forms/SearchHospitalsDrawer";
 // import Cookies from "js-cookie";
 
@@ -83,7 +84,7 @@ export const getHospitalById = async (id: string) => {
     return responseData;
 }
 
-export const updateHospital = async (id: string, data: UpdateHospitalTypes) => {
+export const updateHospital = async (id: string, data: UpdateHospitalTypes | HospitalDataTypes) => {
     const response = await fetch(`${API_BASE_URL}/hospitals/update?id=${id}`, {
         method: "PUT",
         headers: {

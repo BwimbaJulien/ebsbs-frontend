@@ -97,7 +97,7 @@ export default function ApplicationDetails() {
     const form = useForm<HospitalInfoTypes>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
-            accessStatus: "Active"
+            accessStatus: "Inactive"
         }
     })
 

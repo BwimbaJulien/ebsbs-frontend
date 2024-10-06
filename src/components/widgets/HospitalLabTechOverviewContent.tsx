@@ -53,7 +53,7 @@ export default function HospitalLabTechOverviewContent() {
       year: Number(filterYear)
     })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         setNotifications(response.hospital.notifications);
         setBloodRequests(response.sentBloodRequests);
         setReceivedBloodRequests(response.receivedBloodRequests)

@@ -11,37 +11,32 @@ import { updateHospital } from "@/api/hospital"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 
 export const FormSchema = z.object({
-    id: z.string().optional(),
-    name: z.string().min(3, { message: "Name must be at least 3 characters." }),
-    googleLocation: z.string().min(3, { message: "Google location must be at least 3 characters." }),
-    province: z.string().min(3, { message: "Province must be at least 3 characters." }),
-    town: z.string().min(3, { message: "Town must be at least 3 characters." }),
-    specialization: z.string().min(3, { message: "Specialization must be at least 3 characters." }),
-    hospitalType: z.enum(["Public", "Private"]),
-    accessStatus: z.enum(["Active", "Inactive"]),
-    createdAt: z.date().optional(),
-    updatedAt: z.date().optional(),
-})
+    googleLocation: z.string().refine((val) => /^-?\d+(\.\d+)?\s*,\s*-?\d+(\.\d+)?$/.test(val), {
+        message: "Invalid coordinates format",
+    }),
+    hospitalType: z.enum(["Private", "Public"]),
+    id: z.string(),
+    name: z.string(),
+    province: z.string(),
+    specialization: z.string(),
+    town: z.string(),
+});
 
 export type HospitalDataTypes = z.infer<typeof FormSchema>
 
 export default function HospitalSettingsForm({ hospital }: { hospital?: HospitalDataTypes }) {
-    console.log(hospital);
     const [isLoading, setIsLoading] = useState(false);
     const form = useForm<HospitalDataTypes>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
-            id: hospital?.id || "",
             name: hospital?.name || "",
             googleLocation: hospital?.googleLocation || "",
             province: hospital?.province || "",
             town: hospital?.town || "",
             hospitalType: hospital?.hospitalType || "Private",
             specialization: hospital?.specialization || "",
-            accessStatus: hospital?.accessStatus || "Active",
-            createdAt: hospital?.createdAt || new Date(),
-            updatedAt: hospital?.updatedAt || new Date(),
-        },
+            id: hospital?.id || "",
+        }
     })
 
     function onSubmit(data: HospitalDataTypes) {

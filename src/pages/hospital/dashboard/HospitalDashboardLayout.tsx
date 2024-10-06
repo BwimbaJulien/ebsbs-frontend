@@ -32,7 +32,7 @@ export default function HospitalDashboardLayout() {
   useEffect(() => {
     if (params.userType === "a") {
       setUser(JSON.parse(localStorage.getItem("hospitalAdmin") as string))
-      getNotificationsByHospitalId(JSON.parse(localStorage.getItem("hospitalAdmin") as string).bloodBankId)
+      getNotificationsByHospitalId(JSON.parse(localStorage.getItem("hospitalAdmin") as string).hospitalId)
         .then((response) => {
           const inDescendingOrder = response.notifications.sort((a: Notification, b: Notification) => {
             return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
@@ -44,7 +44,7 @@ export default function HospitalDashboardLayout() {
         })
     } else {
       setUser(JSON.parse(localStorage.getItem("hospitalWorker") as string))
-      getNotificationsByHospitalId(JSON.parse(localStorage.getItem("hospitalWorker") as string).bloodBankId)
+      getNotificationsByHospitalId(JSON.parse(localStorage.getItem("hospitalWorker") as string).hospitalId)
         .then((response) => {
           const inDescendingOrder = response.notifications.sort((a: Notification, b: Notification) => {
             return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
@@ -167,7 +167,7 @@ export default function HospitalDashboardLayout() {
                   <DropdownMenuSeparator />
                   <div className="overflow-y-scroll h-96">
                     {notifications && notifications.length > 0 && notifications.map((notification, index) => (
-                      <DropdownMenuItem className="flex flex-col justify-start items-start gap-2">
+                      <DropdownMenuItem key={index} className="flex flex-col justify-start items-start gap-2">
                         <NotificationContainer key={index} notification={notification} />
                       </DropdownMenuItem>
                     ))}

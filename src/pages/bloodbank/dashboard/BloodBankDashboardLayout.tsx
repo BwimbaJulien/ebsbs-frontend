@@ -7,7 +7,7 @@ import BloodBankDashboardLinks from "@/components/widgets/BloodBankDashboardLink
 import { ModeToggle } from "@/components/mode-toggle"
 import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
-import { getNotificationsByBloodBankId } from "@/api/notification"
+import { getAdminNotifications, getNotificationsByBloodBankId } from "@/api/notification"
 import NotificationContainer, { Notification } from "@/components/widgets/NotificationContainer"
 
 type UserData = {
@@ -29,7 +29,7 @@ export default function BloodBankDashboardLayout() {
   useEffect(() => {
     if (params.userType === "a") {
       setUser(JSON.parse(localStorage.getItem("bloodbankAdmin") as string))
-      getNotificationsByBloodBankId(JSON.parse(localStorage.getItem("bloodbankAdmin") as string).bloodBankId)
+      getAdminNotifications()
         .then((response) => {
           const inDescendingOrder = response.notifications.sort((a: Notification, b: Notification) => {
             return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
