@@ -123,10 +123,9 @@ export const columns: ColumnDef<HospitalDataTypes>[] = [
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>
                             <Link to={`/dashboard/a/hospitals/${hospital.id}`}>
-                                View Hospitals Details
+                                View Hospital Details
                             </Link>
                         </DropdownMenuItem>
-                        {/* <DropdownMenuItem>View Applicant</DropdownMenuItem> */}
                     </DropdownMenuContent>
                 </DropdownMenu>
             )

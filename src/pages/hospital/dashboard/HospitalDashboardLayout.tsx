@@ -97,7 +97,7 @@ export default function HospitalDashboardLayout() {
         </div>
       </div>
       <div className="flex flex-col">
-        <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6 bg-[url(/bdpm.png)] bg-no-repeat bg-cover">
+        <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6 bg-[url(/transfusion-therapy.jpg)] bg-no-repeat bg-cover">
           <Sheet>
             <SheetTrigger asChild>
               <Button
