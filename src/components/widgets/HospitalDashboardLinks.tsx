@@ -4,7 +4,6 @@ import {
     MailCheck,
     MailPlus,
     Package,
-    // Package2,
     Settings,
     Users,
   } from "lucide-react"
@@ -14,7 +13,7 @@ const HospitalDashboardLinks = [
         hospitalId: "",
         label: "Overview",
         destination: '',
-        to: '',
+        to: 'overview',
         user: "Worker",
         icon: <LineChart className="h-4 w-4" />,
     },
@@ -42,14 +41,6 @@ const HospitalDashboardLinks = [
         user: "Worker",
         icon: <Package className="h-4 w-4" />,
     },
-    // {
-    //     hospitalId: "",
-    //     label: "Blood Bags",
-    //     destination: '',
-    //     to: "bags",
-    //     user: "Worker",
-    //     icon: <Package2 className="h-4 w-4" />,
-    // },
     {
         hospitalId: "",
         label: "Sent Requests",

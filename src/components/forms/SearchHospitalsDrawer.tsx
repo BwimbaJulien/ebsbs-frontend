@@ -6,12 +6,11 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Search } from "lucide-react"
 import { useState } from "react"
 import { z } from "zod"
-import { HospitalDataTypes } from "./HospitalSettingsForm"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
-import { searchHospitalsByBlood } from "@/api/hospital"
 import { toast } from "sonner"
 import { Separator } from "../ui/separator"
 import LoadingButton from "../widgets/LoadingButton"
+import { searchHospitalsByBlood } from "@/api/hospital"
 
 const FormSchema = z.object({
     bloodType: z.enum(["Plasma", "Platelet", "Whole Blood", "Red Blood Cells"]),
@@ -19,12 +18,27 @@ const FormSchema = z.object({
     rhesis: z.enum(["P", "N"])
 });
 
+export type ResultTypes = {
+    id: string,
+    type: "result" | "bloodBank",
+    name: string,
+    googleLocation: string,
+    province: string,
+    town: string,
+    bloodCount: number,
+    specialization?: string,
+    resultType?: "Public" | "Private",
+    email?: string,
+    phone?: string,
+    POBox?: string, 
+}
+
 export type SearchHospitalsTypes = z.infer<typeof FormSchema>;
 
 export default function SearchHospitalsDrawer() {
     const [isLoading, setIsLoading] = useState(false);
-    const [hospitals, setHospitals] = useState<HospitalDataTypes[]>([]);
-    const hospitalId = JSON.parse(localStorage.getItem("hospitalWorker") as string).hospitalId;
+    const [results, setResults] = useState<ResultTypes[]>([] as ResultTypes[]);
+    const resultId = JSON.parse(localStorage.getItem("hospitalWorker") as string).hospitalId;
 
     const form = useForm<SearchHospitalsTypes>({
         resolver: zodResolver(FormSchema),
@@ -41,7 +55,7 @@ export default function SearchHospitalsDrawer() {
         searchHospitalsByBlood(data)
             .then((response) => {
                 setIsLoading(false);
-                setHospitals(response.hospitals);
+                setResults(response);
             })
             .catch((error) => {
                 setIsLoading(false);
@@ -62,7 +76,7 @@ export default function SearchHospitalsDrawer() {
                 <DialogHeader>
                     <DialogTitle>Search Hospitals</DialogTitle>
                     <DialogDescription>
-                        Search hospitals with required blood.
+                        Search results with required blood.
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
@@ -215,45 +229,30 @@ export default function SearchHospitalsDrawer() {
                 </Form>
                 <DialogFooter>
                     <div className="flex flex-col w-full space-y-2">
-                        {(hospitals && hospitals.length !== 0) && <Separator />}
-                        {(hospitals && hospitals.length > 0) && <p className="font-bold">Search Results</p>}
-                        {hospitals.length !== 0 && <div className="flex bg-secondary flex-col w-full gap-2 border p-2 rounded-md">
-                            {hospitals.map((hospital) => {
-                                if (!hospital || !hospital.name) return null;
-                                if (hospital.id === hospitalId) return null;
+                        {(results && results.length !== 0) && <Separator />}
+                        {(results && results.length > 0) && <p className="font-bold">Search Results</p>}
+                        {results.length !== 0 && <div className="flex bg-secondary flex-col w-full gap-2 border p-2 rounded-md">
+                            {results.map((result) => {
+                                if (!result || !result.name) return null;
+                                if (result.id === resultId) return null;
                                 return (
-                                    <div key={hospital.id} className="flex w-full justify-between">
+                                    <div key={result.id} className="flex w-full justify-between">
                                         <p>
-                                            <span className="text-sm">{hospital.name}</span>
+                                            <span className="text-sm">{result.name}</span>
                                         </p>
                                         <p>
-                                            <span className="text-sm p-1 bg-secondary border rounded-md">Hospital</span>
+                                            <span className="text-sm p-1 bg-secondary border rounded-md">{result.bloodCount}</span>
                                         </p>
                                         <Button
                                             variant={"outline"}
                                             className="w-fit"
                                             size={"sm"}
-                                            onClick={() => window.location.replace(`/hdash/${hospitalId}/r/requests/sent/new?hospital=${hospital.id}`)}>
+                                            onClick={() => window.location.replace(`/hdash/${resultId}/r/requests/sent/new?${result.type}=${result.id}`)}>
                                             Create Request
                                         </Button>
                                     </div>
                                 )
                             })}
-                            <div className="flex w-full justify-between">
-                                <p>
-                                    <span className="text-sm font-bold">Blood Bank</span>
-                                </p>
-                                <p>
-
-                                </p>
-                                <Button
-                                    variant={"outline"}
-                                    className="w-fit"
-                                    size={"sm"}
-                                    onClick={() => window.location.replace(`/hdash/${hospitalId}/r/requests/sent/new`)}>
-                                    Create Request
-                                </Button>
-                            </div>
                         </div>}
                     </div>
                 </DialogFooter>

@@ -4,7 +4,7 @@ import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input";
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import LoadingButton from "../widgets/LoadingButton"
 import { toast } from "sonner"
@@ -82,7 +82,7 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
     defaultValues: {
       id: request?.id || "",
       hospitalId: request?.hospitalId || hospitalId,
-      bloodBankId: request?.bloodBankId !== null ? request?.bloodBankId : "",
+      bloodBankId: request?.bloodBankId !== null && request?.bloodBankId || searchParams.get("bloodBank") || undefined,
       idOfOtherHospital: request?.idOfOtherHospital !== null && request?.idOfOtherHospital || searchParams.get("hospital") || undefined,
       status: request?.status.toString() || 'Pending',
       rhP_O: request?.rhP_O.toString() || "0",
@@ -119,11 +119,6 @@ export default function ManageBloodRequestForm({ request, hospitals, bloodBanks 
       rbcN_AB: request?.rbcN_AB.toString() || "0",
     },
   })
-
-  useEffect(() => {
-    console.log(searchParams.get("hospital"));
-    // console.log(form.getValues())
-  }, [searchParams])
 
   function onSubmit(data: RequestTypes) {
     setIsLoading(true);

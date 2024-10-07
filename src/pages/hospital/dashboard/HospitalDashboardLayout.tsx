@@ -32,16 +32,6 @@ export default function HospitalDashboardLayout() {
   useEffect(() => {
     if (params.userType === "a") {
       setUser(JSON.parse(localStorage.getItem("hospitalAdmin") as string))
-      getNotificationsByHospitalId(JSON.parse(localStorage.getItem("hospitalAdmin") as string).hospitalId)
-        .then((response) => {
-          const inDescendingOrder = response.notifications.sort((a: Notification, b: Notification) => {
-            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-          });
-          setNotifications(inDescendingOrder)
-        })
-        .catch((error) => {
-          console.error(error);
-        })
     } else {
       setUser(JSON.parse(localStorage.getItem("hospitalWorker") as string))
       getNotificationsByHospitalId(JSON.parse(localStorage.getItem("hospitalWorker") as string).hospitalId)
@@ -155,7 +145,7 @@ export default function HospitalDashboardLayout() {
             {params.userType === "r" && <SearchHospitalsDrawer />}
             <div className="flex items-center space-x-4 ml-auto">
               <ModeToggle />
-              <DropdownMenu>
+              {user?.role === "Hospital Worker" && <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="secondary" size="icon" className="rounded-full">
                     <Bell className="h-5 w-5" />
@@ -175,13 +165,8 @@ export default function HospitalDashboardLayout() {
                   <DropdownMenuItem>
                     {notifications && notifications.length === 0 && <span>No notifications available</span>}
                   </DropdownMenuItem>
-                  {/* <DropdownMenuItem>
-                    <Link to={`/dashboard/${params.userType}/notifications`} className="w-fit text-sm underline">
-                      View all notifications
-                    </Link>
-                  </DropdownMenuItem> */}
                 </DropdownMenuContent>
-              </DropdownMenu>
+              </DropdownMenu>}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="secondary" size="icon" className="rounded-full">

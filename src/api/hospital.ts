@@ -1,6 +1,6 @@
 import { HospitalApplicantionTypes } from "@/components/forms/ApplyForHospitalForm";
 import { HospitalDataTypes } from "@/components/forms/HospitalSettingsForm";
-import { SearchHospitalsTypes } from "@/components/forms/SearchHospitalsDrawer";
+import { ResultTypes, SearchHospitalsTypes } from "@/components/forms/SearchHospitalsDrawer";
 // import Cookies from "js-cookie";
 
 const API_BASE_URL = import.meta.env.VITE_APP_BASE_URL;
@@ -158,7 +158,7 @@ export const listInactiveHospitals = async () => {
     return responseData;
 }
 
-export const searchHospitalsByBlood = async (data: SearchHospitalsTypes) => {
+export const searchHospitalsByBlood = async (data: SearchHospitalsTypes): Promise<ResultTypes[]>=> {
     const response = await fetch(`${API_BASE_URL}/hospitals/search`, {
         method: "POST",
         headers: {
@@ -179,7 +179,7 @@ export const searchHospitalsByBlood = async (data: SearchHospitalsTypes) => {
             throw new Error(responseData.error);
         }
     }
-    return responseData;
+    return responseData.results;
 }
 
 export const getAdminOverviewData = async (hospitalId: string) => {
