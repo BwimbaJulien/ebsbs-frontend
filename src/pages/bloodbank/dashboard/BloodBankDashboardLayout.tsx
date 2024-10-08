@@ -163,8 +163,8 @@ export default function BloodBankDashboardLayout() {
                   <DropdownMenuSeparator />
                   <div className="overflow-y-scroll h-96">
                     {notifications && notifications.length > 0 && notifications.map((notification, index) => (
-                      <DropdownMenuItem className="flex flex-col justify-start items-start gap-2">
-                        <NotificationContainer key={index} notification={notification} />
+                      <DropdownMenuItem key={index} className="flex flex-col justify-start items-start gap-2">
+                        <NotificationContainer notification={notification} />
                       </DropdownMenuItem>
                     ))}
                   </div>

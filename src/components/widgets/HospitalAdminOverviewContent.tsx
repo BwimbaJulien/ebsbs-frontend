@@ -7,15 +7,15 @@ import LoadingSkeleton from "./LoadingSkeleton";
 import { getAdminOverviewData } from "@/api/hospital";
 import { HospitalDataTypes } from "../forms/HospitalSettingsForm";
 import { RequestTypes } from "../forms/ManageBloodRequestForm";
+import { BloodInTransactionsTypes } from "../tables/BloodInTransactionsTable/BloodInTransactionTable";
 
 export default function HospitalAdminOverviewContent() {
   const [isLoading, setIsLoading] = useState(false);
   const [users, setUsers] = useState<UserDataTypes[]>();
   const hospitalId = JSON.parse(localStorage.getItem("hospitalAdmin") as string).hospitalId;
   const [hospital, setHospital] = useState<HospitalDataTypes>();
-  const [notifications, setNotifications] = useState();
   const [bloodRequests, setBloodRequests] = useState<RequestTypes[]>();
-  const [bloodInTransactions, setBloodInTransactions] = useState();
+  const [bloodInTransactions, setBloodInTransactions] = useState<BloodInTransactionsTypes[]>();
 
   useEffect(() => {
     setIsLoading(true);
@@ -24,7 +24,6 @@ export default function HospitalAdminOverviewContent() {
         console.log(response);
         setHospital(response.hospital);
         setUsers(response.hospital.workers);
-        setNotifications(response.hospital.notifications);
         setBloodRequests(response.hospital.bloodRequests);
         setBloodInTransactions(response.hospital.bloodInTransactions);
         setIsLoading(false);
@@ -46,7 +45,7 @@ export default function HospitalAdminOverviewContent() {
         <p className="text-lg text-foreground">Manage hospital's access to the system and other user's access here</p>
       </div>
       <div className="grid auto-rows-max items-start gap-4 w-full">
-        <div className="grid gap-4 grid-cols-2 w-full lg:grid-cols-4">
+        <div className="grid gap-4 grid-cols-2 w-full md:grid-cols-3">
           <Card className="">
             <CardHeader className="pb-2">
               <CardDescription>Pharmacists</CardDescription>
@@ -72,20 +71,12 @@ export default function HospitalAdminOverviewContent() {
             <CardContent>
             </CardContent>
           </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardDescription>Notifications</CardDescription>
-              <CardTitle className="text-4xl">{notifications?.length || 0}</CardTitle>
-            </CardHeader>
-            <CardContent>
-            </CardContent>
-          </Card>
         </div>
         <Card className="sm:col-span-2">
           <CardHeader className="pb-3">
-            <CardTitle>Manage Users</CardTitle>
+            <CardTitle>Manage Pharmacists</CardTitle>
             <CardDescription className="text-balance max-w-lg leading-relaxed">
-              Add New Users to manage the blood bank
+              Add New Pharmacists for your hospital
             </CardDescription>
           </CardHeader>
           <CardFooter>
