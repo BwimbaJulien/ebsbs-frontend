@@ -7,6 +7,7 @@ import { HospitalDataTypes } from "../forms/HospitalSettingsForm";
 import { getAdminOverviewData } from "@/api/bloodBank";
 import { UserDataTypes } from "../forms/UserAccountForm";
 import LoadingSkeleton from "./LoadingSkeleton";
+import { Notification } from "./NotificationContainer";
 
 export default function BloodBankAdminOverviewContent() {
   const [isLoading, setIsLoading] = useState(false);
@@ -20,7 +21,6 @@ export default function BloodBankAdminOverviewContent() {
     setIsLoading(true);
     getAdminOverviewData(bloodBankId)
       .then((response) => {
-        console.log(response);
         setUsers(response.users);
         setApplications(response.applications);
         setNotifications(response.notifications);
@@ -81,7 +81,7 @@ export default function BloodBankAdminOverviewContent() {
         <CardHeader className="pb-3">
           <CardTitle>Manage Lab Technicians</CardTitle>
           <CardDescription className="text-balance max-w-lg leading-relaxed">
-            Add New Users to manage the blood bank
+            Add New Lab Technician to manage the blood bank
           </CardDescription>
         </CardHeader>
         <CardFooter>
