@@ -6,12 +6,12 @@ export default function Footer() {
                     <div className="flex justify-center sm:justify-start">
                         <span className="text-2xl font-bold sm:text-3xl flex items-center flex-col gap-2">
                             <img src="https://cpts-nk.org/wp-content/uploads/2024/06/CPTS-NK-logo.png" alt="logo" className="h-20 w-auto" />
-                            <span className="">C.P.T.S</span>
+                            {/* <span className="">C.P.T.S</span> */}
                         </span>
                     </div>
 
                     <p className="mt-4 text-center text-sm text-gray-500 lg:mt-0 lg:text-right">
-                        Copyright &copy; {new Date().getFullYear()}. All rights reserved EBSDS.
+                        Copyright &copy; {new Date().getFullYear()}. All rights reserved C.P.T.S.
                     </p>
                 </div>
             </div>
